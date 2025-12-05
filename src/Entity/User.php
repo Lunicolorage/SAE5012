@@ -50,10 +50,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'user')]
     private Collection $notes;
 
+    /**
+     * @var Collection<int, JeuDonnee>
+     */
+    #[ORM\OneToMany(targetEntity: JeuDonnee::class, mappedBy: 'user')]
+    private Collection $jeuDonnees;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
         $this->notes = new ArrayCollection();
+        $this->jeuDonnees = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -192,6 +199,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($note->getUser() === $this) {
                 $note->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, JeuDonnee>
+     */
+    public function getJeuDonnees(): Collection
+    {
+        return $this->jeuDonnees;
+    }
+
+    public function addJeuDonnee(JeuDonnee $jeuDonnee): static
+    {
+        if (!$this->jeuDonnees->contains($jeuDonnee)) {
+            $this->jeuDonnees->add($jeuDonnee);
+            $jeuDonnee->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJeuDonnee(JeuDonnee $jeuDonnee): static
+    {
+        if ($this->jeuDonnees->removeElement($jeuDonnee)) {
+            // set the owning side to null (unless already changed)
+            if ($jeuDonnee->getUser() === $this) {
+                $jeuDonnee->setUser(null);
             }
         }
 
