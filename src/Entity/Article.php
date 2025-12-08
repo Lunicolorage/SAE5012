@@ -8,7 +8,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Controller\GetFullArticleController;
 
+#[ApiResource(operations: [
+    new GetCollection(
+        name: 'publish_article',
+        uriTemplate: '/articles/full',   
+        controller: GetFullArticleController::class,
+    )
+])]
 #[ApiResource] 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
