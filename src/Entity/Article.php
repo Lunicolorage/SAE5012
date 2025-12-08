@@ -8,13 +8,15 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
 use App\Controller\GetFullArticleController;
+use ApiPlatform\Metadata\Link;
 
 #[ApiResource(operations: [
-    new GetCollection(
+    new Get(
         name: 'publish_article',
-        uriTemplate: '/articles/full',   
+        uriTemplate: '/articles/{id}/full',
+        uriVariables: ['id' => new Link(fromClass: Article::class, identifiers: ['id'])], 
         controller: GetFullArticleController::class,
     )
 ])]

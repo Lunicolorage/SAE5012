@@ -7,16 +7,21 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use App\Entity\Article;
+use App\Repository\ArticleRepository;
 
 #[AsController]
 final class GetFullArticleController extends AbstractController
 {
-    public function __construct()
+    private ArticleRepository $repository;
+
+    public function __construct(ArticleRepository $repository)
     {
+        $this->repository = $repository;
     }
 
-    public function __invoke($data): Response
+    public function __invoke(Article $data): Response
     {
-        return $this->json('Full article data');
+        $res = $this->repository->getFullArticle($data->getId());
+        return $this->json($res);
     }
 }
