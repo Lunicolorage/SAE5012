@@ -39,24 +39,26 @@ function Donnees(){
                 <input type="file" name="csv" id='csv' accept=".csv" onChange={handleChange} required ></input>
             </div>
 
-             <table border="1" cellPadding="5" cellSpacing="0">
-                <thead>
-                    <tr>
-                        {headers.map((header, index) => (
-                        <th key={index}>{header}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((row, index) => (
-                        <tr key={index}>
-                        {headers.map((header, idx) => (
-                            <td key={idx}>{row[header]}</td>
-                        ))}
+            <div className="tableContainer">
+                <table border="1" cellPadding="5" cellSpacing="0">
+                    <thead>
+                        <tr>
+                            {headers.map((header, index) => (
+                            <th key={index}>{header}</th>
+                            ))}
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {data.map((row, index) => (
+                            <tr key={index}>
+                            {headers.map((header, idx) => (
+                                <td key={idx}>{row[header]}</td>
+                            ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
 
             <div className="variables">
