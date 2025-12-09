@@ -1,42 +1,90 @@
 #root {
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 0;
   padding: 2rem;
-  text-align: center;
+  /* text-align: center; */
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+
+/* Donnees.jsx----------------------------------------------------------------- */
+
+.importDonnees{
+  /* display: flex;
+  flex-direction: column; */
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+  color: #000D36;
+  margin-bottom: 25px;
+
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.importDonnees label{
+  font-weight: bold;
+  font-size: 1.5em;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.importDonnees input{
+  cursor: pointer;
+  border-radius: 10px;
 }
 
-.card {
-  padding: 2em;
+
+.variables{
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+  color: #000D36;
+  margin-top: 25px;
+  width: 70%;
 }
 
-.read-the-docs {
-  color: #888;
+.variables h2{
+  margin-top: 0;
 }
+
+.typeVar{
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: 0 5vw;
+}
+
+.typeVar select{
+  width: 50%;
+}
+
+.publierButton{
+  background-color: #7AC74F;
+  color: #000D36;
+  width: 50%;
+  margin: 35px 25% 15px 25%;
+}
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* Articles.js ------------------------------------------------------------------------------- */
+
+main{
+  /* à voir -> bootstrap ? */
+  display: grid; 
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 100%;
+  column-gap: 10px;
+  row-gap: 15px;
+}
+
+main > :first-child{
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+
+.article{
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+  color: #000D36;
+  margin-top: 25px;
+}
+

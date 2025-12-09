@@ -10,7 +10,7 @@ function Donnees(){
         reader.onload = function(e) {    
             let text = e.target.result;
             
-            const lines = text.split("\n").map(l => l.trim()).filter(l => l !== "");
+            const lines = text.split("\n").map(line => line.trim()).filter(line => line !== "");
 
             const newHeaders = lines[0].split(",");
             setHeaders(newHeaders);
@@ -33,9 +33,12 @@ function Donnees(){
 
     return(
         <div>
-            <label htmlFor="csv" id="labelCsv">Source de données</label>
-            <input type="file" name="csv" id='csv' accept=".csv" onChange={handleChange} required ></input>
-        
+            <div className="importDonnees">
+                <label htmlFor="csv" id="labelCsv">Source de données</label>
+                <br></br>
+                <input type="file" name="csv" id='csv' accept=".csv" onChange={handleChange} required ></input>
+            </div>
+
              <table border="1" cellPadding="5" cellSpacing="0">
                 <thead>
                     <tr>
@@ -54,6 +57,27 @@ function Donnees(){
                     ))}
                 </tbody>
             </table>
+
+
+            <div className="variables">
+                <h2>Variables</h2>
+                <form action="" className="choixTypeVar">
+                    {headers.map((header, index) => (
+                        // à voir pour la div
+                        <div key={index} className="typeVar"> 
+                            <label htmlFor={index}>{header}</label>
+                            <select id={index}>
+                                <option value="">-- Type de variable --</option>
+                                <hr></hr>
+                                <option value={"categorielle"}>Catégorielle</option>
+                                <option value={"numerique"}>Numérique</option>
+                            </select>
+                        </div>
+                    ))}
+                    <button type="submit" className="publierButton">Publier</button>
+                </form>
+            </div>
+
         </div>
     )
 }
