@@ -21,7 +21,10 @@ final class PostFullArticleController extends AbstractController
 
     public function __invoke(Article $article): Article
     {
-        $this->articlePublishingHandler->handle($article);
+        // $this->articlePublishingHandler->handle($article);
+        $jsonData = json_decode(file_get_contents('php://input'), true);
+        $this->repository->saveArticleFromJson($article, $jsonData);
+
 
         return $article;
     }

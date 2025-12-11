@@ -44,6 +44,9 @@ security:
         - { path: ^/api/verify, roles: PUBLIC_ACCESS }
         - { path: ^/api/articles$, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/articles/.*?/full$, roles: PUBLIC_ACCESS }
+
+        - { path: ^/api/articles/import$, roles: PUBLIC_ACCESS, methods: [POST] }
+        
         - { path: ^/api/images, roles: ['ROLE_ADMIN'] }
         - { path: ^/api/jeu_donnees, roles: ['ROLE_ADMIN'] }
         - { path: ^/api/notes, roles: ['ROLE_ADMIN'] }

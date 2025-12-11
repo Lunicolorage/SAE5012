@@ -79,6 +79,131 @@ class ArticleRepository extends ServiceEntityRepository
         ];
     }
 
+    /*
+    fichier recuperer
+            {
+        "titre": "Test 1",
+        "resume": "Article de test 1",
+        "user": {
+            "nom": "noah"
+        },
+        "sections": [
+            {
+            "type": "titre",
+            "contenu": {
+                "texte": "Titre 1 section 1",
+                "hierarchie": "h2"
+                }
+            },
+            {
+            "type": "texte",
+            "contenu": {
+                "contenu": "Texte 1 section 2"
+                }
+            },
+            {
+            "type": "image",
+            "contenu":
+                {
+                "id": 1,
+                "url": "https://img.20mn.fr/VPI0zCt8QlSApRWU4so8DSk/1444x920_cat-and-dog-near-christmas-tree",
+                "alt": "chient et chat noel",
+                }
+            }
+        ]
+    }
+
+    */
+
+     public function saveArticleFromJson(Article $article, array $data): Article
+    {
+        $article->setTitre($data['titre'] ?? null);
+        $article->setResume($data['resume'] ?? null);
+        // $article->setCreatedAt(new \DateTimeImmutable());
+
+        // // Récupérer l'utilisateur
+        // $userRepository = $this->getEntityManager()->getRepository(\App\Entity\User::class);
+        // $user = $userRepository->findOneBy(['nom' => $data['user']['nom']]);
+        // if (!$user) {
+        //     throw new \Exception("Utilisateur '{$data['user']['nom']}' non trouvé");
+        // }
+        // $article->setUser($user);
+
+        $this->getEntityManager()->persist($article);
+        $this->getEntityManager()->flush();
+
+        // Traiter les sections
+        $ordre = 1;
+        foreach ($data['sections'] as $sectionData) {
+            $this->createSection($article, $sectionData, $ordre);
+            $ordre++;
+        }
+
+        return $article;
+    }
+
+    private function createSection(Article $article, array $sectionData, int $ordre): void
+    {
+        $section = new \App\Entity\Section();
+        $section->setType($sectionData['type']);
+        $section->setOrdre($ordre);
+        $section->setArticle($article);
+
+        $this->getEntityManager()->persist($section);
+        $this->getEntityManager()->flush();
+
+        // Traiter le contenu selon le type
+        match ($sectionData['type']) {
+            'titre' => $this->createTitre($section, $sectionData['contenu']),
+            'texte' => $this->createTexte($section, $sectionData['contenu']),
+            'image' => $this->linkImage($section, $sectionData['contenu']),
+            default => throw new \Exception("Type de section inconnu: {$sectionData['type']}")
+        };
+    }
+
+    private function createTitre(\App\Entity\Section $section, array $contenu): void
+    {
+        $titre = new \App\Entity\Titre();
+        $titre->setTexte($contenu['texte']);
+        $titre->setHierarchie($contenu['hierarchie']);
+        $titre->setSection($section);
+
+        $this->getEntityManager()->persist($titre);
+        $this->getEntityManager()->flush();
+    }
+
+    private function createTexte(\App\Entity\Section $section, array $contenu): void
+    {
+        $texte = new \App\Entity\Texte();
+        $texte->setContenu($contenu['contenu']);
+        $texte->setSection($section);
+
+        $this->getEntityManager()->persist($texte);
+        $this->getEntityManager()->flush();
+    }
+
+    private function linkImage(\App\Entity\Section $section, array $contenu): void
+    {
+        $imageRepository = $this->getEntityManager()->getRepository(\App\Entity\Image::class);
+        $image = $imageRepository->find($contenu['id']);
+        
+        if (!$image) {
+            // Créer l'image si elle n'existe pas
+            $image = new \App\Entity\Image();
+            $image->setUrl($contenu['url']);
+            $image->setAlt($contenu['alt']);
+            $image->setCreatedAt(new \DateTimeImmutable());
+            $this->getEntityManager()->persist($image);
+            $this->getEntityManager()->flush();
+        }
+
+        // Lier l'image à la section
+        $section->addImage($image);
+        $this->getEntityManager()->persist($section);
+        $this->getEntityManager()->flush();
+    }
+
+
 //    /**
 //     * @return Article[] Returns an array of Article objects
 //     */
