@@ -42,6 +42,15 @@ security:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/register, roles: PUBLIC_ACCESS }
         - { path: ^/api/verify, roles: PUBLIC_ACCESS }
+        - { path: ^/api/articles$, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/articles/.*?/full$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/images, roles: ['ROLE_ADMIN'] }
+        - { path: ^/api/jeu_donnees, roles: ['ROLE_ADMIN'] }
+        - { path: ^/api/notes, roles: ['ROLE_ADMIN'] }
+        - { path: ^/api/sections, roles: ['ROLE_ADMIN'] }
+        - { path: ^/api/textes, roles: ['ROLE_ADMIN'] }
+        - { path: ^/api/titres, roles: ['ROLE_ADMIN'] }
+        - { path: ^/api/users, roles: ['ROLE_ADMIN'] }
         - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
