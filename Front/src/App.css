@@ -60,14 +60,11 @@
 }
 
 .publierButton{
-  background-color: #7AC74F;
-  color: #000D36;
   width: 80%; 
   padding: 10px;
   margin: 20px 10% 0 10%;
   border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
+  font-size: 15pt;
 }
 
 .tableContainer {
@@ -116,10 +113,9 @@ table th, table td {
 }
 
 
-
 /* /////////////////////////////////////////////////////////////////////////////////////// */
 
-/* Articles.js ------------------------------------------------------------------------------- */
+/* Articles.jsx ------------------------------------------------------------------------------- */
 
 main {
   /* à voir -> bootstrap ? */
@@ -178,4 +174,107 @@ main > :first-child {
     grid-column-end: 4;
   }
 
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* TitreResume.jsx ------------------------------------------------------------------------------- */
+
+.titreResume{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.zoneChoixTitre{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.zoneChoixResume{
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* TitreResume.jsx ------------------------------------------------------------------------------- */
+
+.zoneChoixTexte{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* SousTitre.jsx ------------------------------------------------------------------------------- */
+
+.zoneChoixSousTitre{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.zoneChoixSousTitre select{
+  margin-bottom: 10px;
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* Image.jsx ------------------------------------------------------------------------------- */
+
+.zoneChoixImage{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.selectionImage{
+  display: flex;
+  justify-content: space-between;
+}
+
+#choixImage{
+  width: 45%;
+}
+
+.ajoutImage{
+  width: 50%;
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* SourceDonnees.jsx ------------------------------------------------------------------------------- */
+
+.zoneSourceDonnees{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
 }

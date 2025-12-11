@@ -2,13 +2,15 @@
 import './App.css'
 import { Donnees } from './components/ajoutDonnees/Donnees'
 import { Articles } from './components/index/Articles'
+import { PageCreationArticle } from './components/creationArticle/PageCreationArticle'
 
 function App() {
 
   return (
     <div>
-      <Donnees />
+      {/* <Donnees /> */}
       {/* <Articles/> */}
+      <PageCreationArticle />
     </div>
   )
 }
