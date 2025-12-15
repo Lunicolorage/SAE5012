@@ -3,6 +3,7 @@ import { Texte } from "./Texte";
 import { SousTitre } from "./SousTitre";
 import { Image } from "./Image";
 import { SourceDonnees } from "./SourceDonnees";
+import { AjoutBloc } from "./AjoutBloc";
 
 
 function PageCreationArticle(){

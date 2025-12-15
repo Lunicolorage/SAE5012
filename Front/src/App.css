@@ -197,6 +197,17 @@ main > :first-child {
   margin-bottom: 15px;
 }
 
+.zoneChoixTitre label{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.zoneChoixTitre label img{
+  width: 25px;
+  height: auto;
+}
+
 .zoneChoixResume{
   display: flex;
   flex-direction: column;
@@ -215,6 +226,17 @@ main > :first-child {
   background-color: #E3E3E3;
   padding: 15px;
   border-radius: 10px;
+}
+
+.zoneChoixTexte label{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.zoneChoixTexte label img{
+  width: 25px;
+  height: auto;
 }
 
 
@@ -236,6 +258,17 @@ main > :first-child {
   margin-bottom: 10px;
 }
 
+.zoneChoixSousTitre label{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.zoneChoixSousTitre label img{
+  width: 25px;
+  height: auto;
+}
+
 
 /* /////////////////////////////////////////////////////////////////////////////////////// */
 
@@ -251,11 +284,21 @@ main > :first-child {
   border-radius: 10px;
 }
 
+.zoneChoixImage label{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.zoneChoixImage label img{
+  width: 25px;
+  height: auto;
+}
+
 input[type=file]::file-selector-button {
   background-color: #7AC74F;
   color: #000D36;
   width: 50%;
-  /* margin: 3px; */
   margin-top: 10px;
   border-radius: 8px;
   border: 1px solid transparent;
@@ -294,8 +337,6 @@ input[type=file]::file-selector-button {
   }
 
   input[type=file]::file-selector-button {
-    /* width: 50%; */
-    /* margin: 3px; */
     margin-top: 0px;
   }
 }
@@ -315,6 +356,18 @@ input[type=file]::file-selector-button {
   border-radius: 10px;
 }
 
+
+.zoneSourceDonnees label{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.zoneSourceDonnees label img{
+  width: 25px;
+  height: auto;
+}
+
 .zoneCheck{
   padding-top: 10px;
   padding-bottom: 10px;
@@ -323,8 +376,8 @@ input[type=file]::file-selector-button {
 .rectColor{
   width: 20%;
   height: 20px;
-  border: solid;
-  background-color: #7AC74F;
+  border: 0;
+  /* background-color: #7AC74F; */
 }
 
 .form-check-label{

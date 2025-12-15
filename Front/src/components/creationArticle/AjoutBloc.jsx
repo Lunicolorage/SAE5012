@@ -1,0 +1,6 @@
+
+function AjoutBloc(){
+
+}
+
+export {AjoutBloc}
