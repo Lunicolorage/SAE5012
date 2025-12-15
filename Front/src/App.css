@@ -124,7 +124,7 @@ table th, table td {
 @media (min-width: 768px) {
   .variables{
     /* margin-top: 25px auto; */
-    width: 80%;
+    /* width: 80%; */
   }
 
   .typeVar{
