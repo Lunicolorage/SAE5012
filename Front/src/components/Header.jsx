@@ -3,15 +3,15 @@ import { Link } from "react-router-dom";
 function Header(){
     return(
         <header>
-            <div>
+            <div className="header-left">
                 <Link to="/">
-                    <img src="src/assets/eff-fonce.png" alt="logo foncé" />
+                    <img className="header-logo" src="src/assets/eff-fonce.png" alt="logo foncé" />
                 </Link>
                 <Link to="/index" >
                 Index
                 </Link>
                 <Link to="/create" >
-                Publier
+                Ajout d'article
                 </Link>
                 <Link to="/add-data" >
                 Ajout de données
