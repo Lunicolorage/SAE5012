@@ -8,6 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import { NotFound } from './components/NotFound';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
+import { Accueil } from './components/accueil/Accueil';
 
 function App() {
 
@@ -17,7 +18,7 @@ function App() {
       <Header />
 
       <Routes>
-
+          <Route path="/" element={<Accueil />} />
           <Route path="/create" element={<PageCreationArticle />} />
           <Route path="/add-data" element={<Donnees />} />
           <Route path="/index" element={<Articles/>} />
