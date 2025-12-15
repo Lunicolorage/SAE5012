@@ -16,7 +16,7 @@ function App() {
     <>
     < BrowserRouter >
       <Header />
-
+      <main>
       <Routes>
           <Route path="/" element={<Accueil />} />
           <Route path="/create" element={<PageCreationArticle />} />
@@ -25,7 +25,7 @@ function App() {
           {/* <Route path="/shop" element={<Shop like={[tabLiked, setTabLiked]} card={[tabPanier, setTabPanier]} />} />  */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-
+      </main>
       <Footer />
 
     </BrowserRouter>
