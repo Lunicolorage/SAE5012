@@ -1,0 +1,374 @@
+#root {
+  margin: 0;
+  padding: 2rem;
+  /* text-align: center; */
+}
+
+
+/* Donnees.jsx----------------------------------------------------------------- */
+
+.importDonnees{
+  /* display: flex;
+  flex-direction: column; */
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+  color: #000D36;
+  margin-bottom: 25px;
+}
+
+.importDonnees label{
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+.importDonnees input{
+  cursor: pointer;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.variables{
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+  color: #000D36;
+  width: 100%;
+  margin: 25px auto 0 auto;
+}
+
+.variables h2{
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.typeVar{
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.typeVar label{
+  font-weight: bold;
+}
+
+.typeVar select{
+  width: 100%;
+  padding: 6px;
+}
+
+.publierButton{
+  width: 80%; 
+  padding: 10px;
+  margin: 20px 10% 0 10%;
+  border-radius: 8px;
+  font-size: 15pt;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 500px;
+}
+
+table th, table td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #000D36;
+  background-color: #efefef;
+}
+
+
+
+@media (min-width: 768px) {
+  .variables{
+    /* margin-top: 25px auto; */
+    width: 80%;
+  }
+
+  .typeVar{
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5vw;
+  }
+
+  .typeVar select{
+    width: 50%;
+  }
+
+  .publierButton{
+    width: 50%;
+    margin: 35px 25% 15px 25%;
+  }
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* Articles.jsx ------------------------------------------------------------------------------- */
+
+main {
+  /* à voir -> bootstrap ? */
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  row-gap: 15px;
+  column-gap: 10px;
+}
+
+main > :first-child {
+  grid-column: 1;
+}
+
+.article {
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+  color: #000D36;
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+}
+
+.article p {
+  flex-grow: 1;
+}
+
+.buttonArticle {
+  background-color: #7AC74F;
+  color: #000D36;
+  width: 50%;
+  margin: 0 25%;
+}
+
+
+@media (min-width: 600px) {
+  main {
+    grid-template-columns: 1fr 1fr; 
+  }
+
+  main > :first-child {
+    grid-column: 1 / 3;
+  }
+}
+
+
+@media (min-width: 1024px) {
+
+  main{
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  main > :first-child{
+    grid-column-start: 1;
+    grid-column-end: 4;
+  }
+
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* TitreResume.jsx ------------------------------------------------------------------------------- */
+
+.titreResume{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.zoneChoixTitre{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.zoneChoixResume{
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* Texte.jsx ------------------------------------------------------------------------------- */
+
+.zoneChoixTexte{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* SousTitre.jsx ------------------------------------------------------------------------------- */
+
+.zoneChoixSousTitre{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.zoneChoixSousTitre select{
+  margin-bottom: 10px;
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* Image.jsx ------------------------------------------------------------------------------- */
+
+.zoneChoixImage{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+input[type=file]::file-selector-button {
+  background-color: #7AC74F;
+  color: #000D36;
+  width: 50%;
+  /* margin: 3px; */
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 0em;
+  font-family: inherit;
+  background-color: #7AC74F;
+  color: #000D36;
+  font-weight: bold;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.selectionImage{
+  display: flex;
+  flex-direction: column;
+}
+
+#choixImage{
+  width: 45%;
+}
+
+.ajoutImage{
+  width: 50%;
+}
+
+
+@media (min-width: 600px) {
+  .selectionImage{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  input[type=file]{
+    width: 50%;
+  }
+
+  input[type=file]::file-selector-button {
+    /* width: 50%; */
+    /* margin: 3px; */
+    margin-top: 0px;
+  }
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* SourceDonnees.jsx ------------------------------------------------------------------------------- */
+
+.zoneSourceDonnees{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.zoneCheck{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.rectColor{
+  width: 20%;
+  height: 20px;
+  border: solid;
+  background-color: #7AC74F;
+}
+
+.form-check-label{
+  display: flex;
+  justify-content: space-between;
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* PageCreationArticle.jsx ------------------------------------------------------------------------------- */
+
+.pageCreationArticle h1{
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.blocs{
+  width: 100%;
+  margin: 0 auto;
+}
+
+.buttonAjout{
+  width: 100%;
+  border: #7AC74F solid 3px;
+  background-color: #fff;
+  margin-bottom: 15px;
+  font-size: 15pt;
+}
+
+.buttonPublier{
+  width: 100%;
+  margin-bottom: 15px;
+  font-size: 15pt;
+}
+
+@media (min-width: 600px) {
+  .buttonsCreation{
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+  }
+
+  .blocs{
+    width: 60%;
+  }
+}
