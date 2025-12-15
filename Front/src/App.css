@@ -205,7 +205,7 @@ main > :first-child {
 
 /* /////////////////////////////////////////////////////////////////////////////////////// */
 
-/* TitreResume.jsx ------------------------------------------------------------------------------- */
+/* Texte.jsx ------------------------------------------------------------------------------- */
 
 .zoneChoixTexte{
   display: flex;
@@ -251,9 +251,26 @@ main > :first-child {
   border-radius: 10px;
 }
 
+input[type=file]::file-selector-button {
+  background-color: #7AC74F;
+  color: #000D36;
+  width: 50%;
+  /* margin: 3px; */
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 0em;
+  font-family: inherit;
+  background-color: #7AC74F;
+  color: #000D36;
+  font-weight: bold;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
 .selectionImage{
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
 }
 
 #choixImage{
@@ -262,6 +279,25 @@ main > :first-child {
 
 .ajoutImage{
   width: 50%;
+}
+
+
+@media (min-width: 600px) {
+  .selectionImage{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  input[type=file]{
+    width: 50%;
+  }
+
+  input[type=file]::file-selector-button {
+    /* width: 50%; */
+    /* margin: 3px; */
+    margin-top: 0px;
+  }
 }
 
 
@@ -277,4 +313,62 @@ main > :first-child {
   background-color: #E3E3E3;
   padding: 15px;
   border-radius: 10px;
+}
+
+.zoneCheck{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.rectColor{
+  width: 20%;
+  height: 20px;
+  border: solid;
+  background-color: #7AC74F;
+}
+
+.form-check-label{
+  display: flex;
+  justify-content: space-between;
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* PageCreationArticle.jsx ------------------------------------------------------------------------------- */
+
+.pageCreationArticle h1{
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.blocs{
+  width: 100%;
+  margin: 0 auto;
+}
+
+.buttonAjout{
+  width: 100%;
+  border: #7AC74F solid 3px;
+  background-color: #fff;
+  margin-bottom: 15px;
+  font-size: 15pt;
+}
+
+.buttonPublier{
+  width: 100%;
+  margin-bottom: 15px;
+  font-size: 15pt;
+}
+
+@media (min-width: 600px) {
+  .buttonsCreation{
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+  }
+
+  .blocs{
+    width: 60%;
+  }
 }

@@ -7,22 +7,24 @@ import { SourceDonnees } from "./SourceDonnees";
 
 function PageCreationArticle(){
     return(
-        <div>
+        <div className="pageCreationArticle">
             <h1>Création d'article</h1>
 
-            <TitreResume/>
+            <div className="blocs">
+                <TitreResume/>
 
-            <Texte/>
+                <Texte/>
 
-            <SousTitre/>
+                <SousTitre/>
 
-            <Image/>
+                <Image/>
 
-            <SourceDonnees/>
+                <SourceDonnees/>
 
-            <div className="buttonsCreation">
-                <button className="buttonAjout">Ajouter un bloc</button>
-                <button className="buttonPublier">Publier</button>
+                <div className="buttonsCreation">
+                    <button className="buttonAjout">Ajouter un bloc</button>
+                    <button className="buttonPublier">Publier</button>
+                </div>
             </div>
         </div>
     )
