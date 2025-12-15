@@ -230,17 +230,6 @@ table th, table td {
   margin-bottom: 15px;
 }
 
-.zoneChoixTitre label{
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.zoneChoixTitre label img{
-  width: 25px;
-  height: auto;
-}
-
 .zoneChoixResume{
   display: flex;
   flex-direction: column;
@@ -457,4 +446,23 @@ input[type=file]::file-selector-button {
   .blocs{
     width: 60%;
   }
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* AjoutBloc.jsx ------------------------------------------------------------------------------- */
+
+.zoneAjoutBloc{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.zoneAjoutBloc select{
+  margin-bottom: 10px;
 }

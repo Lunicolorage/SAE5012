@@ -7,6 +7,11 @@ import { AjoutBloc } from "./AjoutBloc";
 
 
 function PageCreationArticle(){
+
+    function handleClick(){
+
+    }
+
     return(
         <div className="pageCreationArticle">
             <h1>Création d'article</h1>
@@ -22,8 +27,10 @@ function PageCreationArticle(){
 
                 <SourceDonnees/>
 
+                <AjoutBloc />
+
                 <div className="buttonsCreation">
-                    <button className="buttonAjout">Ajouter un bloc</button>
+                    <button className="buttonAjout" onClick={handleClick}>Ajouter un bloc</button>
                     <button className="buttonPublier">Publier</button>
                 </div>
             </div>
