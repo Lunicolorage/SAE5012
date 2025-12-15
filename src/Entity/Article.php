@@ -8,43 +8,118 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use App\Controller\GetFullArticleController;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
+use App\Controller\PostFullArticleController;
+use Symfony\Component\Serializer\Annotation\Groups;
+use App\State\ArticleProcessor;
 
+// format json post :
+//     {
+//   "titre": "Test Article",
+//   "Resume": "Test resume",
+//   "userName": "noah",
+//   "sections": [
+//     {
+//       "type": "titre",
+//       "contenu": {
+//         "texte": "Titre 1",
+//         "hierarchie": "h1"
+//       }
+//     },
+//     {
+//       "type": "texte",
+//       "contenu": {
+//         "contenu": "Mon texte ici"
+//       }
+//     },
+//     {
+//       "type": "image",
+//       "contenu": {
+//         "url": "https://example.com/image.jpg",
+//         "alt": "Description"
+//       }
+//     }
+//   ]
+// }
+
+#[ApiResource(
+    normalizationContext: ['groups' => ['article:read']],
+    denormalizationContext: ['groups' => ['article:write']],
+    operations: [
+    new Get(
+        name: 'view_full_article',
+        uriTemplate: '/articles/{id}/full',
+        uriVariables: ['id' => new Link(fromClass: Article::class, identifiers: ['id'])], 
+        controller: GetFullArticleController::class,
+    ),
+    new Post(
+            name: 'create_article',
+            uriTemplate: '/articles/import',
+            processor: ArticleProcessor::class,
+        )
+])]
 #[ApiResource] 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Article
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['article:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['article:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['article:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['article:read', 'article:write'])]
     private ?User $user = null;
+
+    #[Groups(['article:write'])]
+    private ?string $userName = null;
+
+    public function getUserName(): ?string
+    {
+        return $this->userName;
+    }
+
+    public function setUserName(?string $userName): static
+    {
+        $this->userName = $userName;
+        return $this;
+    }
 
     /**
      * @var Collection<int, Note>
      */
     #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'article')]
+    #[Groups(['article:read'])]
     private Collection $notes;
 
     /**
      * @var Collection<int, Section>
      */
-    #[ORM\OneToMany(targetEntity: Section::class, mappedBy: 'article')]
+    #[ORM\OneToMany(targetEntity: Section::class, mappedBy: 'article', cascade: ['persist', 'remove'])]
+    #[Groups(['article:read', 'article:write'])]
     private Collection $sections;
 
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['article:read', 'article:write'])]
     private ?string $Resume = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['article:read', 'article:write'])]
     private ?string $titre = null;
 
     public function __construct()
