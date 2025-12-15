@@ -80,6 +80,7 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     /*
+    JE N'UTILISE PLUS LA FONCTION SUIVANTE
     fichier recuperer
             {
         "titre": "Test 1",
@@ -105,7 +106,6 @@ class ArticleRepository extends ServiceEntityRepository
             "type": "image",
             "contenu":
                 {
-                "id": 1,
                 "url": "https://img.20mn.fr/VPI0zCt8QlSApRWU4so8DSk/1444x920_cat-and-dog-near-christmas-tree",
                 "alt": "chient et chat noel",
                 }

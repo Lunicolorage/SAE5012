@@ -20,8 +20,8 @@ class ArticleCreatedNotifier
     public function prePersist(Article $article, PrePersistEventArgs $args): void
     {
         $article->setCreatedAt(new \DateTimeImmutable());
-        $user = $this->security->getUser();
-        $article->setUser($user);
+        // $user = $this->security->getUser();
+        // $article->setUser($user);
         error_log('Article created with ID: ' . $article->getId());
     }
 }

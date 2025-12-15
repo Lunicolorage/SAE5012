@@ -7,31 +7,40 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource] 
 #[ORM\Entity(repositoryClass: SectionRepository::class)]
+#[ApiResource]
 class Section
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['article:read', 'article:write'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['article:read', 'article:write'])]
     private ?string $type = null;
 
-    #[ORM\Column]
-    private ?int $ordre = null;
+    #[ORM\Column(nullable: true)]
+    #[Groups(['article:read', 'article:write'])]
+    private ?int $ordre = 0;
 
     #[ORM\ManyToOne(inversedBy: 'sections')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?article $article = null;
+    private ?Article $article = null;
 
     /**
      * @var Collection<int, Image>
      */
     #[ORM\ManyToMany(targetEntity: Image::class, mappedBy: 'section')]
+    #[Groups(['article:read', 'article:write'])]
     private Collection $images;
+
+    // Propriété pour stocker le contenu imbriqué (titre, texte, image, etc.)
+    #[Groups(['article:write'])]
+    private ?array $contenu = null;
 
     public function __construct()
     {
@@ -51,7 +60,6 @@ class Section
     public function setType(string $type): static
     {
         $this->type = $type;
-
         return $this;
     }
 
@@ -63,19 +71,17 @@ class Section
     public function setOrdre(int $ordre): static
     {
         $this->ordre = $ordre;
-
         return $this;
     }
 
-    public function getArticle(): ?article
+    public function getArticle(): ?Article
     {
         return $this->article;
     }
 
-    public function setArticle(?article $article): static
+    public function setArticle(?Article $article): static
     {
         $this->article = $article;
-
         return $this;
     }
 
@@ -93,7 +99,6 @@ class Section
             $this->images->add($image);
             $image->addSection($this);
         }
-
         return $this;
     }
 
@@ -102,7 +107,18 @@ class Section
         if ($this->images->removeElement($image)) {
             $image->removeSection($this);
         }
+        return $this;
+    }
 
+    // Getter/Setter pour contenu
+    public function getContenu(): ?array
+    {
+        return $this->contenu;
+    }
+
+    public function setContenu(?array $contenu): static
+    {
+        $this->contenu = $contenu;
         return $this;
     }
 }
