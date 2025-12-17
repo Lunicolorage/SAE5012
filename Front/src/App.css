@@ -3,7 +3,12 @@
   /* padding: 2rem; */
   /* text-align: center; */
   background-color: var(--white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  
 }
+
 
 main{
   margin: 0 5%;
@@ -104,6 +109,8 @@ footer{
   background-color: var(--grey);
   text-align: center;
   font-size: 0.8em;
+  bottom: 0;
+  margin-top:auto ;
 }
 
 footer p{
@@ -282,6 +289,7 @@ table th, table td {
   width: 100%;
   row-gap: 15px;
   column-gap: 10px;
+  padding-bottom: 2vw;
 }
 
 .allArticles > :first-child {
