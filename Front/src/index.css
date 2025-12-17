@@ -47,7 +47,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color:  (var(--greenLight));
+  background-color: var(--greenLight);
   color: var(--deepBlue);
   font-weight: bold;
   cursor: pointer;
@@ -65,6 +65,15 @@ input{
   background-color: #EFEFEF
 } */
 
+input, select{
+  border: none;
+  min-height: 25px;
+}
+
+textarea{
+  border: none;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -74,6 +83,6 @@ input{
     color:  (var(--greenLight));
   }
   button {
-    background-color: var(--white);
+    background-color: var(--greenLight);
   }
 }

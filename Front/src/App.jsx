@@ -9,12 +9,15 @@ import { NotFound } from './components/NotFound';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Accueil } from './components/accueil/Accueil';
+import { Connexion } from './components/accueil/connexion/Connexion';
+import { UserProvider } from './context/UserProvider';
 
 function App() {
 
   return (
     <>
     < BrowserRouter >
+    <UserProvider>
       <Header />
       <main>
       <Routes>
@@ -22,12 +25,13 @@ function App() {
           <Route path="/create" element={<PageCreationArticle />} />
           <Route path="/add-data" element={<Donnees />} />
           <Route path="/index" element={<Articles/>} />
+          <Route path="/connexion" element={<Connexion/>} />
           {/* <Route path="/shop" element={<Shop like={[tabLiked, setTabLiked]} card={[tabPanier, setTabPanier]} />} />  */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />
-
+    </UserProvider>
     </BrowserRouter>
     </>
   )

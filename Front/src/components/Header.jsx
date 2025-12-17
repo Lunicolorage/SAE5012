@@ -1,7 +1,20 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
+import { UserContext } from "../context/UserProvider";
 
 function Header(){
+
+    const [user, setUser] = useContext(UserContext);
+    const [buttonCo, setButtonCo] = useState("Connexion");
+
+    useEffect(() => {
+        if(user && user.id){
+            setButtonCo(user.nom)
+        }
+        else{
+            setButtonCo("Connexion")
+        }
+    }, [user]);
 
     const menuBurger = document.querySelector('.menuBurger');
 
@@ -30,7 +43,7 @@ function Header(){
                 </Link>
             </div>
             <Link to="/connexion" className="hideMobile" >
-                Connexion
+                {buttonCo}
             </Link>
             <img 
                 onClick={() => {
@@ -54,7 +67,7 @@ function Header(){
                 Ajout de données
                 </Link>
                 <Link to="/connexion">
-                    Connexion
+                    {buttonCo}
                 </Link>
             </section>
         </header>
