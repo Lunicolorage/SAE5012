@@ -3,7 +3,10 @@ function Texte(){
     return(
         <div className="zoneChoixTexte">
             {/* rajouter la croix dans le coin droit */}
-            <label htmlFor="choixTexte"><h2>Texte</h2></label>
+            <label htmlFor="choixTexte">
+                <h2>Texte</h2>
+                <img src="src\assets\croix.png" alt="fermer"></img>
+            </label>
             <textarea id="choixTexte" rows="4"></textarea>
         </div>
     )

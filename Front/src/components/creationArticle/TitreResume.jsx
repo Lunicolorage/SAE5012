@@ -3,7 +3,9 @@ function TitreResume(){
     return(
         <div className="titreResume">
             <div className="zoneChoixTitre">
-                <label htmlFor="choixTitre"><h2>Titre</h2></label>
+                <label htmlFor="choixTitre">
+                    <h2>Titre</h2>
+                </label>
                 <input id="choixTitre" type="text"></input>
             </div>
             

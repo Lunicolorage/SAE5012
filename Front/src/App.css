@@ -304,6 +304,17 @@ table th, table td {
   border-radius: 10px;
 }
 
+.zoneChoixTexte label{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.zoneChoixTexte label img{
+  width: 25px;
+  height: auto;
+}
+
 
 /* /////////////////////////////////////////////////////////////////////////////////////// */
 
@@ -323,6 +334,17 @@ table th, table td {
   margin-bottom: 10px;
 }
 
+.zoneChoixSousTitre label{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.zoneChoixSousTitre label img{
+  width: 25px;
+  height: auto;
+}
+
 
 /* /////////////////////////////////////////////////////////////////////////////////////// */
 
@@ -338,11 +360,21 @@ table th, table td {
   border-radius: 10px;
 }
 
+.zoneChoixImage label{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.zoneChoixImage label img{
+  width: 25px;
+  height: auto;
+}
+
 input[type=file]::file-selector-button {
   background-color: var(--greenLight);
   color: var(--deepBlue);
   width: 50%;
-  /* margin: 3px; */
   margin-top: 10px;
   border-radius: 8px;
   border: 1px solid transparent;
@@ -381,8 +413,6 @@ input[type=file]::file-selector-button {
   }
 
   input[type=file]::file-selector-button {
-    /* width: 50%; */
-    /* margin: 3px; */
     margin-top: 0px;
   }
 }
@@ -400,6 +430,18 @@ input[type=file]::file-selector-button {
   background-color: var(--grey);
   padding: 15px;
   border-radius: 10px;
+}
+
+
+.zoneSourceDonnees label{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.zoneSourceDonnees label img{
+  width: 25px;
+  height: auto;
 }
 
 .zoneCheck{
@@ -458,4 +500,34 @@ input[type=file]::file-selector-button {
   .blocs{
     width: 60%;
   }
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* AjoutBloc.jsx ------------------------------------------------------------------------------- */
+
+.zoneAjoutBloc{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  background-color: #E3E3E3;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.zoneTitreAjoutBloc{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.zoneTitreAjoutBloc img{
+  width: 25px;
+  height: auto;
+}
+
+.zoneAjoutBloc select{
+  margin-bottom: 10px;
 }
