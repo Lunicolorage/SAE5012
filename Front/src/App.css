@@ -463,6 +463,17 @@ input[type=file]::file-selector-button {
   border-radius: 10px;
 }
 
+.zoneTitreAjoutBloc{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.zoneTitreAjoutBloc img{
+  width: 25px;
+  height: auto;
+}
+
 .zoneAjoutBloc select{
   margin-bottom: 10px;
 }

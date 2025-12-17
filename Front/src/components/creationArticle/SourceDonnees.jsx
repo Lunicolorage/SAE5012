@@ -8,7 +8,10 @@ function SourceDonnees(){
                 <img src="src\assets\croix.png" alt="fermer"></img>
             </label>
             <select id="choixSourceDonnees">
-                <option>lien</option>
+                <option>lien 1</option>
+                <option>lien 2</option>
+                <option>lien 3</option>
+                <option>lien n</option>
             </select>
 
             {/* à faire dynamiquement*/}
@@ -23,7 +26,9 @@ function SourceDonnees(){
 
             <label htmlFor="choixTypeGraphique"><h2>Type de graphique</h2></label>
             <select id="choixTypeGraphique">
-                <option>type 2</option>
+                <option>pie chart</option>
+                <option>bar chart</option>
+                <option>histogram</option>
             </select>
         </div>
     )

@@ -2,7 +2,10 @@
 function AjoutBloc(){
     return(
         <div className="zoneAjoutBloc">
-            <h2>Quel bloc ajouter ?</h2>
+            <div className="zoneTitreAjoutBloc">
+                <h2>Quel bloc ajouter ?</h2>
+                <img src="src\assets\croix.png" alt="fermer"></img>
+            </div>
             <select name="choixBloc" id="choixBloc">
                 <option value="texte">Texte</option>
                 <option value="sousTitre">Sous-titre</option>
