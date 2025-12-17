@@ -136,13 +136,17 @@ footer p{
   width: 100px;
 }
 
+footer .copyright{
+  padding-bottom: 0.5vw;
+}
+
 @media (min-width: 600px) {
   .footerFlex img{
     width: 15%;
   }
 
   footer{
-    font-size: 1em;
+    font-size: 0.9em;
   }
 }
 
@@ -152,7 +156,7 @@ footer p{
   }
 
   .footerFlex div p, .footerFlex div a{
-  padding-top: 0.5em;
+  padding-top: 0.3vw;
 }
 }
 
@@ -243,10 +247,10 @@ table th, table td {
 
 
 @media (min-width: 768px) {
-  .variables{
-    /* margin-top: 25px auto; */
-    /* width: 80%; */
-  }
+  /* .variables{
+     margin-top: 25px auto; 
+     width: 80%; 
+  } */
 
   .typeVar{
     display: flex;

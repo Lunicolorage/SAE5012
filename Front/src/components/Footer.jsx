@@ -24,7 +24,7 @@ function Footer(){
                     <p>Politique de confidentialité</p>
                 </div>
             </div>
-            <p>Copyright @ 2525 Seriouscience</p>
+            <p className="copyright">Copyright @ 2525 Seriouscience</p>
         </footer>
     );
 }
