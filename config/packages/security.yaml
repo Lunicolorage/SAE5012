@@ -53,7 +53,8 @@ security:
         - { path: ^/api/sections, roles: ['ROLE_ADMIN'] }
         - { path: ^/api/textes, roles: ['ROLE_ADMIN'] }
         - { path: ^/api/titres, roles: ['ROLE_ADMIN'] }
-        - { path: ^/api/users, roles: ['ROLE_ADMIN'] }
+        - { path: ^/api/users, roles:  PUBLIC_ACCESS, methods: [POST] }
+        - { path: ^/api/users/, roles: ['ROLE_ADMIN'] }
         - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
