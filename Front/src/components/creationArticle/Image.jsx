@@ -2,7 +2,10 @@
 function Image(){
     return(
         <div className="zoneChoixImage">
-            <label htmlFor="choixImage"><h2>Image</h2></label>
+            <label htmlFor="choixImage">
+                <h2>Image</h2>
+                <img src="src\assets\croix.png" alt="fermer"></img>
+            </label>
             <div className="selectionImage">
                 <select id="choixImage">
                     <option>image stockée 1</option>

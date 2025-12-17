@@ -3,23 +3,24 @@ import { Link } from "react-router-dom";
 function Header(){
     return(
         <header>
-            <div>
+            <div className="header-left">
                 <Link to="/">
-                    <img src="src/assets/eff-fonce.png" alt="logo foncé" />
+                    <img className="header-logo" src="src/assets/eff-fonce.png" alt="logo foncé" />
                 </Link>
-                <Link to="/index" >
+                <Link to="/index" className="hideMobile" >
                 Index
                 </Link>
-                <Link to="/create" >
-                Publier
+                <Link to="/create" className="hideMobile" >
+                Ajout d'article
                 </Link>
-                <Link to="/add-data" >
+                <Link to="/add-data" className="hideMobile" >
                 Ajout de données
                 </Link>
             </div>
-            <Link to="/connexion">
+            <Link to="/connexion" className="hideMobile" >
                 Connection
             </Link>
+            <img src="src/assets/burger.svg" alt="icone menu burger" className="hideOrdi" />
         </header>
     );
 }

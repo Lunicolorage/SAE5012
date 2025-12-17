@@ -5,7 +5,7 @@ function Articles(articles){
     // function handleClick(){} // à voir
 
     return(
-        <main>
+        <div class="allArticles">
             {/* {articles.map((article) =>(
                 <div>
                     <h2>{article.nom}</h2>
@@ -39,7 +39,7 @@ function Articles(articles){
             </div>
 
 
-        </main>
+        </div>
     )
 }
 
