@@ -4,7 +4,7 @@ function Image(){
         <div className="zoneChoixImage">
             <label htmlFor="choixImage">
                 <h2>Image</h2>
-                <img src="src\assets\croix.png" alt="fermer"></img>
+                <img src="src\assets\croix.png" alt="fermer" className="cross"></img>
             </label>
             <div className="selectionImage">
                 <select id="choixImage">

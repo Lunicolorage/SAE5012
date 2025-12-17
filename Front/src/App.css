@@ -471,6 +471,10 @@ input[type=file]::file-selector-button {
   margin-bottom: 40px;
 }
 
+.cross:hover{
+  cursor: pointer;
+}
+
 .blocs{
   width: 100%;
   margin: 0 auto;
@@ -488,6 +492,7 @@ input[type=file]::file-selector-button {
   width: 100%;
   margin-bottom: 15px;
   font-size: 15pt;
+  background-color: var(--greenLight);
 }
 
 @media (min-width: 600px) {

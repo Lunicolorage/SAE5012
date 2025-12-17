@@ -9,11 +9,13 @@ import { useState } from "react";
 
 function PageCreationArticle(){
     const [showAjoutBloc, setShowAjoutBloc] = useState(false)
-    const [isBlocSelected, setIsBlocSelected] = useState(true)
+    const [article, setArticle] = useState([])
 
     function handleClick(){
         setShowAjoutBloc(true);
     }
+
+    // faire un tableau pour gérer affichage blocs
 
     return(
         <div className="pageCreationArticle">
@@ -22,9 +24,9 @@ function PageCreationArticle(){
             <div className="blocs">
                 <TitreResume />
 
-                <Texte />
+                <Texte/>
 
-                <SousTitre />
+                <SousTitre/>
 
                 <Image/>
 

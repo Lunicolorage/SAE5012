@@ -4,7 +4,7 @@ function SousTitre(){
         <div className="zoneChoixSousTitre">
             <label htmlFor="choixSousTitre">
                 <h2>Sous-titre</h2>
-                <img src="src\assets\croix.png" alt="fermer"></img>
+                <img src="src\assets\croix.png" alt="fermer" className="cross"></img>
             </label>
             <select>
                 <option value="titre2">Titre 2</option>
