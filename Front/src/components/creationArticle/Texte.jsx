@@ -1,10 +1,18 @@
 
-function Texte(){
-    // const [isBlocSelected, setIsBlocSelected] = useState(true)
+function Texte({article, setArticle}){
 
-    // function handleCrossClick(){
-    //     setIsBlocSelected(false);
-    // }
+    function handleTexteChange(e){
+        setArticle({
+            ...article,
+            sections:[{
+                ...article.sections,
+                type:"texte",
+                contenu:{
+                    contenu: e.target.value
+                }
+            }]
+        })
+    }
 
     return(
         <div className="zoneChoixTexte">
@@ -13,7 +21,7 @@ function Texte(){
                 <h2>Texte</h2>
                 <img src="src\assets\croix.png" alt="fermer" className="cross"></img>
             </label>
-            <textarea id="choixTexte" rows="4"></textarea>
+            <textarea id="choixTexte" rows="4" onChange={handleTexteChange}></textarea>
         </div>
     )
 }

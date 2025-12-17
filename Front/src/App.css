@@ -536,3 +536,7 @@ input[type=file]::file-selector-button {
 .zoneAjoutBloc select{
   margin-bottom: 10px;
 }
+
+.zoneAjoutBloc button{
+  background-color: var(--greenLight);
+}

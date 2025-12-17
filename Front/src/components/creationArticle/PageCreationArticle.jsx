@@ -9,7 +9,7 @@ import { useState } from "react";
 
 function PageCreationArticle(){
     const [showAjoutBloc, setShowAjoutBloc] = useState(false)
-    const [article, setArticle] = useState([])
+    const [article, setArticle] = useState({titre:"", Resume:"", username:"", sections:[]})
 
     function handleClick(){
         setShowAjoutBloc(true);
@@ -22,15 +22,18 @@ function PageCreationArticle(){
             <h1>Création d'article</h1>
 
             <div className="blocs">
-                <TitreResume />
+                <TitreResume article={article} setArticle={setArticle}/>
+                {/* {console.log(article)}; ok*/}
 
-                <Texte/>
+                <Texte article={article} setArticle={setArticle}/>
+                {/* {console.log(article)} ok -> voir copie sections */}
 
-                <SousTitre/>
+                <SousTitre article={article} setArticle={setArticle}/>
+                {console.log(article)}
 
-                <Image/>
+                <Image article={article} setArticle={setArticle}/>
 
-                <SourceDonnees/>
+                <SourceDonnees article={article} setArticle={setArticle}/>
 
                 {showAjoutBloc && <AjoutBloc />}
 
