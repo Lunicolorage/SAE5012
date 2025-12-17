@@ -41,6 +41,10 @@ header a {
   display: block;
 }
 
+header a:hover{
+  color: var(--greenLight);
+}
+
 header .header-logo{
   width: 80px;
 }
@@ -48,6 +52,14 @@ header .header-logo{
 .menuBurger{
   position:fixed;
   background-color: var(--white);
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0;
+}
+
+.menuBurger a{
+  padding: 10px;
 }
 
 .menuBurger.hide{
