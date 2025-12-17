@@ -15,15 +15,23 @@ header {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 2rem;
+  padding: 5vw;
 }
 
 header .header-left{
-  width: 40%;
+  width: 65vw;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+}
+
+.hideMobile{
+      display: none;  
+  }
+
+.hideOrdi{
+  display: block;
 }
 
 header a {
@@ -34,6 +42,30 @@ header a {
 
 header .header-logo{
   width: 80px;
+}
+
+@media (min-width: 600px) {
+  .hideMobile{
+      display: inline;  
+  }
+
+  .hideOrdi{
+    display: none;
+  }
+
+  header{
+    padding: 2vw 5vw;
+  }
+}
+
+
+@media (min-width: 1024px) {
+  
+
+header .header-left{
+  width: 40vw;
+}
+
 }
 
 /* /////////////////////////////////////////////////////////////////////////////////////// */
