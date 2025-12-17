@@ -2,6 +2,7 @@
   margin: 0;
   /* padding: 2rem; */
   /* text-align: center; */
+  background-color: var(--white);
 }
 
 main{
@@ -35,13 +36,34 @@ header .header-left{
 }
 
 header a {
-  color: #000D36;
+  color: var(--deepBlue);
   cursor: pointer;
   display: block;
 }
 
+header a:hover{
+  color: var(--greenLight);
+}
+
 header .header-logo{
   width: 80px;
+}
+
+.menuBurger{
+  position:fixed;
+  background-color: var(--white);
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0;
+}
+
+.menuBurger a{
+  padding: 10px;
+}
+
+.menuBurger.hide{
+  display: none;
 }
 
 @media (min-width: 600px) {
@@ -75,10 +97,10 @@ header .header-left{
 .importDonnees{
   /* display: flex;
   flex-direction: column; */
-  background-color: #E3E3E3;
+  background-color: var(--grey);
   padding: 15px;
   border-radius: 10px;
-  color: #000D36;
+  color: var(--deepBlue);
   margin-bottom: 25px;
 }
 
@@ -95,10 +117,10 @@ header .header-left{
 }
 
 .variables{
-  background-color: #E3E3E3;
+  background-color: var(--grey);
   padding: 15px;
   border-radius: 10px;
-  color: #000D36;
+  color: var(--deepBlue);
   width: 100%;
   margin: 25px auto 0 auto;
 }
@@ -147,8 +169,8 @@ table {
 table th, table td {
   padding: 8px;
   text-align: left;
-  border: 1px solid #000D36;
-  background-color: #efefef;
+  border: 1px solid var(--deepBlue);
+  background-color: var(--white);
 }
 
 
@@ -196,10 +218,10 @@ table th, table td {
 }
 
 .article {
-  background-color: #E3E3E3;
+  background-color: var(--grey);
   padding: 15px;
   border-radius: 10px;
-  color: #000D36;
+  color: var(--deepBlue);
   margin-top: 25px;
   display: flex;
   flex-direction: column;
@@ -210,8 +232,8 @@ table th, table td {
 }
 
 .buttonArticle {
-  background-color: #7AC74F;
-  color: #000D36;
+  background-color: (var(--greenLight));
+  color: var(--deepBlue);
   width: 50%;
   margin: 0 25%;
 }
@@ -251,7 +273,7 @@ table th, table td {
   flex-direction: column;
   margin-bottom: 15px;
   margin-top: 15px;
-  background-color: #E3E3E3;
+  background-color: var(--grey);
   padding: 15px;
   border-radius: 10px;
 }
@@ -277,7 +299,7 @@ table th, table td {
   flex-direction: column;
   margin-bottom: 15px;
   margin-top: 15px;
-  background-color: #E3E3E3;
+  background-color: var(--grey);
   padding: 15px;
   border-radius: 10px;
 }
@@ -303,7 +325,7 @@ table th, table td {
   flex-direction: column;
   margin-bottom: 15px;
   margin-top: 15px;
-  background-color: #E3E3E3;
+  background-color: var(--grey);
   padding: 15px;
   border-radius: 10px;
 }
@@ -333,7 +355,7 @@ table th, table td {
   flex-direction: column;
   margin-bottom: 15px;
   margin-top: 15px;
-  background-color: #E3E3E3;
+  background-color: var(--grey);
   padding: 15px;
   border-radius: 10px;
 }
@@ -350,16 +372,16 @@ table th, table td {
 }
 
 input[type=file]::file-selector-button {
-  background-color: #7AC74F;
-  color: #000D36;
+  background-color: var(--greenLight);
+  color: var(--deepBlue);
   width: 50%;
   margin-top: 10px;
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 0em;
   font-family: inherit;
-  background-color: #7AC74F;
-  color: #000D36;
+  background-color: var(--greenLight);
+  color: var(--deepBlue);
   font-weight: bold;
   cursor: pointer;
   transition: border-color 0.25s;
@@ -405,7 +427,7 @@ input[type=file]::file-selector-button {
   flex-direction: column;
   margin-bottom: 15px;
   margin-top: 15px;
-  background-color: #E3E3E3;
+  background-color: var(--grey);
   padding: 15px;
   border-radius: 10px;
 }
@@ -430,8 +452,8 @@ input[type=file]::file-selector-button {
 .rectColor{
   width: 20%;
   height: 20px;
-  border: 0;
-  /* background-color: #7AC74F; */
+  border: solid;
+  background-color: var(--greenLight);
 }
 
 .form-check-label{
@@ -456,8 +478,8 @@ input[type=file]::file-selector-button {
 
 .buttonAjout{
   width: 100%;
-  border: #7AC74F solid 3px;
-  background-color: #fff;
+  border: var(--greenLight) solid 3px;
+  background-color: var(--white);
   margin-bottom: 15px;
   font-size: 15pt;
 }

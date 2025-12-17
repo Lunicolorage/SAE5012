@@ -5,7 +5,7 @@ function Articles(articles){
     // function handleClick(){} // à voir
 
     return(
-        <div class="allArticles">
+        <div className="allArticles">
             {/* {articles.map((article) =>(
                 <div>
                     <h2>{article.nom}</h2>
