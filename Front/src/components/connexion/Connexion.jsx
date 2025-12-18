@@ -1,5 +1,5 @@
 import { useContext, useState} from "react";
-import { UserContext } from "../../../context/UserProvider";
+import { UserContext } from "../../context/UserProvider";
 import { FormConnection } from "./FormConnexion";
 import { FormRegister } from "./FormRegister";
 
@@ -7,6 +7,8 @@ function Connexion() {
 
   const [user, setUser] = useContext(UserContext);
   const [isRegister, setIsRegister] = useState(false);
+
+  console.log(user);
 
     if(user && user.nom){
         return (
