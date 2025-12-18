@@ -12,6 +12,7 @@ function FormRegister({register}){
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    
 
     const handleRegister = async () => {
         setError('');
