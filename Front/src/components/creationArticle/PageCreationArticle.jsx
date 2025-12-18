@@ -38,9 +38,9 @@ function PageCreationArticle(){
                     }
                 })}
 
-                <Texte article={article} setArticle={setArticle}/>
+                {/* <Texte article={article} setArticle={setArticle}/> */}
 
-                <SousTitre article={article} setArticle={setArticle}/>
+                {/* <SousTitre article={article} setArticle={setArticle}/> */}
 
                 <Image article={article} setArticle={setArticle}/>
 

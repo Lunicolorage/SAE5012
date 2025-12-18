@@ -1,44 +1,83 @@
 
-function SousTitre({article, setArticle}){
+function SousTitre({article, setArticle, index}){
 
     //à voir 
+    // function handleSousTitreChange(e){
+    //     setArticle({
+    //         ...article,
+    //         sections:[
+    //             ...article.sections,
+    //             {
+    //                 type: "titre",
+    //                 contenu:{
+    //                     texte: e.target.value,
+    //                     ...article.sections.contenu
+    //                 }
+    //             }
+    //         ]
+    //     })
+    // }
+
+    // function handleTypeChange(e){
+    //     setArticle({
+    //         ...article,
+    //         sections:[
+    //             ...article.sections,
+    //             {
+    //                 type: "titre",
+    //                 contenu:{
+    //                     ...article.sections.contenu,
+    //                     hierarchie: e.target.value
+    //                 }
+    //             }
+    //         ]
+    //     })
+    // }
+
     function handleSousTitreChange(e){
-        setArticle({
-            ...article,
-            sections:[
-                ...article.sections,
-                {
-                    type: "titre",
-                    contenu:{
-                        texte: e.target.value,
-                        ...article.sections.contenu
-                    }
+        setArticle(prev => {
+            const sections = [...prev.sections]
+
+            sections[index] = {
+                ...sections[index],
+                type:"titre",
+                contenu:{
+                    ...sections[index].contenu,
+                    texte: e.target.value
                 }
-            ]
+            }
+            return {...prev, sections}
         })
     }
 
     function handleTypeChange(e){
-        setArticle({
-            ...article,
-            sections:[
-                ...article.sections,
-                {
-                    type: "titre",
-                    contenu:{
-                        ...article.sections.contenu,
-                        hierarchie: e.target.value
-                    }
+        setArticle(prev => {
+            const sections = [...prev.sections]
+
+            sections[index] = {
+                ...sections[index],
+                type:"titre",
+                contenu:{
+                    ...sections[index].contenu,
+                    hierarchie: e.target.value
                 }
-            ]
+            }
+            return {...prev, sections}
         })
     }
+
+    function handleCrossClick(){
+        const indexToRemove = index;
+        const sections = article.sections.filter((section, i)=> i!= indexToRemove)
+        setArticle({...article, sections: sections})
+    }
+
 
     return(
         <div className="zoneChoixSousTitre">
             <label htmlFor="choixSousTitre">
                 <h2>Sous-titre</h2>
-                <img src="src\assets\croix.png" alt="fermer" className="cross"></img>
+                <img src="src\assets\croix.png" alt="fermer" className="cross" onClick={handleCrossClick}></img>
             </label>
             <select onChange={handleTypeChange}>
                 <option value="h2">Titre 2</option>
