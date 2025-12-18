@@ -65,6 +65,15 @@ input{
   background-color: #EFEFEF
 } */
 
+input, select{
+  border: none;
+  min-height: 25px;
+}
+
+textarea{
+  border: none;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
