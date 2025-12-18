@@ -38,12 +38,13 @@ function FormConnection({register}){
                     }
                 });
 
+                
                 const userInfo = await response2.json();
                 
                 setUser({'id' : userInfo.id, 
                         'nom' : userInfo.nom, 
                         'email' : userInfo.email,
-                        'role': userInfo.role ,
+                        'role': userInfo.roles ,
                         'token' : data.token
                     });
 
