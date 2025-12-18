@@ -624,7 +624,7 @@ input[type=file]::file-selector-button {
 }
 
 .formConnexion{
-  background-color: var(--grey);
+  /* background-color: var(--grey); */
   display: flex;
   flex-direction: column;
   padding: 3vw;
