@@ -393,7 +393,7 @@ input[type=file]::file-selector-button {
 }
 
 #choixImage{
-  width: 45%;
+  width: 100%;
 }
 
 .ajoutImage{
@@ -414,6 +414,10 @@ input[type=file]::file-selector-button {
 
   input[type=file]::file-selector-button {
     margin-top: 0px;
+  }
+
+  #choixImage{
+    width: 45%;
   }
 }
 

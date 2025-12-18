@@ -9,33 +9,45 @@ import { useState } from "react";
 
 function PageCreationArticle(){
     const [showAjoutBloc, setShowAjoutBloc] = useState(false)
+    // faire un tableau pour gérer affichage blocs
     const [article, setArticle] = useState({titre:"", Resume:"", username:"", sections:[]})
 
     function handleClick(){
         setShowAjoutBloc(true);
     }
 
-    // faire un tableau pour gérer affichage blocs
-
+    
     return(
         <div className="pageCreationArticle">
             <h1>Création d'article</h1>
 
             <div className="blocs">
                 <TitreResume article={article} setArticle={setArticle}/>
-                {/* {console.log(article)}; ok*/}
+
+                {article.sections.map((section, index)=>{
+                    switch (section.type){ // pour juste afficher les blocs sélectionnés
+                        case "texte":
+                            return (<Texte key={index} index={index} article={article} setArticle={setArticle}/>)
+                        case "titre":
+                            return (<SousTitre key={index} index={index} article={article} setArticle={setArticle}/>)
+                        case "image":
+                            return (<Image key={index} index={index} article={article} setArticle={setArticle}/>)
+                        
+                        default:
+                            return null;
+                    }
+                })}
 
                 <Texte article={article} setArticle={setArticle}/>
-                {/* {console.log(article)} ok -> voir copie sections */}
 
                 <SousTitre article={article} setArticle={setArticle}/>
-                {console.log(article)}
 
                 <Image article={article} setArticle={setArticle}/>
 
                 <SourceDonnees article={article} setArticle={setArticle}/>
 
-                {showAjoutBloc && <AjoutBloc />}
+                {showAjoutBloc && <AjoutBloc  article={article} setArticle={setArticle}/>}
+                {console.log(article)}
 
                 <div className="buttonsCreation">
                     <button className="buttonAjout" onClick={handleClick}>Ajouter un bloc</button>

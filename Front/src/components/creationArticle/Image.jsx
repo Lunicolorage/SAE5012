@@ -1,5 +1,49 @@
 
-function Image(){
+function Image({article, setArticle}){
+
+    function handleImageChange(e){
+        const imageUrl = e.target.value;
+
+        setArticle({
+             ...article,
+            sections:[
+                ...article.sections,
+                {
+                    type: "image",
+                    contenu: {
+                        url: imageUrl, //remplacer par bon url
+                        alt: "description" // remplacer par bonne description
+                    }
+                }
+            ]   
+        })
+    }
+
+
+    function handleAjoutImageChange(e){
+        const file = e.target.files[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            const imageAlt = file.name;
+
+            setArticle({
+                ...article,
+                sections:[
+                    ...article.sections,
+                    {
+                        type: "image",
+                        contenu: {
+                            url: imageUrl, 
+                            alt: imageAlt
+                        }
+                    }
+                ]   
+            })
+        }
+    }
+
+
+
     return(
         <div className="zoneChoixImage">
             <label htmlFor="choixImage">
@@ -7,14 +51,13 @@ function Image(){
                 <img src="src\assets\croix.png" alt="fermer" className="cross"></img>
             </label>
             <div className="selectionImage">
-                <select id="choixImage">
-                    <option>image stockée 1</option>
-                    <option>image stockée 2</option>
-                    <option>image stockée 3</option>
+                <select id="choixImage" onChange={handleImageChange}>
+                    <option value="url">image stockée 1</option>
+                    <option value="url">image stockée 2</option>
+                    <option value="url">image stockée 3</option>
                 </select>
-                {/* à voir -> input choix fichier ? */}
                 {/* <button className="ajoutImage">Ajouter une image</button> */}
-                <input type="file" id="ajoutImage" name="ajoutImage" accept=".jpg, .png"/>
+                <input type="file" id="ajoutImage" name="ajoutImage" accept=".jpg, .png" onChange={handleAjoutImageChange}/>
             </div>
         </div>
     )
