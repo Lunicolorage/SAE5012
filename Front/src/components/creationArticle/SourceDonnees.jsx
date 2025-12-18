@@ -5,7 +5,7 @@ function SourceDonnees(){
         <div className="zoneSourceDonnees">
             <label htmlFor="choixSourceDonnees">
                 <h2>Source de données</h2>
-                <img src="src\assets\croix.png" alt="fermer"></img>
+                <img src="src\assets\croix.png" alt="fermer" className="cross"></img>
             </label>
             <select id="choixSourceDonnees">
                 <option>lien 1</option>

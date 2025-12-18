@@ -473,7 +473,7 @@ input[type=file]::file-selector-button {
 }
 
 #choixImage{
-  width: 45%;
+  width: 100%;
 }
 
 .ajoutImage{
@@ -494,6 +494,10 @@ input[type=file]::file-selector-button {
 
   input[type=file]::file-selector-button {
     margin-top: 0px;
+  }
+
+  #choixImage{
+    width: 45%;
   }
 }
 
@@ -551,6 +555,10 @@ input[type=file]::file-selector-button {
   margin-bottom: 40px;
 }
 
+.cross:hover{
+  cursor: pointer;
+}
+
 .blocs{
   width: 100%;
   margin: 0 auto;
@@ -568,6 +576,7 @@ input[type=file]::file-selector-button {
   width: 100%;
   margin-bottom: 15px;
   font-size: 15pt;
+  background-color: var(--greenLight);
 }
 
 @media (min-width: 600px) {
@@ -612,70 +621,6 @@ input[type=file]::file-selector-button {
   margin-bottom: 10px;
 }
 
-/* /////////////////////////////////////////////////////////////////////////////////////// */
-
-/* Pages Connexion------------------------------------------------------------------------------- */
-
-
-
-.pageConnexion h1{
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.formConnexion{
-  background-color: var(--grey);
-  display: flex;
-  flex-direction: column;
-  padding: 3vw;
-  /* width: 90%;
-  margin: 0 5%; */
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 3vw;
-}
-
-.formConnexion input{
-  margin-bottom: 1vw;
-  height: 2vw;
-}
-
-.formConnexion .changeForm{
-  text-decoration: underline;
-  text-align: center;
-  margin-top: 1vw;
-  cursor: pointer;
-}
-
-.formConnexion .changeForm:hover{
-  color: var(--greenLight);
-}
-
-.formConnexion label{
-  margin-bottom: 1vw;
-}
-
-.formConnexion button{
-  width: 80%;
-  align-self: center;
-  margin: 10px 0;
-}
-
-@media (min-width: 600px) {
-  .formConnexion{
-    width: 80%;
-  }
-  
-  .formConnexion button{
-    width: 50%;
-  }
-}
-
-@media (min-width: 1024px) {
-
-  .formConnexion{
-    padding: 2vw;
-    width: 60%;
-  }
-
+.zoneAjoutBloc button{
+  background-color: var(--greenLight);
 }
