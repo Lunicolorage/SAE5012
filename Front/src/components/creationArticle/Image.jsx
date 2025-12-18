@@ -1,22 +1,36 @@
 
-function Image({article, setArticle}){
+function Image({article, setArticle, index}){
 
     function handleImageChange(e){
         const imageUrl = e.target.value;
 
-        setArticle({
-             ...article,
-            sections:[
-                ...article.sections,
-                {
-                    type: "image",
-                    contenu: {
-                        url: imageUrl, //remplacer par bon url
-                        alt: "description" // remplacer par bonne description
-                    }
+        setArticle(prev =>{
+            const sections = [...prev.sections];
+
+            sections[index]={
+                ...sections[index],
+                type: "image",
+                contenu: {
+                    ...sections[index].contenu,
+                    url: imageUrl,
                 }
-            ]   
+            }
+            return {...prev, sections}
         })
+
+        // setArticle({
+        //      ...article,
+        //     sections:[
+        //         ...article.sections,
+        //         {
+        //             type: "image",
+        //             contenu: {
+        //                 url: imageUrl, //remplacer par bon url
+        //                 alt: "description" // remplacer par bonne description
+        //             }
+        //         }
+        //     ]   
+        // })
     }
 
 
@@ -43,6 +57,25 @@ function Image({article, setArticle}){
     }
 
 
+    function handleAltChange(e){
+        const imageAlt = e.target.value;
+
+        setArticle(prev =>{
+            const sections = [...prev.sections];
+
+            sections[index]={
+                ...sections[index],
+                type: "image",
+                contenu: {
+                    ...sections[index].contenu,
+                    alt: imageAlt,
+                }
+            }
+            return {...prev, sections}
+        })
+    }
+
+
 
     return(
         <div className="zoneChoixImage">
@@ -56,6 +89,12 @@ function Image({article, setArticle}){
                     <option value="url">image stockée 2</option>
                     <option value="url">image stockée 3</option>
                 </select>
+
+                <div className="choixAlt">
+                    <label htmlFor="alt">Choisir un texte alternatif</label>
+                    <input type="text" id="alt" onChange={handleAltChange}/>
+                </div>
+                
                 {/* <button className="ajoutImage">Ajouter une image</button> */}
                 <input type="file" id="ajoutImage" name="ajoutImage" accept=".jpg, .png" onChange={handleAjoutImageChange}/>
             </div>

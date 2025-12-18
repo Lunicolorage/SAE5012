@@ -42,7 +42,7 @@ function PageCreationArticle(){
 
                 {/* <SousTitre article={article} setArticle={setArticle}/> */}
 
-                <Image article={article} setArticle={setArticle}/>
+                {/* <Image article={article} setArticle={setArticle}/> */}
 
                 <SourceDonnees article={article} setArticle={setArticle}/>
 

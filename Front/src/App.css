@@ -480,6 +480,15 @@ input[type=file]::file-selector-button {
   width: 50%;
 }
 
+.choixAlt{
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.choixAlt input{
+  width: 100%;
+}
+
 
 @media (min-width: 600px) {
   .selectionImage{
