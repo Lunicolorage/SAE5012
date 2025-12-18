@@ -47,7 +47,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: var(--greenLight);
+  background-color: (var(--greenLight));
   color: var(--deepBlue);
   font-weight: bold;
   cursor: pointer;
