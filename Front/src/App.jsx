@@ -11,6 +11,7 @@ import { Footer } from './components/Footer';
 import { Accueil } from './components/accueil/Accueil';
 import { Connexion } from './components/connexion/Connexion';
 import { UserProvider } from './context/UserProvider';
+import { AffichageArticle } from './components/article/AffichageArticle';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="/add-data" element={<Donnees />} />
           <Route path="/index" element={<Articles/>} />
           <Route path="/connexion" element={<Connexion/>} />
+          <Route path="/article/:id" element={<AffichageArticle />} />
           {/* <Route path="/shop" element={<Shop like={[tabLiked, setTabLiked]} card={[tabPanier, setTabPanier]} />} />  */}
           <Route path="*" element={<NotFound />} />
         </Routes>
