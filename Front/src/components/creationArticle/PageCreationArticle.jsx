@@ -16,6 +16,10 @@ function PageCreationArticle(){
         setShowAjoutBloc(true);
     }
 
+    function handleClickSubmit(){
+        console.log(article)
+    }
+
     
     return(
         <div className="pageCreationArticle">
@@ -38,20 +42,14 @@ function PageCreationArticle(){
                     }
                 })}
 
-                <Texte article={article} setArticle={setArticle}/>
-
-                <SousTitre article={article} setArticle={setArticle}/>
-
-                <Image article={article} setArticle={setArticle}/>
-
                 <SourceDonnees article={article} setArticle={setArticle}/>
 
-                {showAjoutBloc && <AjoutBloc  article={article} setArticle={setArticle}/>}
-                {console.log(article)}
+                {showAjoutBloc && <AjoutBloc  article={article} setArticle={setArticle} clickCross={setShowAjoutBloc}/>}
+                {/* {console.log(article)} */}
 
                 <div className="buttonsCreation">
                     <button className="buttonAjout" onClick={handleClick}>Ajouter un bloc</button>
-                    <button className="buttonPublier">Publier</button>
+                    <button type="submit" className="buttonPublier" onClick={handleClickSubmit}>Publier</button>
                 </div>
             </div>
         </div>

@@ -1,15 +1,23 @@
+import { useState } from "react";
 
-function AjoutBloc({article, setArticle}){
+function AjoutBloc({article, setArticle, clickCross}){
+    const [type, setType] = useState('')
+
+    // faire en sorte que ça gère sans avoir besoin de changer (ou modifier les selects)
 
     function handleChoixBloc(e){
-        switch (e.target.value){
+        setType(e.target.value);        
+    }
+
+    function handleAjoutClick(){
+        // ajouter bloc choisi dans la page
+        switch (type){
             case "texte":
                 setArticle({
                     ...article,
                     sections: [
                         ...article.sections,
                         {
-                            id: 'id', // à changer
                             type: "texte",
                             contenu: {
                                 contenu: ""
@@ -18,24 +26,53 @@ function AjoutBloc({article, setArticle}){
                     ]
                 });
                 break;
+            case "titre":
+                setArticle({
+                    ...article,
+                    sections: [
+                        ...article.sections,
+                        {
+                            type: "titre",
+                            contenu: {
+                                texte: "",
+                                hierarchie: ""
+                            }
+                        }
+                    ]
+                })
+                break;
+            case "image":
+                setArticle({
+                    ...article,
+                    sections: [
+                        ...article.sections,
+                        {
+                            type: "image",
+                            contenu: {
+                                url: "",
+                                alt: ""
+                            }
+                        }
+                    ]
+                })
+            break;
         }
-    }
-
-    function handleAjoutClick(){
-        // ajouter bloc dans la page
         console.log("ajout bloc");
     }
+
 
     return(
         <div className="zoneAjoutBloc">
             <div className="zoneTitreAjoutBloc">
                 <h2>Quel bloc ajouter ?</h2>
-                <img src="src\assets\croix.png" alt="fermer" className="cross"></img>
+                <img src="src\assets\croix.png" alt="fermer" className="cross" onClick={()=>clickCross(false)}></img>
             </div>
             <select name="choixBloc" id="choixBloc" onChange={handleChoixBloc}>
+                {/* rajouter option neutre pour par défaut ? */}
+                <option value="" >Choisissez un type de bloc</option>
                 <option value="texte">Texte</option>
-                <option value="sousTitre">Sous-titre</option>
-                <option value="img">Image</option>
+                <option value="titre">Sous-titre</option>
+                <option value="image">Image</option>
                 <option value="graphique">Graphique</option>
             </select>
             <button type="submit" onClick={handleAjoutClick}>Ajouter</button>

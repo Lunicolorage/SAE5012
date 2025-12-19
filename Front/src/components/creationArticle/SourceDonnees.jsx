@@ -1,6 +1,14 @@
 import { Variables } from "./Variables"
 
-function SourceDonnees(){
+function SourceDonnees({article, setArticle, index}){
+
+    function handleCrossClick(){
+        const indexToRemove = index;
+        const sections = article.sections.filter((section, i)=> i!= indexToRemove)
+        setArticle({...article, sections: sections})
+    }
+    
+
     return(
         <div className="zoneSourceDonnees">
             <label htmlFor="choixSourceDonnees">

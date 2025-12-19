@@ -2,27 +2,26 @@
 function Texte({article, setArticle, index}){
 
     function handleTexteChange(e){
-        // changer pour utiliser l'index
-        
-        const id = "test"; // à voir
 
-        const sectionsSansTexte = article.sections.filter(
-            section => section.id !== id
-        );
+        setArticle(prev =>{
+            const sections = [...prev.sections];
 
-        setArticle({
-            ...article,
-            sections:[
-                ...sectionsSansTexte,
-                {
-                    id: id,
-                    type:"texte",
-                    contenu:{
-                        contenu: e.target.value
-                    }
+            sections[index] = {
+                ...sections[index],
+                type:"texte",
+                contenu:{
+                    contenu: e.target.value
                 }
-            ]
+            }
+            return {...prev, sections}
         })
+    }
+
+
+    function handleCrossClick(){
+        const indexToRemove = index;
+        const sections = article.sections.filter((section, i)=> i!= indexToRemove)
+        setArticle({...article, sections: sections})
     }
 
     return(
@@ -30,7 +29,7 @@ function Texte({article, setArticle, index}){
             {/* rajouter la croix dans le coin droit */}
             <label htmlFor="choixTexte">
                 <h2>Texte</h2>
-                <img src="/src/assets/croix.png" alt="fermer" className="cross"></img>
+                <img src="/src/assets/croix.png" alt="fermer" className="cross" onClick={handleCrossClick}></img>
             </label>
             <textarea id="choixTexte" rows="4" onChange={handleTexteChange}></textarea>
         </div>
