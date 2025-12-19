@@ -1,39 +1,6 @@
 
 function SousTitre({article, setArticle, index}){
 
-    //à voir 
-    // function handleSousTitreChange(e){
-    //     setArticle({
-    //         ...article,
-    //         sections:[
-    //             ...article.sections,
-    //             {
-    //                 type: "titre",
-    //                 contenu:{
-    //                     texte: e.target.value,
-    //                     ...article.sections.contenu
-    //                 }
-    //             }
-    //         ]
-    //     })
-    // }
-
-    // function handleTypeChange(e){
-    //     setArticle({
-    //         ...article,
-    //         sections:[
-    //             ...article.sections,
-    //             {
-    //                 type: "titre",
-    //                 contenu:{
-    //                     ...article.sections.contenu,
-    //                     hierarchie: e.target.value
-    //                 }
-    //             }
-    //         ]
-    //     })
-    // }
-
     function handleSousTitreChange(e){
         setArticle(prev => {
             const sections = [...prev.sections]

@@ -17,42 +17,28 @@ function Image({article, setArticle, index}){
             }
             return {...prev, sections}
         })
-
-        // setArticle({
-        //      ...article,
-        //     sections:[
-        //         ...article.sections,
-        //         {
-        //             type: "image",
-        //             contenu: {
-        //                 url: imageUrl, //remplacer par bon url
-        //                 alt: "description" // remplacer par bonne description
-        //             }
-        //         }
-        //     ]   
-        // })
     }
 
 
     function handleAjoutImageChange(e){
         const file = e.target.files[0];
-        if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            const imageAlt = file.name;
+        if (file) { // à voir -> mettre image dans dossier pour images (pour être réutilisé) 
+            const imageUrl = URL.createObjectURL(file); // et récupérer cet url
 
-            setArticle({
-                ...article,
-                sections:[
-                    ...article.sections,
-                    {
-                        type: "image",
-                        contenu: {
-                            url: imageUrl, 
-                            alt: imageAlt
-                        }
+            setArticle(prev=>{
+                const sections = [...prev.sections];
+
+                sections[index]={
+                    ...sections[index],
+                    type: "image",
+                    contenu: {
+                        ...sections[index].contenu,
+                        url: imageUrl,
                     }
-                ]   
+                }
+                return {...prev, sections}
             })
+
         }
     }
 
@@ -76,28 +62,39 @@ function Image({article, setArticle, index}){
     }
 
 
+    function handleCrossClick(){
+        const indexToRemove = index;
+        const sections = article.sections.filter((section, i)=> i!= indexToRemove)
+        setArticle({...article, sections: sections})
+    }
+
+
 
     return(
         <div className="zoneChoixImage">
             <label htmlFor="choixImage">
                 <h2>Image</h2>
-                <img src="src\assets\croix.png" alt="fermer" className="cross"></img>
+                <img src="src\assets\croix.png" alt="fermer" className="cross" onClick={handleCrossClick}></img>
             </label>
+
             <div className="selectionImage">
                 <select id="choixImage" onChange={handleImageChange}>
+                    <option value="">Choisissez une image</option>
+                    {/* à obtenir dynamiquement avec bdd ? */}
                     <option value="url">image stockée 1</option>
                     <option value="url">image stockée 2</option>
                     <option value="url">image stockée 3</option>
                 </select>
 
-                <div className="choixAlt">
-                    <label htmlFor="alt">Choisir un texte alternatif</label>
-                    <input type="text" id="alt" onChange={handleAltChange}/>
-                </div>
-                
                 {/* <button className="ajoutImage">Ajouter une image</button> */}
-                <input type="file" id="ajoutImage" name="ajoutImage" accept=".jpg, .png" onChange={handleAjoutImageChange}/>
+                <input type="file" id="ajoutImage" name="ajoutImage" accept=".jpg, .png, .webp" onChange={handleAjoutImageChange}/>
             </div>
+
+            <div className="choixAlt">
+                <label htmlFor="alt">Choisir un texte alternatif</label>
+                <input type="text" id="alt" onChange={handleAltChange}/>
+            </div>
+                
         </div>
     )
 }

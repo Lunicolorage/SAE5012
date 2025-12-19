@@ -15,35 +15,6 @@ function Texte({article, setArticle, index}){
             }
             return {...prev, sections}
         })
-
-        
-        // const sections = article.sections.map((section, i)=>{
-        //     if (i==index){
-        //         return {
-        //             ...section,
-        //             type:"texte",
-        //             contenu:{
-        //                 contenu: e.target.value
-        //             }
-        //         }
-        //     }
-        //     return sections;
-        // })
-        
-
-        // setArticle({
-        //     ...article,
-        //     sections:[ newSections
-        //         // ...sectionsSansTexte,
-        //         // {
-        //         //     id: id,
-        //         //     type:"texte",
-        //         //     contenu:{
-        //         //         contenu: e.target.value
-        //         //     }
-        //         // }
-        //     ]
-        // })
     }
 
 

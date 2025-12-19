@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function AjoutBloc({article, setArticle}){
+function AjoutBloc({article, setArticle, clickCross}){
     const [type, setType] = useState('')
 
     // faire en sorte que ça gère sans avoir besoin de changer (ou modifier les selects)
@@ -60,11 +60,12 @@ function AjoutBloc({article, setArticle}){
         console.log("ajout bloc");
     }
 
+
     return(
         <div className="zoneAjoutBloc">
             <div className="zoneTitreAjoutBloc">
                 <h2>Quel bloc ajouter ?</h2>
-                <img src="src\assets\croix.png" alt="fermer" className="cross"></img>
+                <img src="src\assets\croix.png" alt="fermer" className="cross" onClick={()=>clickCross(false)}></img>
             </div>
             <select name="choixBloc" id="choixBloc" onChange={handleChoixBloc}>
                 {/* rajouter option neutre pour par défaut ? */}

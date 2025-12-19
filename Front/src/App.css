@@ -610,7 +610,8 @@ input[type=file]::file-selector-button {
   flex-direction: column;
   margin-bottom: 15px;
   margin-top: 15px;
-  background-color: #E3E3E3;
+  background-color: var(--white);
+  border: solid #7AC74F;
   padding: 15px;
   border-radius: 10px;
 }
