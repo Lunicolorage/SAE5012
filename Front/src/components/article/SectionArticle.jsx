@@ -22,9 +22,15 @@ function SectionArticle(section){
     }
 
     if(section.section.type == 'image'){
-        console.log(section.section.contenu[0].alt);
+        // console.log(section.section.contenu[0].alt);
         return(
             <img className="sectionImage" src={section.section.contenu[0].url} alt={section.section.contenu[0].alt} />
+        )
+    }
+
+    if(section.section.type == 'graph'){
+        return(
+           <p>graphique</p>
         )
     }
 

@@ -30,7 +30,7 @@ function Header(){
         <header>
             <div className="header-left">
                 <Link to="/">
-                    <img className="header-logo" src="src/assets/eff-fonce.png" alt="logo foncé" />
+                    <img className="header-logo" src="src/assets/eff-fonce.png" alt="logo EFF" />
                 </Link>
                 <Link to="/index" className="hideMobile" >
                 Index
