@@ -1,0 +1,11 @@
+Model Information:
+* title:	African Fish-eagle
+* source:	https://sketchfab.com/3d-models/african-fish-eagle-1042f70899c043df86cccb19b6260e04
+* author:	The Watt Institution (https://sketchfab.com/wattinstitution)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "African Fish-eagle" (https://sketchfab.com/3d-models/african-fish-eagle-1042f70899c043df86cccb19b6260e04) by The Watt Institution (https://sketchfab.com/wattinstitution) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
