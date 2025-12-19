@@ -312,7 +312,7 @@ table th, table td {
 }
 
 .buttonArticle {
-  background-color: (var(--greenLight));
+  /* background-color: (var(--greenLight)); */
   color: var(--deepBlue);
   width: 50%;
   margin: 0 25%;
