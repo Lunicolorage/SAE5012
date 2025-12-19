@@ -30,7 +30,7 @@ function FormConnection({register}){
 
             if (response.ok) {
                 const data = await response.json();
-                localStorage.setItem('token', data.token);
+                //localStorage.setItem('token', data.token);
 
                 const response2 = await fetch('http://localhost:8000/api/me', {
                     headers: {
@@ -40,16 +40,24 @@ function FormConnection({register}){
 
                 
                 const userInfo = await response2.json();
-                
-                setUser({'id' : userInfo.id, 
+
+                const userDico = {'id' : userInfo.id, 
                         'nom' : userInfo.nom, 
                         'email' : userInfo.email,
                         'role': userInfo.roles ,
                         'token' : data.token
-                    });
+                    }
+                
+                setUser(userDico);
+
+                Object.entries(userDico).forEach(([key, value]) => {
+                   localStorage.setItem('user_'+key, value);
+                });
+
+                // localStorage.setItem('user_id', userInfo.id);
 
                 //console.log(user);
-                // console.log(localStorage.token);
+                //console.log(localStorage);
                 setSuccess(' Connexion réussie !');
                 setMail('');
                 setMdp('');

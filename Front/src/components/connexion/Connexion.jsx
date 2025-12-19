@@ -8,7 +8,8 @@ function Connexion() {
   const [user, setUser] = useContext(UserContext);
   const [isRegister, setIsRegister] = useState(false);
 
-  console.log(user);
+  //console.log(localStorage);
+  
 
     if(user && user.nom){
         return (
@@ -17,6 +18,11 @@ function Connexion() {
             <button
             onClick={() => {
                 setUser({});
+                localStorage.removeItem("user_id");
+                localStorage.removeItem("user_nom");
+                localStorage.removeItem("user_email");
+                localStorage.removeItem("user_role");
+                localStorage.removeItem("user_token");
             }}
             >Me déconnecter</button>
         </div>
