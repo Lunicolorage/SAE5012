@@ -9,7 +9,7 @@ import { NotFound } from './components/NotFound';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Accueil } from './components/accueil/Accueil';
-import { Connexion } from './components/accueil/connexion/Connexion';
+import { Connexion } from './components/connexion/Connexion';
 import { UserProvider } from './context/UserProvider';
 
 function App() {

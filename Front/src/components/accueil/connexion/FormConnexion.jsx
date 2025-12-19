@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { UserContext } from "../../../context/UserProvider";
+import { UserContext } from "../../context/UserProvider";
 
 function FormConnection({register}){
 

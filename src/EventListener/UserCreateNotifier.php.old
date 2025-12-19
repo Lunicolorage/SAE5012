@@ -1,0 +1,20 @@
+<?php
+
+namespace App\EventListener;
+
+use App\Entity\User;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Events;
+
+#[AsEntityListener(event: Events::prePersist, method: 'prePersist', entity: User::class)]
+final class UserRoleListener
+{
+    public function prePersist(User $user, PrePersistEventArgs $event): void
+    {
+        // Assigner ROLE_USER si aucun rôle n'est défini
+        if (empty($user->getRoles()) || $user->getRoles() === ['ROLE_USER']) {
+            $user->setRoles(['ROLE_USER']);
+        }
+    }
+}
