@@ -1,46 +1,42 @@
+import { useEffect, useState } from "react";
+import { ArticleIndex } from "./ArticleIndex";
 
-// à voir pour transmettre article + comment aller page de l'article
-function Articles(articles){ 
+function Articles() {
+  const [listeArticles, setListeArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    // function handleClick(){} // à voir
+  useEffect(() => {
+    async function getData() {
+      const url = 'http://localhost:8000/api/articles';
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+        const result = await response.json();
+        setListeArticles(result.member);
+      } catch (err) {
+        setError(err.message);
+        console.error(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-    return(
-        <div className="allArticles">
-            {/* {articles.map((article) =>(
-                <div>
-                    <h2>{article.nom}</h2>
-                    <p>{article.resume}</p>
-                    <button className="buttonArticle" onClick={() => handleClick(article.id)}>Voir l'article</button>
-                </div>
-            ))} */}
+    getData();
+  }, []); 
 
-            <div className="article">
-                <h2>Titre</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec volutpat felis vel orci viverra elementum. Phasellus ornare viverra mollis. Maecenas tempor in urna sed aliquet. Nam semper tempus imperdiet. Suspendisse sit amet ligula quis nulla consectetur dapibus. Duis dignissim pretium massa, et ornare risus sodales hendrerit. Cras egestas condimentum pellentesque. Proin ornare, ligula fringilla elementum porttitor, velit justo suscipit ligula, dapibus laoreet massa...</p>
-                <button className="buttonArticle">Voir l'article</button>
-            </div>
+  if (loading) return <div className="allArticles">Chargement...</div>;
+  if (error) return <div className="allArticles">Erreur: {error}</div>;
 
-            <div className="article">
-                <h2>Titre</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec volutpat felis vel orci viverra elementum. Phasellus ornare viverra mollis. Maecenas tempor in urna sed aliquet. Nam semper tempus imperdiet. Suspendisse sit amet ligula quis nulla consectetur dapibus. Duis dignissim pretium massa, et ornare risus sodales hendrerit. Cras egestas condimentum pellentesque. Proin ornare, ligula fringilla elementum porttitor, velit justo suscipit ligula, dapibus laoreet massa...</p>
-                <button className="buttonArticle">Voir l'article</button>
-            </div>
-
-            <div className="article">
-                <h2>Titre</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec volutpat felis vel orci viverra elementum. Phasellus ornare viverra mollis. Maecenas tempor in urna sed aliquet. Nam semper tempus imperdiet. Suspendisse sit amet ligula quis nulla consectetur dapibus. Duis dignissim pretium massa, et ornare risus sodales hendrerit. Cras egestas condimentum pellentesque. Proin ornare, ligula fringilla elementum porttitor, velit justo suscipit ligula, dapibus laoreet massa...</p>
-                <button className="buttonArticle">Voir l'article</button>
-            </div>
-
-            <div className="article">
-                <h2>Titre</h2>
-                <p>Résumé</p>
-                <button className="buttonArticle">Voir l'article</button>
-            </div>
-
-
-        </div>
-    )
+  return (
+    <div className="allArticles">
+      {listeArticles.map((article) => (
+        <ArticleIndex key={article.id} article={article} />
+      ))}
+    </div>
+  );
 }
 
-export {Articles};
+export { Articles };
