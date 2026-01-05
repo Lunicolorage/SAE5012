@@ -10,14 +10,47 @@ import { useState } from "react";
 function PageCreationArticle(){
     const [showAjoutBloc, setShowAjoutBloc] = useState(false)
     // faire un tableau pour gérer affichage blocs
-    const [article, setArticle] = useState({titre:"", Resume:"", username:"", sections:[]})
+    const [article, setArticle] = useState({titre:"", resume:"", username:"", sections:[]})
+
+    // à voir
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
 
     function handleClick(){
         setShowAjoutBloc(true);
     }
 
-    function handleClickSubmit(){
+    // récupérer username -> local storage
+
+    const handleClickSubmit = async () => {
         console.log(article)
+        setError('');
+        setSuccess('');
+        setLoading(true);
+
+        try {
+            const response = await fetch('http://localhost:8000/api/articles', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`},
+                body: JSON.stringify(article),
+            });
+        
+            if (!response.ok) {
+                setError('Erreur');
+            }
+            else{
+                setSuccess('Article publié') 
+            }
+           
+        } catch (err) {
+            setError(` Erreur : ${err.message}`);
+        } finally {
+            setLoading(false);
+        }
+        
     }
 
     

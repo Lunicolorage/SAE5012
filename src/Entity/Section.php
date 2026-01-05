@@ -42,6 +42,9 @@ class Section
     #[Groups(['article:write'])]
     private ?array $contenu = null;
 
+    #[ORM\OneToOne(mappedBy: 'idSection', cascade: ['persist', 'remove'])]
+    private ?Graphique $graphique = null;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -119,6 +122,28 @@ class Section
     public function setContenu(?array $contenu): static
     {
         $this->contenu = $contenu;
+        return $this;
+    }
+
+    public function getGraphique(): ?Graphique
+    {
+        return $this->graphique;
+    }
+
+    public function setGraphique(?Graphique $graphique): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($graphique === null && $this->graphique !== null) {
+            $this->graphique->setIdSection(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($graphique !== null && $graphique->getIdSection() !== $this) {
+            $graphique->setIdSection($this);
+        }
+
+        $this->graphique = $graphique;
+
         return $this;
     }
 }
