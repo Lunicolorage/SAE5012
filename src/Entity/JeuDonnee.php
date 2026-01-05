@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\JeuDonneeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 
@@ -24,6 +26,24 @@ class JeuDonnee
 
     #[ORM\Column(length: 255)]
     private ?string $lien = null;
+
+    /**
+     * @var Collection<int, Variable>
+     */
+    #[ORM\OneToMany(targetEntity: Variable::class, mappedBy: 'idDonnees', orphanRemoval: true)]
+    private Collection $variables;
+
+    /**
+     * @var Collection<int, Graphique>
+     */
+    #[ORM\OneToMany(targetEntity: Graphique::class, mappedBy: 'idDonnees', orphanRemoval: true)]
+    private Collection $graphiques;
+
+    public function __construct()
+    {
+        $this->variables = new ArrayCollection();
+        $this->graphiques = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -62,6 +82,66 @@ class JeuDonnee
     public function setLien(string $lien): static
     {
         $this->lien = $lien;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Variable>
+     */
+    public function getVariables(): Collection
+    {
+        return $this->variables;
+    }
+
+    public function addVariable(Variable $variable): static
+    {
+        if (!$this->variables->contains($variable)) {
+            $this->variables->add($variable);
+            $variable->setIdDonnees($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVariable(Variable $variable): static
+    {
+        if ($this->variables->removeElement($variable)) {
+            // set the owning side to null (unless already changed)
+            if ($variable->getIdDonnees() === $this) {
+                $variable->setIdDonnees(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Graphique>
+     */
+    public function getGraphiques(): Collection
+    {
+        return $this->graphiques;
+    }
+
+    public function addGraphique(Graphique $graphique): static
+    {
+        if (!$this->graphiques->contains($graphique)) {
+            $this->graphiques->add($graphique);
+            $graphique->setIdDonnees($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGraphique(Graphique $graphique): static
+    {
+        if ($this->graphiques->removeElement($graphique)) {
+            // set the owning side to null (unless already changed)
+            if ($graphique->getIdDonnees() === $this) {
+                $graphique->setIdDonnees(null);
+            }
+        }
 
         return $this;
     }

@@ -11,7 +11,7 @@ function TitreResume({article, setArticle}){
     function handleResumeChange(e){
         setArticle({
             ...article,
-            Resume: e.target.value
+            resume: e.target.value
         })
     }
 

@@ -65,6 +65,30 @@ class ArticleRepository extends ServiceEntityRepository
                         break;
 
                         // ajouter graph
+                        case 'graphique':
+                            $graphique = $this->getEntityManager()
+                                ->getRepository(\App\Entity\Graphique::class)
+                                ->findOneBy(['idSection'=>$section->getId()]);
+
+                            $variables = [];
+                            foreach($graphique->getGraphiqueVariables() as $gv){
+                                $variables[] = [
+                                    'id' => $gv->getId(),
+                                    'variableId'=> $gv->getIdVaraiable()->getId(),
+                                    'nom'=> $gv->getIdVariable()->getNom(),
+                                    'couleur'=> $gv->getCouleur(),
+                                ];
+                            }
+
+                            $contenu = $graphique ? [
+                                'id' => $graphique->getId(),
+                                'type' => $graphique->getType(),
+                                'jeuDonneeId' => $graphique->getIdDonnees()->getId(),
+                                'variables' => $variables
+                            ] : null;
+                            break;
+                            $contenu = null;
+                            break;
                     default:
                         $contenu = null;
                 }
@@ -157,6 +181,7 @@ class ArticleRepository extends ServiceEntityRepository
             'titre' => $this->createTitre($section, $sectionData['contenu']),
             'texte' => $this->createTexte($section, $sectionData['contenu']),
             'image' => $this->linkImage($section, $sectionData['contenu']),
+            'graphique' => $this->createGraphique($section, $sectionData['contenu']),
             default => throw new \Exception("Type de section inconnu: {$sectionData['type']}")
         };
     }
@@ -201,6 +226,39 @@ class ArticleRepository extends ServiceEntityRepository
         $section->addImage($image);
         $this->getEntityManager()->persist($section);
         $this->getEntityManager()->flush();
+    }
+
+    private function createGraphique(\App\Entity\Section $section, array $contenu): void
+    {
+        $manager = $this->getEntityManager();
+
+        // Récupérer le jeu de données
+        $jeuDonnee = $manager->getRepository(\App\Entity\JeuDonnee::class)
+            ->find($contenu['jeuDonneeId']);
+
+        // Créer le graphique
+        $graphique = new \App\Entity\Graphique();
+        $graphique->setType($contenu['type']);
+        $graphique->setIdSection($section);
+        $graphique->setIdDonnees($jeuDonnee);
+
+        $manager->persist($graphique);
+        $manager->flush();
+        
+        // S'occuper de la liaison entre graphique et variable (GraphiqueVariable)
+        foreach ($contenu['variables'] as $varData){
+            $variable = $manager->getRepository(\App\Entity\Variable::class)
+                ->find($varData['variableId']);
+            
+            $gv = new \App\Entity\GraphiqueVariable();
+            $gv->setIdGraphique($graphique);
+            $gv->setIdVariable($variable);
+            $gv->setCouleur($varData['couleur']);
+
+            $manager->persist($gv);
+        }
+
+        $manager->flush();
     }
 
 
