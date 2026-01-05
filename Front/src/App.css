@@ -25,12 +25,15 @@ header {
 }
 
 header .header-left{
-  width: 65vw;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  min-width: max-content;
 }
+
+header .header-left a{
+  margin-right: 5vw;
+} 
 
 .hideMobile{
       display: none;  

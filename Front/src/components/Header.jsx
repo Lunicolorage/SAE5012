@@ -26,6 +26,10 @@ function Header(){
     }
   }, [burgerOuvert]);
 
+    const createAllowed = ['ROLE_ADMIN','ROLE_AUTEUR','ROLE_EDIT'];
+    const addDataAllowed = ['ROLE_ADMIN','ROLE_FOURNI'];
+    const hasAnyRole = (allowed) => Array.isArray(user?.role) && user.role.some(r => allowed.includes(r));
+
     return(
         <header>
             <div className="header-left">
@@ -35,12 +39,17 @@ function Header(){
                 <Link to="/index" className="hideMobile" >
                 Index
                 </Link>
-                <Link to="/create" className="hideMobile" >
-                Ajout d'article
-                </Link>
-                <Link to="/add-data" className="hideMobile" >
-                Ajout de données
-                </Link>
+                {hasAnyRole(createAllowed) && (
+                    <Link to="/create" className="hideMobile" >
+                    Ajout d'article
+                    </Link>
+                )}
+
+                {hasAnyRole(addDataAllowed) && (
+                    <Link to="/add-data" className="hideMobile" >
+                    Ajout de données
+                    </Link>
+                )}       
             </div>
             <Link to="/connexion" className="hideMobile" >
                 {buttonCo}
@@ -60,12 +69,16 @@ function Header(){
                 <Link to="/index">
                 Index
                 </Link>
-                <Link to="/create">
-                Ajout d'article
-                </Link>
-                <Link to="/add-data">
-                Ajout de données
-                </Link>
+                {hasAnyRole(createAllowed) && (
+                    <Link to="/create">
+                    Ajout d'article
+                    </Link>
+                )}
+               {hasAnyRole(addDataAllowed) && (
+                    <Link to="/add-data" >
+                    Ajout de données
+                    </Link>
+                )} 
                 <Link to="/connexion">
                     {buttonCo}
                 </Link>
