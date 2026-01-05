@@ -27,7 +27,7 @@ function App() {
           <Route path="/add-data" element={<Donnees />} />
           <Route path="/index" element={<Articles/>} />
           <Route path="/connexion" element={<Connexion/>} />
-          <Route path="/article/" element={<AffichageArticle/>} />
+          <Route path="/article/:id" element={<AffichageArticle />} />
           {/* <Route path="/shop" element={<Shop like={[tabLiked, setTabLiked]} card={[tabPanier, setTabPanier]} />} />  */}
           <Route path="*" element={<NotFound />} />
         </Routes>

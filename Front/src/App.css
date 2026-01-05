@@ -343,6 +343,36 @@ table th, table td {
 
 }
 
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* AffichageArticle.jsx et SectionArticle.jsx ------------------------------------------------------------------------------- */
+
+.sectionTitre, .sectionTexte{
+  margin-bottom: 1vw;
+}
+
+.sectionImage{
+  margin-bottom: 1vw;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+@media (min-width: 600px) {
+  .sectionImage{
+  max-width: 80%;
+  }
+}
+
+@media (min-width: 1024px) {
+
+  .sectionImage{
+  max-width: 60%;
+}
+
+}
+
 
 /* /////////////////////////////////////////////////////////////////////////////////////// */
 

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ArticleIndex } from "./ArticleIndex";
 
 function Articles() {
   const [listeArticles, setListeArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getData() {
@@ -27,13 +29,21 @@ function Articles() {
     getData();
   }, []); 
 
+  const handleArticleClick = (articleId) => {
+    navigate(`/article/${articleId}`);
+  };
+
   if (loading) return <div className="allArticles">Chargement...</div>;
   if (error) return <div className="allArticles">Erreur: {error}</div>;
 
   return (
     <div className="allArticles">
       {listeArticles.map((article) => (
-        <ArticleIndex key={article.id} article={article} />
+        <ArticleIndex 
+          key={article.id} 
+          article={article}
+          onArticleClick={handleArticleClick}
+        />
       ))}
     </div>
   );

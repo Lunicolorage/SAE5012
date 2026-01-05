@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-text-geometry-component/dist/aframe-text-geometry-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
+    <script src="myfont.typeface.js"></script>
+  </head>
+  <body>
+
+    <audio id="buzzClick" src="confetti/click.mp3"></audio>
+    <audio id="loseSound" src="confetti/loserhorns.mp3"></audio>
+    <audio id="winSound" src="confetti/correct.mp3"></audio>
+    <audio loop="true" id="victorySound" src="confetti/victory.mp3"></audio>
+    
+    <a-scene shadow="type: pcf">
+      <a-entity id="rig" movement-controls="dynamic-body controls: checkpoint, gamepad, trackpad, keyboard, nipple;" 
+      position="0 1 0" rotation="" checkpoint-controls="" gamepad-controls="" trackpad-controls="" keyboard-controls="" nipple-controls="">
+        <a-entity camera="" position="0 1.6 0" look-controls="pointerLockEnabled: true" rotation="">
+          <a-cursor></a-cursor>
+        </a-entity>
+      </a-entity>
+
+      <!-- <a-entity camera universal-controls look-controls wasd-controls="acceleration: 40" position="0 2 0">
+        <a-cursor></a-cursor>
+      </a-entity> -->
+        <a-sky
+            color="#afeeee">
+        </a-sky>
+        
+      <a-assets>
+        <a-asset-item id="optimerBoldFont" src="https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json"></a-asset-item>
+        <a-mixin id="boldFont" text="font: #optimerBoldFont"></a-mixin>
+        <a-asset-item id="confettis" src="confetti/scene.gltf"></a-asset-item> 
+        <img id="foret" src="confetti/foret.jpeg"></img>
+        <img id="ocean" src="confetti/ocean.jpg"></img>
+        <img id="grotte" src="confetti/grotte.jpg"></img>
+        <img id="herbe" src="confetti/herbe.jpg"></img>
+        <a-asset-item id="giraffe" src="confetti/giraffe/scene.gltf"></a-asset-item>
+        <a-asset-item id="eagle" src="confetti/african_fish-eagle/scene.gltf"></a-asset-item>
+        <a-asset-item id="seaLion" src="confetti/sea_lion_v2_v1/scene.gltf"></a-asset-item>
+        <a-asset-item id="wolf" src="confetti/wolf/scene.gltf"></a-asset-item>
+      </a-assets>
+
+      <a-gltf-model src="#giraffe" position="-6.8 3 -11.5" scale="3 3 3" rotation="0 45 0"></a-gltf-model>
+      <a-gltf-model src="#eagle" position="-7 1 2.5" scale="0.40 0.4 0.4" rotation="0 20 0"></a-gltf-model>
+      <!-- <a-gltf-model src="#seaLion" position="7 0 -12" scale="0.025 0.025 0.025" rotation="270 -45 0"></a-gltf-model> -->
+      <a-gltf-model src="#seaLion" position="7 0 2.5" scale="0.025 0.025 0.025" rotation="270 -150 0"></a-gltf-model>
+      <a-gltf-model src="#wolf" position="6.5 -0.2 -10.5" rotation="0 -30 0"></a-gltf-model>
+
+
+      <!-- murs et sol -->
+      <a-plane src="#herbe" position="0 0 -5" rotation="-90 0 0" width="20" height="20" color="#7ac74f" roughness="1" static-body></a-plane>
+      <a-box position="0 5 -15" rotation="0 0 0" width="20" height="10" color="#e3e3e3" static-body></a-box>
+      <a-box src="#foret" position="-10 5 -5" rotation="0 90 0" width="20" height="10" color="white" static-body></a-box>
+      <a-box src="#ocean" position="10 5 -5" rotation="0 -90 0" width="20" height="10" color="white" static-body></a-box>
+      <a-box src="#grotte" position="0 5 5" rotation="0 -180 0" width="20" height="10" color="white" static-body></a-box>
+      <a-box position="0 10 -5" rotation="-90 0 0" width="20" height="20" color="#e3e3e3" static-body></a-box>
+
+      <a-gltf-model src="#giraffe" position="-4 2 -6" scale="1.5 1.5 1.5" rotation="0 10 0"></a-gltf-model>
+
+      <!-- texte de question -->
+      <a-entity>
+        <a-entity id="question"  
+          text="value: Ce texte est bleu;
+                    width: 7;
+                    wrapCount: 25;
+                    align: center;
+                    baseline: center;
+                    color: black;
+                    font: mozillavr"
+        material="color: black" position="0 5 -14" scale="1 1 1"></a-entity>
+        <a-box position="0 5 -14.5" width="10" height="5" depth="0.5" 
+        shadow="cast:true; receive: false" id="questionBg" position="-5 7 -14" radius="0.2" 
+        material="color:white; emissive: white; emissiveIntensity: 1; shader: standard" 
+        static-body light="type: point; color: white; intensity: 1; distance: 5; decay: 2">
+      </a-box>
+
+        <a-entity> <!-- cadre gauche -->
+          <a-box position="-5 4.5 -14.5" width="1" height="6" 
+       material="color: #7ac74f; shader: standard; emissive: #FFE95C; emissiveIntensity: 0.05" 
+       static-body></a-box>
+          <a-sphere
+            shadow="cast:true; receive: false" class="lamp" position="-5 7 -14" radius="0.2" 
+            material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+            static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere>
+          <a-sphere 
+            shadow="cast:true; receive: false" class="lamp" position="-5 6 -14" radius="0.2" 
+            material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+            static-body light="type: point; color: #FFE95C; intensity: 1;  distance: 5; decay: 2">
+          </a-sphere>
+          <a-sphere 
+            shadow="cast:true; receive: false" class="lamp" position="-5 5 -14" radius="0.2" 
+            material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+            static-body light="type: point; color: #FFE95C; intensity: 1;  distance: 5; decay: 2">
+          </a-sphere>
+          <a-sphere 
+            shadow="cast:true; receive: false" class="lamp" position="-5 4 -14" radius="0.2" 
+            material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+            static-body light="type: point; color: #FFE95C; intensity: 1;  distance: 5; decay: 2">
+          </a-sphere>
+          <a-sphere 
+            shadow="cast:true; receive: false" class="lamp" position="-5 3 -14" radius="0.2" 
+            material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+            static-body light="type: point; color: #FFE95C; intensity: 1;  distance: 5; decay: 2">
+          </a-sphere>
+          <a-sphere 
+            shadow="cast:true; receive: false" class="lamp" position="-5 2 -14" radius="0.2" 
+            material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+            static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere>
+        </a-entity>
+
+        <a-entity> <!-- cadre droit -->
+        <a-box position="5 4.5 -14.5" width="1" height="6" color="#7ac74f" static-body
+        material="color: #7ac74f; shader: standard; emissive: #FFE95C; emissiveIntensity: 0.05" ></a-box>
+        <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="5 7 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+        </a-sphere>
+        <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="5 6 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+        </a-sphere>
+        <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="5 5 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+        </a-sphere>
+        <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="5 4 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+        </a-sphere>
+        <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="5 3 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+        </a-sphere>
+        <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="5 2 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+        </a-sphere>
+        </a-entity>
+
+        <a-entity><!-- cadre haut -->
+          <a-box position="0 7 -14.5" width="10" height="1" color="#7ac74f" static-body
+          material="color: #7ac74f; shader: standard; emissive: #FFE95C; emissiveIntensity: 0.05" ></a-box>
+          <a-sphere 
+            shadow="cast:true; receive: false" class="lamp" position="-4 7 -14" radius="0.2" 
+            material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+            static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere>
+          <a-sphere 
+            shadow="cast:true; receive: false" class="lamp" position="-3 7 -14" radius="0.2" 
+            material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+            static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere>
+          <a-sphere 
+            shadow="cast:true; receive: false" class="lamp" position="-2 7 -14" radius="0.2" 
+            material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+            static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere>
+          <a-sphere 
+            shadow="cast:true; receive: false" class="lamp" position="-1 7 -14" radius="0.2" 
+            material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+            static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere> 
+          <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="0 7 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere> 
+          <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="1 7 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere> 
+          <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="2 7 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere> 
+          <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="3 7 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere> 
+          <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="4 7 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere> 
+  
+        </a-entity>
+
+          <a-entity><!-- cadre bas -->
+          <a-box position="0 2 -14.5" width="10" height="1" color="#7ac74f" static-body
+          material="color: #7ac74f; shader: standard; emissive: #FFE95C; emissiveIntensity: 0.05" ></a-box>
+          <a-sphere 
+            shadow="cast:true; receive: false" class="lamp" position="-4 2 -14" radius="0.2" 
+            material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+            static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere>
+          <a-sphere 
+            shadow="cast:true; receive: false" class="lamp" position="-3 2 -14" radius="0.2" 
+            material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+            static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere>
+          <a-sphere 
+            shadow="cast:true; receive: false" class="lamp" position="-2 2 -14" radius="0.2" 
+            material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+            static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere>
+          <a-sphere 
+            shadow="cast:true; receive: false" class="lamp" position="-1 2 -14" radius="0.2" 
+            material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+            static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere> 
+          <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="0 2 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere> 
+          <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="1 2 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere> 
+          <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="2 2 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere> 
+          <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="3 2 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere> 
+          <a-sphere 
+          shadow="cast:true; receive: false" class="lamp" position="4 2 -14" radius="0.2" 
+          material="color: #FFE95C; emissive: #FFE95C; emissiveIntensity: 1; shader: standard" 
+          static-body light="type: point; color: #FFE95C; intensity: 1; distance: 5; decay: 2">
+          </a-sphere> 
+        </a-entity>
+      </a-entity>
+
+      <!-- buzzer gauche -->
+      <a-entity
+      position="-3 1 -8">
+      <a-entity light="color: #AFA; intensity: 0.5" ></a-entity>
+
+      <a-sphere class="buzz" id="buzzg" position="0 0.9 0" 
+      radius="0.55" 
+        color="#FF0000"
+        phi-start="0"
+        phi-length="180"
+        rotation="-90 0 0"
+        shadow="cast: true; receive: true"
+        animation__press="property: position; to: 0 0.8 0; dur: 200; easing: linear; dir: alternate; loop: 1; startEvents: click">
+      </a-sphere>
+      
+
+      <a-cylinder position="0 0.7 0" radius="0.4" height="0.5" 
+                  color="#FF0000"
+                  shadow="cast: true; receive: true"></a-cylinder>
+
+      <a-box id="socleg" position="0 0 0" height="1.5" width="1.5" depth="1.5"
+                  color="#ffcc00"
+                  shadow="cast: true; receive: true"></a-box>
+
+      <a-entity position="0 3 0" rotation="-90 0 0"
+                light="type: spot;
+                       color: #ffffff;
+                       intensity: 2;
+                      angle: 30;
+                       penumbra: 0.3;
+                       distance: 6;
+                       decay: 2;
+                       castShadow: true;
+                       target: #socleg"></a-entity>
+
+         <a-box position="0 0 0.8" width="1" height="1" depth="0.1" 
+        shadow="cast:true; receive: false" id="lampG" position="-5 7 -14" radius="0.2" 
+        material="color:white; emissive: white; emissiveIntensity: 1; shader: standard" 
+        static-body light="type: point; color: white; intensity: 1; distance: 5; decay: 2">
+      </a-box>
+
+      <a-entity text-geometry="value: vrai; font: #optimerBoldFont"
+      id="vrai"
+      material="color: black"
+      position="-0.4 -0.15 0.85"
+      scale="0.7 0.7 0.7"
+     ></a-entity>
+
+      </a-entity>
+
+       <!-- buzzer droit -->
+      <a-entity
+      position="3 1 -8">
+      <a-entity light="color: #AFA; intensity: 0.5" ></a-entity>
+
+      <a-sphere class="buzz" id="buzzd" position="0 0.9 0" 
+      radius="0.55" 
+      color="#FF0000"
+      phi-start="0"
+      phi-length="180"
+      rotation="-90 0 0"
+      shadow="cast: true; receive: true"
+      animation__press="property: position; to: 0 0.8 0; dur: 200; easing: linear; dir: alternate; loop: 1; startEvents: click">
+</a-sphere>
+      
+
+      <a-cylinder position="0 0.7 0" radius="0.4" height="0.5" 
+                  color="#FF0000"
+                  shadow="cast: true; receive: true"></a-cylinder>
+
+      <a-box id="socled" position="0 0 0" height="1.5" width="1.5" depth="1.5"
+                  color="#ffcc00"
+                  shadow="cast: true; receive: true"></a-box>
+
+      <a-entity position="0 3 0" rotation="-90 0 0"
+                light="type: spot;
+                       color: #ffffff;
+                       intensity: 2;
+                      angle: 30;
+                       penumbra: 0.3;
+                       distance: 6;
+                       decay: 2;
+                       castShadow: true;
+                       target: #socled"></a-entity>
+
+      <a-box position="0 0 0.8" width="1" height="1" depth="0.1" 
+        shadow="cast:true; receive: false" id="lampD" position="-5 7 -14" radius="0.2" 
+        material="color:white; emissive: white; emissiveIntensity: 1; shader: standard" 
+        static-body light="type: point; color: white; intensity: 1; distance: 5; decay: 2">
+      </a-box>
+
+      <a-entity text-geometry="value: faux; font: #optimerBoldFont"
+      id="faux"
+      material="color: black"
+      position="-0.45 -0.15 0.85"
+      scale="0.7 0.7 0.7"
+></a-entity>
+
+      </a-entity>
+
+      </a-entity>
+
+
+      
+
+
+      <!-- Bouton changer de page -->
+      <a-entity position="0 1 -14.5" >
+        <a-box id="boutonChange" width="5" position="0 -0.3 0" visible="false">
+        </a-box >
+          <a-entity id="question"  
+          
+            text="value: Aller a la page article;
+                      width: 7;
+                      wrapCount: 25;
+                      align: center;
+                      baseline: center;
+                      color: black;
+                      font: mozillavr"
+            material="color: black" position="0 0 0.5" scale="1 1 1"></a-entity>
+      </a-entity>
+
+
+      
+    <a-gltf-model id="conf" src="#confettis" position="0 15 0" rotation="250 0 0" scale="0.008 0.008 0.008" animation-mixer="clip: *" visible="false"></a-gltf-model>
+
+
+    </a-scene>
+  </body>
+  <script>
+    document.querySelector('a-scene').addEventListener('loaded', function () {
+ 
+    const questions = [
+      {
+        question: "Les chauves-souris sont aveugles",
+        correct: "faux",
+        reponse : "Les chauves-souris ne sont pas aveugles. Elles utilisent l'echolocation pour se reperer dans l'obscurite, mais elles ont aussi des yeux fonctionnels."
+      },
+      {
+        question: "Les flamants roses naissent roses",
+        correct: "faux",
+        reponse : "Les flamants roses naissent gris ou blancs. Leur couleur rose provient des pigments contenus dans les crevettes et les algues qu'ils consomment."
+      },
+      {
+        question: "Les cameleons changent de couleurs principalement pour communiquer",
+        correct: "vrai",
+        reponse : "En effet l'idee recue est que les cameleons changent de couleur pour se camoufler, mais ils le font surtout pour communiquer leurs emotions et intentions aux autres cameleons."
+      },
+      {
+        question: "Le poulpe possede 2 coeurs",
+        correct: "faux",
+        reponse : "Le poulpe possede en realite 3 coeurs : deux coeurs branchiaux qui pompent le sang vers les branchies, et un coeur systémique qui pompe le sang vers le reste du corps."
+      },
+      {
+        question: "Le poules mangent des pierres pour aider a la digestion",
+        correct: "vrai",
+        reponse : "Les poules avalent des petites pierres ou du gravier, qui se logent dans leur gesier et aident a broyer les aliments pour faciliter la digestion."
+      }
+    ];
+
+    let boutonChange = document.querySelector('#boutonChange')
+    boutonChange.addEventListener('click', function (evtBtn) {
+        window.parent.postMessage({ action: 'navigateToIndex' }, '*');
+    })
+    
+
+    let pos = 0;
+    let questionText = document.querySelector('#question');
+    let questionBg = document.querySelector('#questionBg');
+
+    function loadQuestion(questionText, pos) {
+      let currentQuestion = questions[pos];
+      questionText.setAttribute('text', 'value: ' + currentQuestion.question + '; width: 7; wrapCount: 25; align: center; baseline: center; color: black; font: mozillavr');
+    }
+    loadQuestion(questionText, pos);
+
+    let buzzDroit = document.querySelector('#buzzd');
+    let buzzGauche = document.querySelector('#buzzg');
+    let buzz = document.querySelectorAll(".buzz");
+
+    let soundBuzzClick = document.getElementById("buzzClick");
+    let soundLose = document.getElementById("loseSound");
+    let soundWin = document.getElementById("winSound");
+    let soundVictory = document.getElementById("victorySound");
+
+    let lampCadre = document.querySelectorAll(".lamp");
+    
+    buzz.forEach(buzzer => {
+        buzzer.addEventListener('click', function (evt) {
+           soundBuzzClick.play();
+
+          var selectedAnswer = buzzer.id === "buzzd" ? "faux" : "vrai";
+          if (selectedAnswer === questions[pos].correct) {
+            soundWin.play();
+            lampCadre.forEach(lamp =>{
+              lamp.setAttribute('animation__mat',
+                  'property: material.color; to: #008000; dur: 200; easing: easeInOutQuad'
+                );
+                lamp.setAttribute('animation__emi',
+                  'property: material.emissive; to: #008000; dur: 200; easing: easeInOutQuad'
+                );
+                lamp.setAttribute('animation__light',
+                  'property: light.color; to: #008000; dur: 200; easing: easeInOutQuad'
+                );
+            })
+            questionBg.setAttribute('material', 'color: green; emissive: green; emissiveIntensity: 1; shader: standard');
+              setTimeout(function () {
+                questionBg.setAttribute('material', 'color: white; emissive: white; emissiveIntensity: 1; shader: standard');
+              }, 100);
+            console.log("Correct! " + questions[pos].reponse);
+            pos++;
+            if (pos >= questions.length) {
+              soundVictory.play();
+              questionText.setAttribute('text', 'value: Bravo ! Vous avez repondu a toutes les questions.; width: 7; wrapCount: 25; align: center; baseline: center; color: green; font: mozillavr');
+              var confetti = document.querySelector('#conf');
+              confetti.setAttribute('visible', 'true');
+              setTimeout(() => {
+                lampCadre.forEach(lamp => {
+                  lamp.setAttribute('animation__mat',
+                    'property: material.color; to: #FFE95C; dur: 200; easing: easeInOutQuad'
+                  );
+                  lamp.setAttribute('animation__emi',
+                    'property: material.emissive; to: #FFE95C; dur: 200; easing: easeInOutQuad'
+                  );
+                  lamp.setAttribute('animation__light',
+                    'property: light.color; to: #FFE95C; dur: 200; easing: easeInOutQuad'
+                  );
+                });
+              }, 1000);
+            } else {
+              loadQuestion(questionText, pos);
+            }
+          } else {
+            soundLose.play();
+            lampCadre.forEach(lamp =>{
+              lamp.setAttribute('animation__mat',
+                  'property: material.color; to: #FF0000; dur: 200; easing: easeInOutQuad'
+                );
+                lamp.setAttribute('animation__emi',
+                  'property: material.emissive; to: #FF0000; dur: 200; easing: easeInOutQuad'
+                );
+                lamp.setAttribute('animation__light',
+                  'property: light.color; to: #FF0000; dur: 200; easing: easeInOutQuad'
+                );
+              })
+             questionBg.setAttribute('material', 'color: red; emissive: red; emissiveIntensity: 1; shader: standard');
+              setTimeout(function () {
+                questionBg.setAttribute('material', 'color: white; emissive: white; emissiveIntensity: 1; shader: standard');
+              }, 100);
+            // console.log("Incorrect! " + questions[pos].reponse);
+            questionText.setAttribute('text', 'value: Perdu ! ' + questions[pos].reponse + '; width: 7; wrapCount: 25; align: center; baseline: center; color: red; font: mozillavr');
+            
+          }
+      });
+    });
+    
+
+});
+  </script>
+
+</html>
