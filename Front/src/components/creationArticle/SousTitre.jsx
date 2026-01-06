@@ -47,6 +47,7 @@ function SousTitre({article, setArticle, index}){
                 <img src="src\assets\croix.png" alt="fermer" className="cross" onClick={handleCrossClick}></img>
             </label>
             <select onChange={handleTypeChange}>
+                <option value="">Choisissez le niveau de titre</option>
                 <option value="h2">Titre 2</option>
                 <option value="h3">Titre 3</option>
                 <option value="h4">Titre 4</option>

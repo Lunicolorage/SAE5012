@@ -5,12 +5,15 @@ import { Image } from "./Image";
 import { SourceDonnees } from "./SourceDonnees";
 import { AjoutBloc } from "./AjoutBloc";
 import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserProvider";
 
 
 function PageCreationArticle(){
     const [showAjoutBloc, setShowAjoutBloc] = useState(false)
+    const [user, setUser] = useContext(UserContext);
     // faire un tableau pour gérer affichage blocs
-    const [article, setArticle] = useState({titre:"", resume:"", username:"", sections:[]})
+    const [article, setArticle] = useState({titre:"", Resume:"", userName:`${user.nom}`, sections:[]})
 
     // à voir
     const [loading, setLoading] = useState(false);
@@ -21,7 +24,7 @@ function PageCreationArticle(){
         setShowAjoutBloc(true);
     }
 
-    // récupérer username -> local storage
+    // console.log(localStorage);
 
     const handleClickSubmit = async () => {
         console.log(article)
@@ -29,17 +32,21 @@ function PageCreationArticle(){
         setSuccess('');
         setLoading(true);
 
+        console.log(user);
+        // console.log(JSON.stringify(article)); // ok
+
         try {
-            const response = await fetch('http://localhost:8000/api/articles', {
+            const response = await fetch('http://localhost:8000/api/articles/import', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`},
+                    Authorization: `Bearer ${user.token}`
+                },
                 body: JSON.stringify(article),
             });
         
             if (!response.ok) {
-                setError('Erreur');
+                setError('Erreur ');
             }
             else{
                 setSuccess('Article publié') 
@@ -84,6 +91,9 @@ function PageCreationArticle(){
                     <button className="buttonAjout" onClick={handleClick}>Ajouter un bloc</button>
                     <button type="submit" className="buttonPublier" onClick={handleClickSubmit}>Publier</button>
                 </div>
+
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                {success && <p style={{ color: 'green' }}>{success}</p>}
             </div>
         </div>
     )

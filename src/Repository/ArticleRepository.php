@@ -26,7 +26,7 @@ class ArticleRepository extends ServiceEntityRepository
         return [
             'id' => $article->getId(),
             'titre' => $article->getTitre(),
-            'resume' => $article->getResume(),
+            'Resume' => $article->getResume(),
             'createdAt' => $article->getCreatedAt()?->format('c'),
             'updatedAt' => $article->getUpdatedAt()?->format('c'),
             'user' => [
@@ -142,7 +142,7 @@ class ArticleRepository extends ServiceEntityRepository
      public function saveArticleFromJson(Article $article, array $data): Article
     {
         $article->setTitre($data['titre'] ?? null);
-        $article->setResume($data['resume'] ?? null);
+        $article->setResume($data['Resume'] ?? null);
         // $article->setCreatedAt(new \DateTimeImmutable());
 
         // // Récupérer l'utilisateur

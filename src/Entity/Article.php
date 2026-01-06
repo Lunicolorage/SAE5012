@@ -59,6 +59,8 @@ use App\State\ArticleProcessor;
             name: 'create_article',
             uriTemplate: '/articles/import',
             processor: ArticleProcessor::class,
+            inputFormats: ['json' => ['application/json']],
+            deserialize: true,
         )
 ])]
 #[ApiResource] 
