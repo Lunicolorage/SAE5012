@@ -7,6 +7,7 @@ function Header(){
     const [user, setUser] = useContext(UserContext);
     const [buttonCo, setButtonCo] = useState("Connexion");
 
+
     useEffect(() => {
         if(user && user.id){
             setButtonCo(user.nom)
@@ -28,7 +29,7 @@ function Header(){
 
     const createAllowed = ['ROLE_ADMIN','ROLE_AUTEUR','ROLE_EDIT'];
     const addDataAllowed = ['ROLE_ADMIN','ROLE_FOURNI'];
-    const hasAnyRole = (allowed) => Array.isArray(user?.role) && user.role.some(r => allowed.includes(r));
+    const hasAnyRole = (allowed) => Array.isArray(user?.roles) && user.roles.some(r => allowed.includes(r));
 
     return(
         <header>

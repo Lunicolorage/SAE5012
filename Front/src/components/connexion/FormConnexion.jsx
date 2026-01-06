@@ -44,20 +44,21 @@ function FormConnection({register}){
                 const userDico = {'id' : userInfo.id, 
                         'nom' : userInfo.nom, 
                         'email' : userInfo.email,
-                        'role': userInfo.roles ,
+                        'roles': userInfo.roles ,
                         'token' : data.token
                     }
                 
                 setUser(userDico);
 
                 Object.entries(userDico).forEach(([key, value]) => {
-                   localStorage.setItem('user_'+key, value);
+                    const dataToStore = Array.isArray(value) ? JSON.stringify(value) : value;
+                    localStorage.setItem('user_' + key, dataToStore);
                 });
 
                 // localStorage.setItem('user_id', userInfo.id);
 
                 //console.log(user);
-                //console.log(localStorage);
+                console.log(localStorage);
                 setSuccess(' Connexion réussie !');
                 setMail('');
                 setMdp('');

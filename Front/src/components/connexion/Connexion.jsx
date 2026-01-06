@@ -8,8 +8,7 @@ function Connexion() {
   const [user, setUser] = useContext(UserContext);
   const [isRegister, setIsRegister] = useState(false);
 
-  console.log(user);
-  
+  // console.log(user);
 
     if(user && user.nom){
         return (
