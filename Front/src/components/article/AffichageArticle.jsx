@@ -1,10 +1,16 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { SectionArticle } from "./SectionArticle";
+import { UserContext } from "../../context/UserProvider";
+import Rating from '@mui/material/Rating';
 
 function AffichageArticle(){
 
     const { id } = useParams();
+
+    const [user, setUser] = useContext(UserContext);
+    const addNoteAllowed = ['ROLE_ADMIN','ROLE_ABO'];
+    const hasAnyRole = (allowed) => Array.isArray(user?.roles) && user.roles.some(r => allowed.includes(r));
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -37,12 +43,29 @@ function AffichageArticle(){
     if (loading) return <div>Chargement...</div>;
     if (error) return <div>{error}</div>;
 
-    //console.log(contenuArticle.sections);
+    // console.log(contenuArticle);
 
     return(
         <div>
             {/* à voir, tab d'objet d'objets */}
-            <h1>{contenuArticle.titre}</h1>
+            <div className="titreArticle">
+              <h1>{contenuArticle.titre}</h1>
+              <div className="notationArticle">
+                  <Rating 
+                    className="etoiles-rating"
+                    name="etoiles-rating" 
+                    value={contenuArticle.noteMoyenne || 0} 
+                    precision={0.1} 
+                    sx={{ 
+                      color: "#7AC74F",
+                    }}
+                    readOnly
+                  />
+                {hasAnyRole(addNoteAllowed) && (
+                  <button>Noter</button>
+                )}
+              </div>
+            </div>
             <p> {new Date(contenuArticle.createdAt).toLocaleDateString('fr-FR')} - {contenuArticle.user.nom}</p> 
 
             {contenuArticle.sections

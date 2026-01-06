@@ -350,6 +350,32 @@ table th, table td {
 
 /* AffichageArticle.jsx et SectionArticle.jsx ------------------------------------------------------------------------------- */
 
+.notationArticle{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notationArticle button{
+  padding: 3px 13px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+@media (min-width: 600px) {
+  .titreArticle{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .notationArticle button{
+    padding: 5px 15px;
+    margin: 0 0 0 20px;
+  }
+}
+
 .sectionTitre, .sectionTexte{
   margin-bottom: 1vw;
 }

@@ -8,7 +8,7 @@ function UserProvider({ children }) {
     let storage_user = {};
 
     if (localStorage.user_id){
-        console.log(localStorage);
+        // console.log(localStorage);
         storage_user ={
             'id' : localStorage.user_id,
             'nom' : localStorage.user_nom,

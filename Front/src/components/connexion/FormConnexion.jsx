@@ -58,7 +58,7 @@ function FormConnection({register}){
                 // localStorage.setItem('user_id', userInfo.id);
 
                 //console.log(user);
-                console.log(localStorage);
+                // console.log(localStorage);
                 setSuccess(' Connexion réussie !');
                 setMail('');
                 setMdp('');

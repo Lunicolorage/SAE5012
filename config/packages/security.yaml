@@ -50,7 +50,7 @@ security:
         - { path: ^/api/jeu_donnees, roles: ['ROLE_ADMIN','ROLE_FOURNI'] }
         - { path: ^/api/graphique_variables, roles: ['ROLE_ADMIN','ROLE_FOURNI'] }
 
-        - { path: ^/api/notes, roles: ['ROLE_ADMIN'] }
+        - { path: ^/api/notes, roles: ['ROLE_ADMIN', 'ROLE_ABO'] }
 
         - { path: ^/api/sections,roles: ['ROLE_ADMIN','ROLE_AUTEUR','ROLE_EDIT'] }
         - { path: ^/api/textes, roles: ['ROLE_ADMIN','ROLE_AUTEUR','ROLE_EDIT'] }
