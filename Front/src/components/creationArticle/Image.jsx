@@ -1,13 +1,46 @@
 import { useState } from "react";
 import { useContext } from "react";
+import { useEffect } from "react";
 import { UserContext } from "../../context/UserProvider";
 
 function Image({article, setArticle, index}){
-    const [options, setOptions] = useState();
+    const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     // const [success, setSuccess] = useState('');
     const [user, setUser] = useContext(UserContext);
+
+    useEffect(() => {
+        const fetchImages = async () => {
+            setLoading(true);
+            setError('');
+
+            try {
+                const response = await fetch('http://localhost:8000/api/images', {
+                    method: 'GET',
+                    headers: { 
+                        Authorization: `Bearer ${user.token}`
+                    },
+                });
+            
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    setError(`Erreur: ${errorData.message}`);
+                }
+
+                const response2 = await response.json();
+                setImages(response2.member);
+            }
+            catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchImages();
+    }, [user.token]);
+
+
 
     function handleImageChange(e){
         const imageUrl = e.target.value;
@@ -41,6 +74,7 @@ function Image({article, setArticle, index}){
                     contenu: {
                         ...sections[index].contenu,
                         url: imageUrl,
+                        file: file, // permet de réutiliser l'image
                     }
                 }
                 return {...prev, sections}
@@ -68,50 +102,6 @@ function Image({article, setArticle, index}){
     }
 
 
-    const handleSelectClick = async () => {
-        setError('');
-        setLoading(true);
-
-        try {
-            const response = await fetch('http://localhost:8000/api/images', {
-                method: 'GET',
-                headers: { 
-                    Authorization: `Bearer ${user.token}`
-                },
-            });
-        
-            if (!response.ok) {
-                const errorData = await response.json();
-                setError(`Erreur: ${errorData.message}`);
-            }
-            else{
-                // à voir
-                const allImages = await response.json();
-
-                console.log(allImages);
-
-                setOptions(
-                    allImages.map((img) => {
-                        console.log('map') // ne s'affiche pas
-                        const altImage = img.alt;
-                        const urlImage = img.url;
-                        return <option key={urlImage} value={urlImage}>{altImage}</option>;  
-                    })
-                );
-
-            }
-           
-        } catch (err) {
-            setError(` Erreur : ${err.message}`);
-        } finally {
-            setLoading(false);
-        }
-
-    }
-
-
-
-
     function handleCrossClick(){
         const indexToRemove = index;
         const sections = article.sections.filter((section, i)=> i!= indexToRemove)
@@ -128,16 +118,18 @@ function Image({article, setArticle, index}){
             </label>
 
             <div className="selectionImage">
-                <select id="choixImage" onChange={handleImageChange} onClick={handleSelectClick}>
-                    <option value="">Choisissez une image</option>
-                    {/* à obtenir dynamiquement avec bdd ? */}
-                    {options}
-                    <option value="url">image stockée 1</option>
-                    <option value="url">image stockée 2</option>
-                    <option value="url">image stockée 3</option>
+                <select id="choixImage" onChange={handleImageChange} disabled={loading}>
+                    <option value="">{loading ? "Chargement..." : "Choisissez une image"}</option>
+
+                    {/* Faire en sorte que si déjà en BDD -> se réengistre pas */}
+                    {images.map((img) => (
+                        <option key={img.id} value={img.url}>
+                            {img.alt || "Image sans description"}
+                        </option>
+                    ))}
+
                 </select>
 
-                {/* <button className="ajoutImage">Ajouter une image</button> */}
                 <input type="file" id="ajoutImage" name="ajoutImage" accept=".jpg, .png, .webp" onChange={handleAjoutImageChange}/>
             </div>
 
