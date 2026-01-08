@@ -210,9 +210,16 @@ class ArticleRepository extends ServiceEntityRepository
     private function linkImage(\App\Entity\Section $section, array $contenu): void
     {
         $imageRepository = $this->getEntityManager()->getRepository(\App\Entity\Image::class);
-        $image = $imageRepository->find($contenu['id']);
         
-        if (!$image) {
+        if(array_key_exists('id', $contenu) && $contenu['id'] != null){
+            $image = $imageRepository->find($contenu['id']);
+
+            if ($image == null) {
+                throw new \Exception("Image avec l'id {$contenu['id']} introuvable");
+            }
+        }
+
+        else {
             // Créer l'image si elle n'existe pas
             $image = new \App\Entity\Image();
             $image->setUrl($contenu['url']);

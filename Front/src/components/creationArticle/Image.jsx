@@ -10,6 +10,7 @@ function Image({article, setArticle, index}){
     // const [success, setSuccess] = useState('');
     const [user, setUser] = useContext(UserContext);
 
+    // récupérer image en BDD pour remplir les options
     useEffect(() => {
         const fetchImages = async () => {
             setLoading(true);
@@ -29,7 +30,7 @@ function Image({article, setArticle, index}){
                 }
 
                 const response2 = await response.json();
-                setImages(response2.member);
+                setImages(response2.member || []);
             }
             catch (err) {
                 setError(err.message);
@@ -41,9 +42,9 @@ function Image({article, setArticle, index}){
     }, [user.token]);
 
 
-
+    // image déjà en BDD
     function handleImageChange(e){
-        const imageUrl = e.target.value;
+        const imageId = e.target.value;
 
         setArticle(prev =>{
             const sections = [...prev.sections];
@@ -53,32 +54,57 @@ function Image({article, setArticle, index}){
                 type: "image",
                 contenu: {
                     ...sections[index].contenu,
-                    url: imageUrl,
+                    id: imageId,
                 }
             }
             return {...prev, sections}
         })
     }
 
-    function handleAjoutImageChange(e){
+    const uploadImage = async (file) => {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await fetch("http://localhost:8000/api/media", { // route à rajouter en back
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+            body: formData,
+        });
+
+        return await response.json();
+    };
+
+    // nouvelle image
+    async function handleAjoutImageChange(e){
         const file = e.target.files[0];
         if (file) { // à voir -> mettre image dans dossier pour images (pour être réutilisé) 
-            const imageUrl = URL.createObjectURL(file); // et récupérer cet url
+            // const imageUrl = URL.createObjectURL(file); // url temporaire
 
-            setArticle(prev=>{
-                const sections = [...prev.sections];
+            try{
+                const uploaded = await uploadImage(file);
 
-                sections[index]={
-                    ...sections[index],
-                    type: "image",
-                    contenu: {
-                        ...sections[index].contenu,
-                        url: imageUrl,
-                        file: file, // permet de réutiliser l'image
+                setArticle(prev=>{
+                    const sections = [...prev.sections];
+
+                    sections[index]={
+                        ...sections[index],
+                        type: "image",
+                        contenu: {
+                            ...sections[index].contenu,
+                            // url: imageUrl,
+                            id: uploaded.id,
+                            url: uploaded.url,
+                            // file: file, // permet de réutiliser l'image ? -> temporaire aussi
+                        }
                     }
-                }
-                return {...prev, sections}
-            })
+                    return {...prev, sections}
+                })
+            } catch (err) {
+                setError(err.message);
+            }
+            
 
         }
     }
@@ -123,7 +149,7 @@ function Image({article, setArticle, index}){
 
                     {/* Faire en sorte que si déjà en BDD -> se réengistre pas */}
                     {images.map((img) => (
-                        <option key={img.id} value={img.url}>
+                        <option key={img.id} value={img.id}>
                             {img.alt || "Image sans description"}
                         </option>
                     ))}
