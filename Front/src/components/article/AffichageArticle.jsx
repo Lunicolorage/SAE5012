@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, use } from "react";
 import { SectionArticle } from "./SectionArticle";
 import { UserContext } from "../../context/UserProvider";
 import Rating from '@mui/material/Rating';
@@ -15,6 +15,9 @@ function AffichageArticle(){
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [contenuArticle, setContenuArticle] = useState({});
+
+    const [canNote, setCanNote] = useState(true);
+    const [noteMoyenne, setNoteMoyenne] = useState(0);
 
     // console.log(id)
 
@@ -40,10 +43,29 @@ function AffichageArticle(){
         getData();
       }, []); 
 
+      useEffect(() => {
+        if (contenuArticle.notes && Array.isArray(contenuArticle.notes)) {
+          contenuArticle.notes.forEach(note => {
+            let idNoteUser = note.user.split('/').pop();
+            // console.log(idNoteUser);
+            if (idNoteUser === user.id) {
+              setCanNote(false);
+            }
+          });
+        }
+
+        if (contenuArticle.notes && contenuArticle.notes.length > 0) {
+          const totalNotes = contenuArticle.notes.reduce((sum, note) => sum + note.valeur, 0);
+          const average = totalNotes / contenuArticle.notes.length;
+          setNoteMoyenne(average);
+        }
+      }, [contenuArticle, user]);
+
+
+
     if (loading) return <div>Chargement...</div>;
     if (error) return <div>{error}</div>;
 
-    // console.log(contenuArticle);
 
     return(
         <div>
@@ -54,14 +76,14 @@ function AffichageArticle(){
                   <Rating 
                     className="etoiles-rating"
                     name="etoiles-rating" 
-                    value={contenuArticle.noteMoyenne || 0} 
+                    value={noteMoyenne} 
                     precision={0.1} 
                     sx={{ 
                       color: "#7AC74F",
                     }}
                     readOnly
                   />
-                {hasAnyRole(addNoteAllowed) && (
+                {hasAnyRole(addNoteAllowed) && canNote && (
                   <button>Noter</button>
                 )}
               </div>
