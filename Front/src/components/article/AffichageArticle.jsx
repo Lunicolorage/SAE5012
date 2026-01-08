@@ -3,6 +3,7 @@ import { useEffect, useState, useContext, use } from "react";
 import { SectionArticle } from "./SectionArticle";
 import { UserContext } from "../../context/UserProvider";
 import Rating from '@mui/material/Rating';
+import { BoutonNotation } from "./BoutonNotation";
 
 function AffichageArticle(){
 
@@ -84,7 +85,9 @@ function AffichageArticle(){
                     readOnly
                   />
                 {hasAnyRole(addNoteAllowed) && canNote && (
-                  <button>Noter</button>
+
+                 <BoutonNotation />
+
                 )}
               </div>
             </div>

@@ -376,6 +376,15 @@ table th, table td {
   }
 }
 
+.PopupNote, .PopupNoteTitre{
+  text-align: center;
+}
+
+.PopupNote{
+  min-width: 20vw;
+}
+
+
 .sectionTitre, .sectionTexte{
   margin-bottom: 1vw;
 }
