@@ -189,6 +189,22 @@ class Article
         return $this;
     }
 
+    public function getNoteMoyenne(): ?float
+    {
+        $total = 0;
+        $count = count($this->notes);
+
+        if ($count === 0) {
+            return 0; 
+        }
+
+        foreach ($this->notes as $note) {
+            $total += $note->getValeur();
+        }
+
+        return $total / $count;
+    }
+
     public function removeNote(Note $note): static
     {
         if ($this->notes->removeElement($note)) {

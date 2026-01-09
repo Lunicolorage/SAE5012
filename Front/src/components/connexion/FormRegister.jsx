@@ -66,14 +66,15 @@ function FormRegister({ register }) {
                 id: userInfo.id,
                 nom: userInfo.nom,
                 email: userInfo.email,
-                role: userInfo.roles,
+                roles: userInfo.roles,
                 token: token,
             };
 
             setUser(userDico);
 
             Object.entries(userDico).forEach(([key, value]) => {
-                localStorage.setItem('user_' + key, value);
+                const dataToStore = Array.isArray(value) ? JSON.stringify(value) : value;
+                localStorage.setItem('user_' + key, dataToStore);
             });
 
             setSuccess(' Inscription et connexion réussies !');

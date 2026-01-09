@@ -33,6 +33,8 @@ class ArticleRepository extends ServiceEntityRepository
                 'id' => $article->getUser()->getId(),
                 'nom' => $article->getUser()->getNom(),
             ],
+            'notes' => $article->getNotes()->toArray(),
+
             'sections' => array_map(function ($section) {
                 switch ($section->getType()) {
                     case 'texte':

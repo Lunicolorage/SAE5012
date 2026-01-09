@@ -38,7 +38,9 @@ function Articles() {
 
   return (
     <div className="allArticles">
-      {listeArticles.map((article) => (
+      {listeArticles
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .map((article) => (
         <ArticleIndex 
           key={article.id} 
           article={article}
