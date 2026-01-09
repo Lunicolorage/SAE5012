@@ -33,7 +33,7 @@ function PageCreationArticle(){
         setLoading(true);
 
         console.log(user);
-        // console.log(JSON.stringify(article)); // ok
+        console.log(JSON.stringify(article)); // ok
 
         try {
             const response = await fetch('http://localhost:8000/api/articles/import', {

@@ -5,6 +5,8 @@ import { UserContext } from "../../context/UserProvider";
 
 function Image({article, setArticle, index}){
     const [images, setImages] = useState([]);
+    const [altValue, setAltValue] = useState('');
+    const [tempImage, setTempImage] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     // const [success, setSuccess] = useState('');
@@ -24,12 +26,14 @@ function Image({article, setArticle, index}){
                     },
                 });
             
+                const response2 = await response.json();
+
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    setError(`Erreur: ${errorData.message}`);
+                    setError(`Erreur: ${response2.message}`);
+                    return;
                 }
 
-                const response2 = await response.json();
+                
                 setImages(response2.member || []);
             }
             catch (err) {
@@ -41,10 +45,12 @@ function Image({article, setArticle, index}){
         fetchImages();
     }, [user.token]);
 
-
     // image déjà en BDD
     function handleImageChange(e){
         const imageId = e.target.value;
+
+        const selectedImage = images.find(img => img.id == imageId);
+        setAltValue(selectedImage.alt || '');
 
         setArticle(prev =>{
             const sections = [...prev.sections];
@@ -55,66 +61,144 @@ function Image({article, setArticle, index}){
                 contenu: {
                     ...sections[index].contenu,
                     id: imageId,
+                    url: selectedImage.url,
+                    alt: selectedImage.alt,
                 }
             }
             return {...prev, sections}
         })
     }
 
-    const uploadImage = async (file) => {
-        const formData = new FormData();
-        formData.append("file", file);
+    
+    // enregistrer la nouvelle image
+    // const uploadImage = async (file) => {
+    //     const formData = new FormData();
 
-        const response = await fetch("http://localhost:8000/api/media", { // route à rajouter en back
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${user.token}`,
-            },
-            body: formData,
-        });
+    //     console.log(file);
 
-        return await response.json();
-    };
+    //     formData.append("file", file);
+    //     formData.append("alt", altValue || file.name);
 
-    // nouvelle image
-    async function handleAjoutImageChange(e){
+    //     console.log(formData);
+
+    //     const response = await fetch("http://localhost:8000/api/media", {
+    //         method: "POST",
+    //         headers: {
+    //             Authorization: `Bearer ${user.token}`,
+    //         },
+    //         body: formData,
+    //     });
+
+    //     if (!response.ok) {
+    //         const errorData = await response.json();
+    //         throw new Error(errorData.error || 'Erreur upload image');
+    //     }
+
+    //     return await response.json();
+    // };
+
+    //  // nouvelle image
+    // async function handleAjoutImageChange(e){
+    //     const file = e.target.files[0];
+    //     if (file) { // à voir -> mettre image dans dossier pour images (pour être réutilisé) 
+    //         // const imageUrl = URL.createObjectURL(file); // url temporaire
+
+    //         try{
+    //             const uploaded = await uploadImage(file);
+    //             console.log('uploaded : ', uploaded) 
+    //             setAltValue(uploaded.alt);
+
+    //             setArticle(prev=>{
+    //                 const sections = [...prev.sections];
+
+    //                 sections[index]={
+    //                     ...sections[index],
+    //                     type: "image",
+    //                     contenu: {
+    //                         ...sections[index].contenu,
+    //                         // url: imageUrl,
+    //                         id: uploaded.id,
+    //                         url: uploaded.url,
+    //                         alt: uploaded.alt,
+    //                     }
+    //                 }
+    //                 return {...prev, sections}
+    //             })
+    //         } catch (err) {
+    //             setError(err.message);
+    //         }
+    //     }
+    // }
+
+
+
+    // choix nouvelle image
+    
+
+    function handleFileSelect(e){
         const file = e.target.files[0];
-        if (file) { // à voir -> mettre image dans dossier pour images (pour être réutilisé) 
-            // const imageUrl = URL.createObjectURL(file); // url temporaire
+        setTempImage(file);
+        setAltValue('');
+    }
 
-            try{
-                const uploaded = await uploadImage(file);
+    async function handleValidateUpload() {
+        setError('');
+        setLoading(true);
 
-                setArticle(prev=>{
-                    const sections = [...prev.sections];
+        try{
+            const formData = new FormData();
+            formData.append("file", tempImage);
+            formData.append("alt", altValue);
 
-                    sections[index]={
-                        ...sections[index],
-                        type: "image",
-                        contenu: {
-                            ...sections[index].contenu,
-                            // url: imageUrl,
-                            id: uploaded.id,
-                            url: uploaded.url,
-                            // file: file, // permet de réutiliser l'image ? -> temporaire aussi
-                        }
-                    }
-                    return {...prev, sections}
-                })
-            } catch (err) {
-                setError(err.message);
+            console.log('formData : ', formData);
+
+            const response = await fetch("http://localhost:8000/api/media", {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+                body: formData,
+            });
+
+            const uploaded = await response.json();
+
+            if (!response.ok) {
+                throw new Error(uploaded.error || 'Erreur upload image');
             }
-            
 
+            setArticle(prev=>{
+                const sections = [...prev.sections];
+                sections[index]={
+                    ...sections[index],
+                    type: "image",
+                    contenu: {
+                        ...sections[index].contenu,
+                        // url: imageUrl,
+                        id: uploaded.id,
+                        url: uploaded.url,
+                        alt: uploaded.alt,
+                    }
+                }
+                return {...prev, sections}
+            });
+
+            setTempImage(null);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
     }
 
+
+   
+    // gestion alt 
     function handleAltChange(e){
         const imageAlt = e.target.value;
+        setAltValue(imageAlt);
 
         setArticle(prev =>{
             const sections = [...prev.sections];
-
             sections[index]={
                 ...sections[index],
                 type: "image",
@@ -147,7 +231,10 @@ function Image({article, setArticle, index}){
                 <select id="choixImage" onChange={handleImageChange} disabled={loading}>
                     <option value="">{loading ? "Chargement..." : "Choisissez une image"}</option>
 
-                    {/* Faire en sorte que si déjà en BDD -> se réengistre pas */}
+                    {/* Faire en sorte que si déjà en BDD -> se réengistre pas ? 
+                        -> peut être laisser comme ça en fait
+                        -> au cas où veut juste changer pour l'article 
+                        -> sinon changerait pour tous les articles*/}
                     {images.map((img) => (
                         <option key={img.id} value={img.id}>
                             {img.alt || "Image sans description"}
@@ -156,13 +243,24 @@ function Image({article, setArticle, index}){
 
                 </select>
 
-                <input type="file" id="ajoutImage" name="ajoutImage" accept=".jpg, .png, .webp" onChange={handleAjoutImageChange}/>
+                <input type="file" id="ajoutImage" name="ajoutImage" accept=".jpg, .png, .webp" onChange={handleFileSelect}/>
             </div>
 
             <div className="choixAlt">
                 <label htmlFor="alt">Choisir un texte alternatif</label>
-                <input type="text" id="alt" onChange={handleAltChange}/>
+                <input type="text" id="alt" value={altValue} onChange={handleAltChange}/>
             </div>
+
+            {/* pour valider l'image et l'envoyer en BDD */}
+             {tempImage && (
+                <button
+                    type="button"
+                    onClick={handleValidateUpload}
+                    disabled={loading}
+                >
+                    {loading ? "Upload..." : "Valider l’image"}
+                </button>
+            )}
                 
         </div>
     )
