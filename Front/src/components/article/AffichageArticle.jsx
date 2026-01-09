@@ -22,6 +22,20 @@ function AffichageArticle(){
 
     // console.log(id)
 
+    const handleNoteAdded = async () => {
+    const url = 'http://localhost:8000/api/articles/'+id+'/full';
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        const result = await response.json();
+        setContenuArticle(result);
+    } catch (err) {
+        console.error(err.message);
+    }
+};
+
     useEffect(() => {
         async function getData() {
           const url = 'http://localhost:8000/api/articles/'+id+'/full';
@@ -86,7 +100,11 @@ function AffichageArticle(){
                   />
                 {hasAnyRole(addNoteAllowed) && canNote && (
 
-                 <BoutonNotation />
+                 <BoutonNotation 
+                    articleId={contenuArticle.id}
+                    OnNoteAdded={handleNoteAdded}
+                    setCanNote={setCanNote}
+                 />
 
                 )}
               </div>
