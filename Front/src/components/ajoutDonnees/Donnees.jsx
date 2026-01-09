@@ -10,6 +10,7 @@ function Donnees(){
         reader.onload = function(e) {    
             let text = e.target.result;
             
+            // trim supprime les espaces au début et à la fin d'une chaîne
             const lines = text.split("\n").map(line => line.trim()).filter(line => line !== "");
 
             const newHeaders = lines[0].split(",");

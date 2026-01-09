@@ -7,11 +7,14 @@ import { AjoutBloc } from "./AjoutBloc";
 import { useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserProvider";
+import { useNavigate } from "react-router-dom";
 
 
 function PageCreationArticle(){
     const [showAjoutBloc, setShowAjoutBloc] = useState(false)
     const [user, setUser] = useContext(UserContext);
+    const navigate = useNavigate();
+
     // faire un tableau pour gérer affichage blocs
     const [article, setArticle] = useState({titre:"", Resume:"", userName:`${user.nom}`, sections:[]})
 
@@ -27,12 +30,17 @@ function PageCreationArticle(){
     // console.log(localStorage);
 
     const handleClickSubmit = async () => {
+        if (!article.titre.trim() || !article.Resume.trim()) {
+            setError("Le titre et le résumé sont obligatoires");
+            return;
+        }
+
         console.log(article)
         setError('');
         setSuccess('');
         setLoading(true);
 
-        console.log(user);
+        console.log('user :', user);
         console.log(JSON.stringify(article)); // ok
 
         try {
@@ -46,10 +54,12 @@ function PageCreationArticle(){
             });
         
             if (!response.ok) {
-                setError('Erreur ');
+                setError('Erreur lors de la publication de l\'article');
             }
             else{
                 setSuccess('Article publié') 
+                // pour rediriger vers page index articles
+                navigate("/index", {state: { success: "Article publé avec succès"}})
             }
            
         } catch (err) {
@@ -89,7 +99,7 @@ function PageCreationArticle(){
 
                 <div className="buttonsCreation">
                     <button className="buttonAjout" onClick={handleClick}>Ajouter un bloc</button>
-                    <button type="submit" className="buttonPublier" onClick={handleClickSubmit}>Publier</button>
+                    <button type="submit" className="buttonPublier" onClick={handleClickSubmit} disabled={loading || !article.titre.trim() || !article.Resume.trim()}>Publier</button>
                 </div>
 
                 {error && <p style={{ color: 'red' }}>{error}</p>}
