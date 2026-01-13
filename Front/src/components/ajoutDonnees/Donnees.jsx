@@ -1,12 +1,25 @@
 import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserProvider";
 
 function Donnees(){
+    const [user, setUser] = useContext(UserContext);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const [data, setData] = useState([]);
     const [headers, setHeaders] = useState([]);
-    const [variables, setVariables] = useState([]); // utiliser ? tab obj
+    const [variables, setVariables] = useState({}); // utiliser ? tab, obj ?
+
+    const [fileName, setFileName] = useState(''); // à voir -> correspond pas au lien
+    const [file, setFile] = useState(null) // -> pour vrai fichier (test)
 
     function handleChoixFichier (e) {
-        var file = e.target.files[0];
+        var selectedFile = e.target.files[0];
+        if (!selectedFile) return;
+
+        // setFileName(selectedFile.name);
+        setFile(selectedFile);
+
         let reader = new FileReader();
         reader.onload = function(e) {    
             let text = e.target.result;
@@ -29,18 +42,18 @@ function Donnees(){
             console.log("tab :", rows);
             setData(rows);
         }
-        reader.readAsText(file);
+        reader.readAsText(selectedFile);
     }
 
 
-    function handleChangeTypeVar(e){
+    function handleChangeTypeVar(nomVar, type){
         // associer le bon type à la bonne variable -> obj
-        // setVariables(prev=>{...prev, e.target.value}) // à voir
+        setVariables(prev=>({...prev, [nomVar]: type}));
     }
 
     // doit enregistrer dans jeu_donnee le lien du fichier (url cf image ?), l'id du user, created_at ?
     // doit enregistrer dans variable pour chaque variable le nom, le type, id du jeu de données lié
-    async function handleClickPublier(){
+    async function handleClickPublier(e){
         // appel à /api/jeu_donnees en POST
         // {
         //     "createdAt": "2026-01-13T10:14:33.989Z",
@@ -64,6 +77,72 @@ function Donnees(){
         // }
         // Doit pas remplir graphiques et graphiqueVariables pour l'instant. 
         // Verif peut être null
+
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+
+        if (headers.length == 0){ // vérif si fichier choisi
+            setError("Choisir un fichier");
+            setLoading(false);
+            return;
+        }
+
+        if (Object.keys(variables).length != headers.length){ // vérif si toutes les variables ont un type
+            setError("Choisir un type pour chaque variable");
+            setLoading(false);
+            return;
+        }
+
+        try{
+            const response = await fetch("http://localhost:8000/api/jeu_donnees", {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${user.token}`
+                },
+                body: JSON.stringify({
+                    user: `/api/users/${user.id}`,
+                    lien: fileName,
+                    // createdAt -> voir dans back
+                })
+            })
+
+            const uploaded = await response.json();
+
+            if(!response.ok){
+                throw new Error(uploaded.message || "Erreur envoi données");
+            }
+
+
+            // Variables
+            for (const [nom, type] of Object.entries(variables)){ // pour chaque variable
+                const response2 = await fetch("http://localhost:8000/api/variables", {
+                    method: "POST",
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${user.token}`
+                    },
+                    body: JSON.stringify({
+                        idDonnees: uploaded['@id'], // à voir -> nom pas sûr
+                        nom,
+                        type
+                    })
+                })
+
+                if (!response2.ok){
+                    throw new Error("Erreur envoi variables");
+                }
+            }
+
+            console.log("jeu de données (et variables) ok")
+
+        } catch (err) {
+            setError(err.message);            
+        } finally{
+            setLoading(false);
+        }
+        
     }
 
 
@@ -99,23 +178,25 @@ function Donnees(){
 
             <div className="variables">
                 <h2>Variables</h2>
-                <form action="" className="choixTypeVar">
+                <form className="choixTypeVar">
                     {headers.map((header, index) => (
                         // à voir pour la div
                         <div key={index} className="typeVar"> 
                             <label htmlFor={index}>{header}</label>
-                            <select id={index} onChange={handleChangeTypeVar}>
+                            <select id={index} onChange={(e)=>handleChangeTypeVar(header, e.target.value)}>
                                 <option value="">-- Type de variable --</option>
-                                <hr></hr>
+                                <hr></hr> {/* à voir */}
                                 <option value={"categorielle"}>Catégorielle</option>
                                 <option value={"numerique"}>Numérique</option>
                             </select>
                         </div>
                     ))}
-                    <button type="submit" className="publierButton" onClick={handleClickPublier}>Publier</button>
+
+                    {error && <p style={{ color: "red" }}>{error}</p>}
+
+                    <button type="submit" className="publierButton" disabled={loading} onClick={handleClickPublier}>{loading ? "Publication..." : "Publier"}</button>
                 </form>
             </div>
-
         </div>
     )
 }
