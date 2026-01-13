@@ -3,9 +3,9 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light;
+  color: #213547; 
+  background-color: var(--white);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -75,13 +75,17 @@ input{
 input, select{
   border: none;
   min-height: 25px;
+  background-color: var(--white);
+  color: var(--deepBlue);
 }
 
 textarea{
   border: none;
+  background-color: var(--white);
+  color: var(--deepBlue);
 }
 
-@media (prefers-color-scheme: light) {
+/* @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: var(--white);
@@ -92,4 +96,4 @@ textarea{
   button {
     background-color: var(--greenLight);
   }
-}
+} */
