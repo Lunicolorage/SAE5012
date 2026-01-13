@@ -35,6 +35,7 @@ function Header(){
 
     const createAllowed = ['ROLE_ADMIN','ROLE_AUTEUR','ROLE_EDIT'];
     const addDataAllowed = ['ROLE_ADMIN','ROLE_FOURNI'];
+    const editDesignAllowed = ['ROLE_ADMIN','ROLE_DESIGN'];
     const hasAnyRole = (allowed) => Array.isArray(user?.roles) && user.roles.some(r => allowed.includes(r));
 
     return(
@@ -57,7 +58,10 @@ function Header(){
                     Ajout de données
                     </Link>
                 )}       
+
+                {hasAnyRole(editDesignAllowed) && (
                 <button
+                    className="hideMobile"
                     onClick={() => {
                         let idTheme = themes.findIndex(t => t.id === theme.id) + 1;
                         if (idTheme >= themes.length) {
@@ -68,8 +72,9 @@ function Header(){
                         setTheme(newTheme);
                     }}
                 >
-                    {theme.name}
+                    Theme {theme.name}
                 </button>
+                )}
             </div>
             <Link to="/connexion" className="hideMobile" >
                 {buttonCo}
@@ -78,10 +83,11 @@ function Header(){
                 onClick={() => {
                     setBurgerOuvert(!burgerOuvert);
                 }}
-                src="src/assets/burger.svg" alt="icone menu burger" className="hideOrdi" />
+                src="src/assets/burger.svg" alt="icone menu burger" className="hideOrdi icone" />
 
             <section className="menuBurger hide">
                 <img
+                    className="icone"
                     onClick={() => {
                         setBurgerOuvert(!burgerOuvert);
                     }}
@@ -99,9 +105,27 @@ function Header(){
                     Ajout de données
                     </Link>
                 )} 
+
                 <Link to="/connexion">
                     {buttonCo}
                 </Link>
+
+                {hasAnyRole(editDesignAllowed) && (
+                <button
+                    className="boutonMobileTheme"
+                    onClick={() => {
+                        let idTheme = themes.findIndex(t => t.id === theme.id) + 1;
+                        if (idTheme >= themes.length) {
+                            idTheme = 0;
+                        }
+                        // console.log(idTheme);
+                        const newTheme  = themes[idTheme];
+                        setTheme(newTheme);
+                    }}
+                >
+                    Theme {theme.name}
+                </button>
+                )}
             </section>
         </header>
     );

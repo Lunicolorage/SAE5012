@@ -33,8 +33,12 @@ header .header-left{
 }
 
 header .header-left a{
-  margin-right: 5vw;
+  margin-right: 3vw;
 } 
+
+header button{
+  padding: 0.5vw 1vw;
+}
 
 .hideMobile{
       display: none;  
@@ -83,6 +87,21 @@ header .header-logo{
   display: none;
 }
 
+.boutonMobileTheme{
+  margin-top: 15px;
+  padding: 2vw 3vw
+
+}
+
+.hideOrdi {
+  color: var(--deepBlue);
+  filter: brightness(0) saturate(100%) invert(0%);
+}
+
+html.dark-mode .icone {
+  filter: brightness(0) saturate(100%) invert(100%);
+}
+
 @media (min-width: 600px) {
   .hideMobile{
       display: inline;  
@@ -95,6 +114,11 @@ header .header-logo{
   header{
     padding: 2vw 5vw;
   }
+
+  header .header-logo{
+  width: 6vw;
+  min-width: 60px;
+}
 }
 
 
