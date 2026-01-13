@@ -9,6 +9,8 @@ function Image({article, setArticle, index}){
     const [tempImage, setTempImage] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [editAlt, setEditAlt] = useState(false);
+    const [selectedImageId, setSelectedImageId] = useState(null);
     // const [success, setSuccess] = useState('');
     const [user, setUser] = useContext(UserContext);
 
@@ -50,7 +52,10 @@ function Image({article, setArticle, index}){
         const imageId = e.target.value;
 
         const selectedImage = images.find(img => img.id == imageId);
+        setSelectedImageId(imageId);
         setAltValue(selectedImage.alt || '');
+        setEditAlt(false);
+        setTempImage(null);
 
         setArticle(prev =>{
             const sections = [...prev.sections];
@@ -70,75 +75,13 @@ function Image({article, setArticle, index}){
     }
 
     
-    // enregistrer la nouvelle image
-    // const uploadImage = async (file) => {
-    //     const formData = new FormData();
-
-    //     console.log(file);
-
-    //     formData.append("file", file);
-    //     formData.append("alt", altValue || file.name);
-
-    //     console.log(formData);
-
-    //     const response = await fetch("http://localhost:8000/api/media", {
-    //         method: "POST",
-    //         headers: {
-    //             Authorization: `Bearer ${user.token}`,
-    //         },
-    //         body: formData,
-    //     });
-
-    //     if (!response.ok) {
-    //         const errorData = await response.json();
-    //         throw new Error(errorData.error || 'Erreur upload image');
-    //     }
-
-    //     return await response.json();
-    // };
-
-    //  // nouvelle image
-    // async function handleAjoutImageChange(e){
-    //     const file = e.target.files[0];
-    //     if (file) { // à voir -> mettre image dans dossier pour images (pour être réutilisé) 
-    //         // const imageUrl = URL.createObjectURL(file); // url temporaire
-
-    //         try{
-    //             const uploaded = await uploadImage(file);
-    //             console.log('uploaded : ', uploaded) 
-    //             setAltValue(uploaded.alt);
-
-    //             setArticle(prev=>{
-    //                 const sections = [...prev.sections];
-
-    //                 sections[index]={
-    //                     ...sections[index],
-    //                     type: "image",
-    //                     contenu: {
-    //                         ...sections[index].contenu,
-    //                         // url: imageUrl,
-    //                         id: uploaded.id,
-    //                         url: uploaded.url,
-    //                         alt: uploaded.alt,
-    //                     }
-    //                 }
-    //                 return {...prev, sections}
-    //             })
-    //         } catch (err) {
-    //             setError(err.message);
-    //         }
-    //     }
-    // }
-
-
-
     // choix nouvelle image
-    
-
     function handleFileSelect(e){
         const file = e.target.files[0];
         setTempImage(file);
         setAltValue('');
+        setSelectedImageId(null);
+        setEditAlt(false);
     }
 
     async function handleValidateUpload() {
@@ -173,7 +116,6 @@ function Image({article, setArticle, index}){
                     type: "image",
                     contenu: {
                         ...sections[index].contenu,
-                        // url: imageUrl,
                         id: uploaded.id,
                         url: uploaded.url,
                         alt: uploaded.alt,
@@ -212,6 +154,54 @@ function Image({article, setArticle, index}){
     }
 
 
+    async function handleValidateAlt(){
+        setLoading(true)
+        setError('');
+
+        try {
+            const response = await fetch(`http://localhost:8000/api/images/${selectedImageId}`, {
+                method: 'PATCH',
+                headers: { 
+                    'Content-Type': 'application/merge-patch+json',
+                    Authorization: `Bearer ${user.token}`
+                },
+                body: JSON.stringify({alt: altValue})
+            });
+
+            const updated = await response.json();
+
+            if (!response.ok){
+                throw new Error(updated.message || "Erreur modif alt");
+            }
+
+            setImages(prev => 
+                prev.map(img =>
+                    img.id == selectedImageId ? {...img, alt: altValue} : img
+                )
+            )
+
+            setArticle(prev => {
+                const sections = [...prev.sections];
+                sections[index] = {
+                    ...sections[index],
+                    contenu: {
+                        ...sections[index].contenu,
+                        alt: altValue,
+                    }
+                }
+                return {...prev, sections};
+            })
+
+            setEditAlt(false);
+
+        } catch (err) {
+            setError(err.message);            
+        } finally{
+            setLoading(false);
+        }
+    }
+
+
     function handleCrossClick(){
         const indexToRemove = index;
         const sections = article.sections.filter((section, i)=> i!= indexToRemove)
@@ -246,19 +236,45 @@ function Image({article, setArticle, index}){
                 <input type="file" id="ajoutImage" name="ajoutImage" accept=".jpg, .png, .webp" onChange={handleFileSelect}/>
             </div>
 
-            <div className="choixAlt">
+            
+            {/* <div className="choixAlt">
                 <label htmlFor="alt">Choisir un texte alternatif</label>
                 <input type="text" id="alt" value={altValue} onChange={handleAltChange}/>
-            </div>
+            </div> */}
+
+            {/* alt pour image uploaded */}
+            {tempImage && (
+                <div className="choixAlt">
+                    <label htmlFor="alt">Choisir un texte alternatif</label>
+                    <input type="text" id="alt" value={altValue} onChange={handleAltChange}/>
+                </div>
+            )}
+
+            {/* alt pour image de la BDD */}
+            {selectedImageId && !tempImage && (
+                <div>
+                    {!editAlt ? 
+                        (<button type="button" onClick={()=>setEditAlt(true)}>Modifier le texte alternatif</button>)
+                        : 
+                        (
+                            <div className="choixAlt"> 
+                                <label htmlFor="alt">Choisir un texte alternatif</label>
+                                <input type="text" id="alt" value={altValue} onChange={handleAltChange}/>
+
+                                <button type="button" onClick={handleValidateAlt} disabled={loading}>{loading ? "Enregistrement..." : "Valider l'alt"}</button>
+                            </div> 
+                        )}
+                </div>
+            )}
 
             {/* pour valider l'image et l'envoyer en BDD */}
              {tempImage && (
                 <button
                     type="button"
                     onClick={handleValidateUpload}
-                    disabled={loading}
+                    disabled={loading || !altValue.trim()} // empêche de valider si a pas alt
                 >
-                    {loading ? "Upload..." : "Valider l’image"}
+                    {loading ? "Upload..." : "Valider l'image"}
                 </button>
             )}
                 
