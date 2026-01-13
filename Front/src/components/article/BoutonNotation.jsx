@@ -11,6 +11,12 @@ function BoutonNotation({ articleId, OnNoteAdded, setCanNote }) {
     const [noteValue, setNoteValue] = useState(0);
     const [user] = useContext(UserContext);
 
+    const getCSSVariable = (variable) => {
+        return getComputedStyle(document.documentElement)
+            .getPropertyValue(variable)
+            .trim();
+    };
+
     async function PostNoteApi(note) {
         const url = 'http://localhost:8000/api/notes';
         
@@ -63,7 +69,7 @@ function BoutonNotation({ articleId, OnNoteAdded, setCanNote }) {
                         value={noteValue} 
                         precision={1} 
                         sx={{ 
-                            color: "#7AC74F",
+                            color: getCSSVariable('--greenLight'),
                             fontSize: "2.5em",
                         }}
                         onChange={(e, newValue) => {
@@ -73,7 +79,7 @@ function BoutonNotation({ articleId, OnNoteAdded, setCanNote }) {
                 </DialogContent>
                 <Button 
                     onClick={PostNote}
-                    sx={{ color: "#7AC74F" }}
+                    sx={{ color: getCSSVariable('--greenLight') }}
                 >
                     Valider
                 </Button>

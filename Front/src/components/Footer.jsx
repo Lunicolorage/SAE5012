@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
+import { useContext } from 'react'
+import { ThemeContext } from "../context/ThemeProvider";
 
 function Footer(){
+
+    const [theme, setTheme, themes] = useContext(ThemeContext);
+
+    const srcImg = theme.name === 'dark' ? 'src/assets/logo-clair.png' : 'src/assets/logo-foncé.png';
+
     return(
         <footer>
             <div className="footerFlex">
@@ -18,7 +25,7 @@ function Footer(){
                         Connexion
                     </Link>
                 </div>
-                <img src="src/assets/logo-foncé.png" alt="logo seriouscience" />
+                <img src={srcImg} alt="logo seriouscience" />
                 <div>
                     <p>Mentions légales</p>
                     <p>Politique de confidentialité</p>

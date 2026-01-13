@@ -18,6 +18,20 @@
   --grey: #e3e3e3;
 }
 
+html.dark-mode {
+  --greenLight: #54853a;
+  --white: #121212;
+  --deepBlue: #EFEFEF;
+  --grey: #2c2c2c;
+}
+
+html.blue-mode {
+  --greenLight: #4A90E2;
+  --white: #E6F0FA;
+  --deepBlue: #0B2545;
+  --grey: #B0C4DE;
+}
+
 a {
   font-weight: 500;
   color: (var(--greenLight));

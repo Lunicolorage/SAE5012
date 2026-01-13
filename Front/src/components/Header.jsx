@@ -1,8 +1,14 @@
 import { Link } from "react-router-dom";
 import { useContext, useState, useEffect } from 'react'
 import { UserContext } from "../context/UserProvider";
+import { ThemeContext } from "../context/ThemeProvider";
 
 function Header(){
+
+    const [theme, setTheme, themes] = useContext(ThemeContext);
+
+
+    const srcImg = theme.name === 'dark' ? 'src/assets/eff-clair.png' : 'src/assets/eff-fonce.png';
 
     const [user, setUser] = useContext(UserContext);
     const [buttonCo, setButtonCo] = useState("Connexion");
@@ -35,7 +41,7 @@ function Header(){
         <header>
             <div className="header-left">
                 <Link to="/">
-                    <img className="header-logo" src="src/assets/eff-fonce.png" alt="logo EFF" />
+                    <img className="header-logo" src={srcImg} alt="logo EFF" />
                 </Link>
                 <Link to="/index" className="hideMobile" >
                 Index
@@ -51,6 +57,19 @@ function Header(){
                     Ajout de données
                     </Link>
                 )}       
+                <button
+                    onClick={() => {
+                        let idTheme = themes.findIndex(t => t.id === theme.id) + 1;
+                        if (idTheme >= themes.length) {
+                            idTheme = 0;
+                        }
+                        // console.log(idTheme);
+                        const newTheme  = themes[idTheme];
+                        setTheme(newTheme);
+                    }}
+                >
+                    {theme.name}
+                </button>
             </div>
             <Link to="/connexion" className="hideMobile" >
                 {buttonCo}

@@ -12,12 +12,14 @@ import { Accueil } from './components/accueil/Accueil';
 import { Connexion } from './components/connexion/Connexion';
 import { UserProvider } from './context/UserProvider';
 import { AffichageArticle } from './components/article/AffichageArticle';
+import { ThemeProvider } from './context/ThemeProvider';
 
 function App() {
 
   return (
     <>
     < BrowserRouter >
+    <ThemeProvider>
     <UserProvider>
       <Header />
       <main>
@@ -34,6 +36,7 @@ function App() {
       </main>
       <Footer />
     </UserProvider>
+    </ThemeProvider>
     </BrowserRouter>
     </>
   )

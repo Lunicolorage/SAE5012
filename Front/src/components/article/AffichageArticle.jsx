@@ -1,11 +1,17 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState, useContext, use } from "react";
+import { useEffect, useState, useContext } from "react";
 import { SectionArticle } from "./SectionArticle";
 import { UserContext } from "../../context/UserProvider";
 import Rating from '@mui/material/Rating';
 import { BoutonNotation } from "./BoutonNotation";
 
 function AffichageArticle(){
+
+    const getCSSVariable = (variable) => {
+        return getComputedStyle(document.documentElement)
+            .getPropertyValue(variable)
+            .trim();
+    };
 
     const { id } = useParams();
 
@@ -20,21 +26,19 @@ function AffichageArticle(){
     const [canNote, setCanNote] = useState(true);
     const [noteMoyenne, setNoteMoyenne] = useState(0);
 
-    // console.log(id)
-
     const handleNoteAdded = async () => {
-    const url = 'http://localhost:8000/api/articles/'+id+'/full';
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
+        const url = 'http://localhost:8000/api/articles/'+id+'/full';
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            setContenuArticle(result);
+        } catch (err) {
+            console.error(err.message);
         }
-        const result = await response.json();
-        setContenuArticle(result);
-    } catch (err) {
-        console.error(err.message);
-    }
-};
+    };
 
     useEffect(() => {
         async function getData() {
@@ -45,7 +49,6 @@ function AffichageArticle(){
               throw new Error(`Response status: ${response.status}`);
             }
             const result = await response.json();
-            // console.log(result);
             setContenuArticle(result);
           } catch (err) {
             setError(err.message);
@@ -56,13 +59,12 @@ function AffichageArticle(){
         }
     
         getData();
-      }, []); 
+    }, []); 
 
-      useEffect(() => {
+    useEffect(() => {
         if (contenuArticle.notes && Array.isArray(contenuArticle.notes)) {
           contenuArticle.notes.forEach(note => {
             let idNoteUser = note.user.split('/').pop();
-            // console.log(idNoteUser);
             if (idNoteUser === user.id) {
               setCanNote(false);
             }
@@ -74,17 +76,13 @@ function AffichageArticle(){
           const average = totalNotes / contenuArticle.notes.length;
           setNoteMoyenne(average);
         }
-      }, [contenuArticle, user]);
-
-
+    }, [contenuArticle, user]);
 
     if (loading) return <div>Chargement...</div>;
     if (error) return <div>{error}</div>;
 
-
     return(
         <div>
-            {/* à voir, tab d'objet d'objets */}
             <div className="titreArticle">
               <h1>{contenuArticle.titre}</h1>
               <div className="notationArticle">
@@ -94,18 +92,16 @@ function AffichageArticle(){
                     value={noteMoyenne} 
                     precision={0.1} 
                     sx={{ 
-                      color: "#7AC74F",
+                      color: getCSSVariable('--greenLight'),
                     }}
                     readOnly
                   />
                 {hasAnyRole(addNoteAllowed) && canNote && (
-
                  <BoutonNotation 
                     articleId={contenuArticle.id}
                     OnNoteAdded={handleNoteAdded}
                     setCanNote={setCanNote}
                  />
-
                 )}
               </div>
             </div>
@@ -119,15 +115,6 @@ function AffichageArticle(){
                     section={section} />
                 ))
             }
-
-            {/* <p>texte</p>
-            <h2>Sous-titre</h2>
-            <p>suite du texte</p> */}
-
-            {/* <img></img> ou graphique*/}
-
-            {/* <canvas id="graphique" width="640" height="250"></canvas> */}
-
         </div> 
     )
 }
