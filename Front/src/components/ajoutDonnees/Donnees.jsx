@@ -3,8 +3,9 @@ import { useState } from "react";
 function Donnees(){
     const [data, setData] = useState([]);
     const [headers, setHeaders] = useState([]);
+    const [variables, setVariables] = useState([]); // utiliser ? tab obj
 
-    function handleChange (e) {
+    function handleChoixFichier (e) {
         var file = e.target.files[0];
         let reader = new FileReader();
         reader.onload = function(e) {    
@@ -32,12 +33,46 @@ function Donnees(){
     }
 
 
+    function handleChangeTypeVar(e){
+        // associer le bon type à la bonne variable -> obj
+        // setVariables(prev=>{...prev, e.target.value}) // à voir
+    }
+
+    // doit enregistrer dans jeu_donnee le lien du fichier (url cf image ?), l'id du user, created_at ?
+    // doit enregistrer dans variable pour chaque variable le nom, le type, id du jeu de données lié
+    async function handleClickPublier(){
+        // appel à /api/jeu_donnees en POST
+        // {
+        //     "createdAt": "2026-01-13T10:14:33.989Z",
+        //     "user": "https://example.com/",
+        //     "lien": "string",
+        //     "variables": [
+        //         "https://example.com/"
+        //     ],
+        //     "graphiques": [
+        //         "https://example.com/"
+        //     ]
+        // }
+        // appel à /api/variables en POST
+        // {
+        //     "idDonnees": "https://example.com/",
+        //     "nom": "string",
+        //     "type": "string",
+        //     "graphiqueVariables": [
+        //         "https://example.com/"
+        //     ]
+        // }
+        // Doit pas remplir graphiques et graphiqueVariables pour l'instant. 
+        // Verif peut être null
+    }
+
+
     return(
         <div>
             <div className="importDonnees">
                 <label htmlFor="csv" id="labelCsv">Source de données</label>
                 <br></br>
-                <input type="file" name="csv" id='csv' accept=".csv" onChange={handleChange} required ></input>
+                <input type="file" name="csv" id='csv' accept=".csv" onChange={handleChoixFichier} required ></input>
             </div>
 
             <div className="tableContainer">
@@ -69,7 +104,7 @@ function Donnees(){
                         // à voir pour la div
                         <div key={index} className="typeVar"> 
                             <label htmlFor={index}>{header}</label>
-                            <select id={index}>
+                            <select id={index} onChange={handleChangeTypeVar}>
                                 <option value="">-- Type de variable --</option>
                                 <hr></hr>
                                 <option value={"categorielle"}>Catégorielle</option>
@@ -77,7 +112,7 @@ function Donnees(){
                             </select>
                         </div>
                     ))}
-                    <button type="submit" className="publierButton">Publier</button>
+                    <button type="submit" className="publierButton" onClick={handleClickPublier}>Publier</button>
                 </form>
             </div>
 
