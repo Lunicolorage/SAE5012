@@ -15,12 +15,12 @@ function Footer(){
                     <Link to="/index">
                     Index
                     </Link>
-                    <Link to="/create">
+                    {/* <Link to="/create">
                     Ajout d'article
                     </Link>
                     <Link to="/add-data">
                     Ajout de données
-                    </Link>
+                    </Link> */}
                     <Link to="/connexion">
                         Connexion
                     </Link>

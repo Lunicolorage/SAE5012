@@ -60,20 +60,9 @@ function Header(){
                 )}       
 
                 {hasAnyRole(editDesignAllowed) && (
-                <button
-                    className="hideMobile"
-                    onClick={() => {
-                        let idTheme = themes.findIndex(t => t.id === theme.id) + 1;
-                        if (idTheme >= themes.length) {
-                            idTheme = 0;
-                        }
-                        // console.log(idTheme);
-                        const newTheme  = themes[idTheme];
-                        setTheme(newTheme);
-                    }}
-                >
-                    Theme {theme.name}
-                </button>
+                <Link to="/theme-design" className="hideMobile" >
+                    Modifier thème
+                </Link>
                 )}
             </div>
             <Link to="/connexion" className="hideMobile" >
@@ -106,26 +95,15 @@ function Header(){
                     </Link>
                 )} 
 
+                 {hasAnyRole(editDesignAllowed) && (
+                <Link to="/theme-design">
+                    Modifier thème
+                </Link>
+                )}
+
                 <Link to="/connexion">
                     {buttonCo}
                 </Link>
-
-                {hasAnyRole(editDesignAllowed) && (
-                <button
-                    className="boutonMobileTheme"
-                    onClick={() => {
-                        let idTheme = themes.findIndex(t => t.id === theme.id) + 1;
-                        if (idTheme >= themes.length) {
-                            idTheme = 0;
-                        }
-                        // console.log(idTheme);
-                        const newTheme  = themes[idTheme];
-                        setTheme(newTheme);
-                    }}
-                >
-                    Theme {theme.name}
-                </button>
-                )}
             </section>
         </header>
     );

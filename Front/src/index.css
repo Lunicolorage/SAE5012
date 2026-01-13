@@ -32,6 +32,15 @@ html.blue-mode {
   --grey: #B0C4DE;
 }
 
+.icone {
+  color: var(--deepBlue);
+  filter: brightness(0) saturate(100%) invert(0%);
+}
+
+html.dark-mode .icone {
+  filter: brightness(0) saturate(100%) invert(100%);
+}
+
 a {
   font-weight: 500;
   color: (var(--greenLight));

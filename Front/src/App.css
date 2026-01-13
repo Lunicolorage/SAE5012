@@ -93,15 +93,6 @@ header .header-logo{
 
 }
 
-.hideOrdi {
-  color: var(--deepBlue);
-  filter: brightness(0) saturate(100%) invert(0%);
-}
-
-html.dark-mode .icone {
-  filter: brightness(0) saturate(100%) invert(100%);
-}
-
 @media (min-width: 600px) {
   .hideMobile{
       display: inline;  
