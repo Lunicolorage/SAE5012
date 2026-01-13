@@ -85,6 +85,13 @@ textarea{
   color: var(--deepBlue);
 }
 
+a:hover {
+    color:  (var(--greenLight));
+  }
+  button {
+    background-color: var(--greenLight);
+  }
+
 /* @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
