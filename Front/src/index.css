@@ -18,7 +18,7 @@
   --grey: #e3e3e3;
 }
 
-html.dark-mode {
+/* html.dark-mode {
   --greenLight: #54853a;
   --white: #121212;
   --deepBlue: #EFEFEF;
@@ -30,7 +30,7 @@ html.blue-mode {
   --white: #E6F0FA;
   --deepBlue: #0B2545;
   --grey: #B0C4DE;
-}
+} */
 
 .icone {
   color: var(--deepBlue);

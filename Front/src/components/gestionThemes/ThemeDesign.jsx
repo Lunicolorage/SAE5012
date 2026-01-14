@@ -19,9 +19,21 @@ export function ThemeDesign() {
                                 if (idTheme >= themes.length) {
                                     idTheme = 0;
                                 }
-                                // console.log(theme);
+                                
                                 const newTheme  = themes[idTheme];
-                                setTheme(newTheme);
+                                setTheme({
+                                id: newTheme.id, 
+                                nom: newTheme.nom, 
+                                class: newTheme.class,
+                                logoCouleur: newTheme.logoCouleur,
+                                user: newTheme.user,
+                                couleurs: {
+                                    grey : newTheme.grey,
+                                    deepBlue : newTheme.deepBlue,
+                                    white : newTheme.white,
+                                    greenLight : newTheme.greenLight,
+                                } } );
+                                // console.log(theme);
                             }}
                         >
                         {theme.nom}

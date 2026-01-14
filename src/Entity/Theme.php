@@ -31,6 +31,18 @@ class Theme
     #[ORM\Column(length: 255)]
     private ?string $logo_couleur = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $greenLight = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $white = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $deepBlue = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $grey = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -92,6 +104,54 @@ class Theme
     public function setLogoCouleur(string $logo_couleur): static
     {
         $this->logo_couleur = $logo_couleur;
+
+        return $this;
+    }
+
+    public function getGreenLight(): ?string
+    {
+        return $this->greenLight;
+    }
+
+    public function setGreenLight(string $greenLight): static
+    {
+        $this->greenLight = $greenLight;
+
+        return $this;
+    }
+
+    public function getWhite(): ?string
+    {
+        return $this->white;
+    }
+
+    public function setWhite(string $white): static
+    {
+        $this->white = $white;
+
+        return $this;
+    }
+
+    public function getDeepBlue(): ?string
+    {
+        return $this->deepBlue;
+    }
+
+    public function setDeepBlue(string $deepBlue): static
+    {
+        $this->deepBlue = $deepBlue;
+
+        return $this;
+    }
+
+    public function getGrey(): ?string
+    {
+        return $this->grey;
+    }
+
+    public function setGrey(string $grey): static
+    {
+        $this->grey = $grey;
 
         return $this;
     }

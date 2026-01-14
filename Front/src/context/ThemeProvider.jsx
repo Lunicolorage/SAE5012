@@ -14,7 +14,7 @@ function ThemeProvider({ children }) {
     const [ListeThemes, setListeThemes] = useState([]);
     const [error, setError] = useState(null);
     const [theme, setTheme] = useState({});
-    // console.log(theme);
+    // sconsole.log(theme);
 
     useEffect(() => {
         async function getData() {
@@ -37,13 +37,32 @@ function ThemeProvider({ children }) {
     useEffect(() => {
         ListeThemes.forEach(monTheme => {
             if (monTheme.active){
-                setTheme(monTheme);
+                setTheme({
+                    id: monTheme.id, 
+                    nom: monTheme.nom, 
+                    class: monTheme.class,
+                    logoCouleur: monTheme.logoCouleur,
+                    user: monTheme.user,
+                    couleurs: {
+                        grey : monTheme.grey,
+                        deepBlue : monTheme.deepBlue,
+                        white : monTheme.white,
+                        greenLight : monTheme.greenLight,
+                    } } );
+                // console.log(theme);
             }
         });
     }, [ListeThemes]);
 
     useEffect(() => {
-        document.documentElement.className = theme.class;
+        // document.documentElement.className = theme.class;
+        if (theme && theme.couleurs) {
+            const colors = theme.couleurs;
+            Object.entries(colors).forEach(([key, value]) => {
+                document.documentElement.style.setProperty(`--${key}`, value); //cette ligne modifie les variables CSS
+            });
+        }
+
     }, [theme]);
 
     return (
