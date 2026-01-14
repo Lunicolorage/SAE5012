@@ -783,3 +783,62 @@ input[type=file]::file-selector-button {
   }
 
 }
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* Page theme-design------------------------------------------------------------------------------- */
+
+.formTestTheme{
+  background-color: var(--grey);
+  padding: 15px;
+  border-radius: 10px;
+  color: var(--deepBlue);
+  width: 100%;
+  margin: 25px auto 25px auto;
+}
+
+.formTestTheme-selection{
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.boutonValiderTheme{
+  width: 60%;
+  padding: 10px;
+  margin: 20px 20% 0 20%;
+  border-radius: 8px;
+}
+
+@media (min-width: 600px) {
+
+  .formTestTheme{
+    width: 80%;
+    padding: 30px;
+  }
+
+  .formTestTheme h2{
+    margin-right: 4vw;
+  }
+
+  .formTestTheme-selection{
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1024px) {
+
+  .formTestTheme{
+    width: 60%;
+    margin-top: 2vw;
+  }
+
+  .boutonValiderTheme{
+  width: 40%;
+  margin: 20px 30% 0 30%;
+}
+
+}
+
+
