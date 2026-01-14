@@ -28,6 +28,9 @@ class Theme
     #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $logo_couleur = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,6 +80,18 @@ class Theme
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getLogoCouleur(): ?string
+    {
+        return $this->logo_couleur;
+    }
+
+    public function setLogoCouleur(string $logo_couleur): static
+    {
+        $this->logo_couleur = $logo_couleur;
 
         return $this;
     }

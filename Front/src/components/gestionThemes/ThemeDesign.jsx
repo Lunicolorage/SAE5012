@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeProvider";
+import { BoutonValiderTheme } from "./BoutonValiderTheme";
 
 export function ThemeDesign() {
 
@@ -26,9 +27,7 @@ export function ThemeDesign() {
                         {theme.nom}
                     </button>
                 </div>
-                <button className="boutonValiderTheme">
-                    Valider le thème
-                </button>
+                <BoutonValiderTheme />
             </section>
         </>
     );

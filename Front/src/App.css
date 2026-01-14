@@ -63,6 +63,7 @@ header .header-logo{
 }
 
 .menuBurger{
+  z-index: 100;
   position:fixed;
   background-color: var(--white);
   width: 100%;
@@ -737,6 +738,7 @@ input[type=file]::file-selector-button {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 3vw;
+  border-radius: 10px;
 }
 
 .formConnexion input{

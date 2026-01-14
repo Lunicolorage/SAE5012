@@ -12,7 +12,7 @@ function Footer({createAllowed, addDataAllowed, editDesignAllowed}){
     const hasAnyRole = (allowed) => Array.isArray(user?.roles) && user.roles.some(r => allowed.includes(r));
 
 
-    const srcImg = theme.name === 'dark' ? 'src/assets/logo-clair.png' : 'src/assets/logo-foncé.png';
+    const srcImg ='src/assets/logo-'+ theme.logoCouleur +'.png';
 
     return(
         <footer>

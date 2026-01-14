@@ -9,7 +9,7 @@ function Header({createAllowed, addDataAllowed, editDesignAllowed}){
     const [theme, setTheme, themes] = useContext(ThemeContext);
 
 
-    const srcImg = theme.name === 'dark' ? 'src/assets/eff-clair.png' : 'src/assets/eff-fonce.png';
+    const srcImg = 'src/assets/eff-'+ theme.logoCouleur +'.png';
 
     const [user, setUser] = useContext(UserContext);
     const [buttonCo, setButtonCo] = useState("Connexion");
