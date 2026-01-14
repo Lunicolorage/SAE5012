@@ -53,6 +53,8 @@ security:
         - { path: ^/api/notes, roles: ['ROLE_ADMIN', 'ROLE_ABO'] }
         # - { path: ^/api/notes, roles: PUBLIC_ACCESS }
 
+        - { path: ^/api/themes, roles: ['ROLE_ADMIN', 'ROLE_DESIGN'] }
+
         - { path: ^/api/sections,roles: ['ROLE_ADMIN','ROLE_AUTEUR','ROLE_EDIT'] }
         - { path: ^/api/textes, roles: ['ROLE_ADMIN','ROLE_AUTEUR','ROLE_EDIT'] }
         - { path: ^/api/titres, roles: ['ROLE_ADMIN','ROLE_AUTEUR','ROLE_EDIT'] }
