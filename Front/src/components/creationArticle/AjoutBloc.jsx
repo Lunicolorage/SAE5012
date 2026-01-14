@@ -56,6 +56,24 @@ function AjoutBloc({article, setArticle, clickCross}){
                     ]
                 })
             break;
+            case "graphique":
+                setArticle({
+                    ...article,
+                    sections: [
+                        ...article.sections,
+                        {
+                            type: "graphique",
+                            contenu: {
+                                // à voir
+                                typeGraphic: "", // à voir -> "bar" | "pie" | "histogram"
+                                title: "", //Titre du graphique
+                                labels: [],
+                                datasets: [],
+                                options: {},
+                            }
+                        }
+                    ]
+                })
         }
         console.log("ajout bloc");
     }

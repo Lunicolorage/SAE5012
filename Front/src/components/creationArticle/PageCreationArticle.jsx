@@ -18,7 +18,6 @@ function PageCreationArticle(){
     // faire un tableau pour gérer affichage blocs
     const [article, setArticle] = useState({titre:"", Resume:"", userName:`${user.nom}`, sections:[]})
 
-    // à voir
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -86,7 +85,8 @@ function PageCreationArticle(){
                             return (<SousTitre key={index} index={index} article={article} setArticle={setArticle}/>)
                         case "image":
                             return (<Image key={index} index={index} article={article} setArticle={setArticle}/>)
-                        
+                        case "graphique":
+                            return (<SourceDonnees  key={index} index={index} article={article} setArticle={setArticle}/>)
                         default:
                             return null;
                     }

@@ -49,8 +49,38 @@ function SourceDonnees({article, setArticle, index}){
 
     function handleChoixTypeGraphique(){}
 
-    function handleSourceDonnees(){}
 
+    function handleSourceDonnees(e){
+        const donnees = e.target.value;
+        // console.log("donnees : ", donnees);
+
+        const selectedData = jeuDonnees.find(jd => jd.id == donnees);
+        // console.log(selectedData.variables); // récupérer variables pour zoneCheck
+
+        setArticle(prev => {
+            const sections = [...prev.sections];
+
+            sections[index]={
+                ...sections[index],
+                type: "graphique",
+                contenu: {
+                    ...sections[index].contenu,
+                    // à voir -> faire en fonction type de graphiques ?
+                }
+            }
+            return {...prev, sections}
+        })
+    }
+
+    async function handleValidateGraphic(){
+        // pour mettre tout bien dans toutes les tebles ? (notamment jeu_donnees)
+        setError('');
+        setLoading(true);
+
+        // try{
+
+        // }
+    }
 
 
 
@@ -83,7 +113,8 @@ function SourceDonnees({article, setArticle, index}){
             {/* à faire dynamiquement*/}
             <div className="zoneCheck">
                 <h2>Variables</h2>
-                {/* faire boucle ? */}
+                {/* faire boucle ? récupérer toutes les variables liées au jeu de données choisi*/}
+
                 <Variables nom={"nom"}/>
                 <Variables nom={"var 2"}/>
                 <Variables nom={"var 3"}/>
@@ -99,6 +130,13 @@ function SourceDonnees({article, setArticle, index}){
                 <option>bar chart</option>
                 <option>histogram</option>
             </select>
+
+            <button type="button"
+                    onClick={handleValidateGraphic}
+                    disabled={loading} 
+                >
+                    {loading ? "Upload..." : "Valider le graphique"}
+                </button>
         </div>
     )
 }

@@ -50,6 +50,7 @@ function Image({article, setArticle, index}){
     // image déjà en BDD
     function handleImageChange(e){
         const imageId = e.target.value;
+        console.log("imageId : ",imageId);
 
         const selectedImage = images.find(img => img.id == imageId);
         setSelectedImageId(imageId);
@@ -202,6 +203,7 @@ function Image({article, setArticle, index}){
     }
 
 
+    // enlever la section -> faire en sorte que si nouvelle image -> supprimée ?
     function handleCrossClick(){
         const indexToRemove = index;
         const sections = article.sections.filter((section, i)=> i!= indexToRemove)
