@@ -18,12 +18,12 @@ export function ThemeDesign() {
                                 if (idTheme >= themes.length) {
                                     idTheme = 0;
                                 }
-                                // console.log(idTheme);
+                                // console.log(theme);
                                 const newTheme  = themes[idTheme];
                                 setTheme(newTheme);
                             }}
                         >
-                        {theme.name}
+                        {theme.nom}
                     </button>
                 </div>
                 <button className="boutonValiderTheme">

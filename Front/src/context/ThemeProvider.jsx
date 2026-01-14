@@ -4,9 +4,9 @@ import ReactDOM from "react-dom/client";
 export const ThemeContext = createContext();
 
 const themes = [
-    {id:1, name: 'light', class: '' },
-    {id:2, name: 'dark',class: 'dark-mode' },
-    {id:3, name: 'blue', class: 'blue-mode' },
+    {id:1, nom: 'light', class: '' },
+    {id:2, nom: 'dark',class: 'dark-mode' },
+    {id:3, nom: 'blue', class: 'blue-mode' },
   ];
 
 function ThemeProvider({ children }) {
