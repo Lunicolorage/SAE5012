@@ -3,21 +3,19 @@ import { useContext } from "react";
 import { UserContext } from "../../context/UserProvider";
 
 function Donnees(){
-    const [user, setUser] = useContext(UserContext);
+    const [user] = useContext(UserContext);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const [data, setData] = useState([]);
     const [headers, setHeaders] = useState([]);
-    const [variables, setVariables] = useState({}); // utiliser ? tab, obj ?
-
-    const [fileName, setFileName] = useState(''); // à voir -> correspond pas au lien
-    const [file, setFile] = useState(null) // -> pour vrai fichier (test)
+    const [variables, setVariables] = useState({});
+    const [file, setFile] = useState(null)
 
     function handleChoixFichier (e) {
         var selectedFile = e.target.files[0];
         if (!selectedFile) return;
 
-        // setFileName(selectedFile.name);
         setFile(selectedFile);
 
         let reader = new FileReader();
@@ -127,28 +125,32 @@ function Donnees(){
 
             // Variables
             for (const [nom, type] of Object.entries(variables)){ // récupère nom et type pour chaque variable dans variables
-                console.log(nom, type); // ok
 
                 const response2 = await fetch("http://localhost:8000/api/variables", {
                     method: "POST",
                     headers: { 
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/ld+json', // ld = Linked Data -> nécessaire pour façon dont gère id
                         Authorization: `Bearer ${user.token}`
                     },
                     body: JSON.stringify({
-                        idDonnees: uploaded['@id'], // à voir -> probablement ça qui bloque
+                        idDonnees: `/api/jeu_donnees/${uploaded.id}`,
                         nom,
                         type,
-                        graphiqueVariables: [], // à changer -> là juste pour test reste
+                        // graphiqueVariables: [], // à changer ? -> là juste pour tester
                     })
                 })
 
                 if (!response2.ok){
+                    const errorData = await response2.json();
+                    console.log(errorData);
                     throw new Error("Erreur envoi variables");
+                }
+                else {
+                    setSuccess('Données ajoutées en base de données');
                 }
             }
 
-            console.log("jeu de données (et variables) ok")
+            // console.log("jeu de données (et variables) ok")
 
         } catch (err) {
             setError(err.message);            
@@ -208,6 +210,7 @@ function Donnees(){
                     ))}
 
                     {error && <p style={{ color: "red" }}>{error}</p>}
+                    {success && <p style={{ color: 'green' }}>{success}</p>}
 
                     <button type="submit" className="publierButton" disabled={loading} onClick={handleClickPublier}>{loading ? "Publication..." : "Publier"}</button>
                 </form>

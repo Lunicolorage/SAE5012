@@ -27,6 +27,9 @@ class JeuDonnee
     #[ORM\Column(length: 255)]
     private ?string $lien = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
+
     /**
      * @var Collection<int, Variable>
      */
@@ -82,6 +85,18 @@ class JeuDonnee
     public function setLien(string $lien): static
     {
         $this->lien = $lien;
+
+        return $this;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
 
         return $this;
     }
