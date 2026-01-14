@@ -82,30 +82,40 @@ function Donnees(){
         setLoading(true);
         setError('');
 
-        if (headers.length == 0){ // vérif si fichier choisi
+        // vérif si fichier choisi
+        if (headers.length == 0){ 
             setError("Choisir un fichier");
             setLoading(false);
             return;
         }
 
-        if (Object.keys(variables).length != headers.length){ // vérif si toutes les variables ont un type
+        // vérif si toutes les variables ont un type
+        if (Object.keys(variables).length != headers.length){ 
             setError("Choisir un type pour chaque variable");
             setLoading(false);
             return;
         }
 
         try{
-            const response = await fetch("http://localhost:8000/api/jeu_donnees", {
+            // console.log(`/api/users/${user.id}`); // ok
+            // console.log(file); // ok
+            const userId = user.id; 
+
+            const formData = new FormData();
+            formData.append("user", userId);
+            formData.append("lien", file);
+            
+            // https://fr.javascript.info/formdata 
+            // for (var value of formData.values()) {
+            //     console.log(value); // ok
+            // }
+
+            const response = await fetch("http://localhost:8000/api/datasets", {
                 method: "POST",
                 headers: { 
-                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${user.token}`
                 },
-                body: JSON.stringify({
-                    user: `/api/users/${user.id}`,
-                    lien: fileName,
-                    // createdAt -> voir dans back
-                })
+                body: formData,
             })
 
             const uploaded = await response.json();
@@ -116,7 +126,9 @@ function Donnees(){
 
 
             // Variables
-            for (const [nom, type] of Object.entries(variables)){ // pour chaque variable
+            for (const [nom, type] of Object.entries(variables)){ // récupère nom et type pour chaque variable dans variables
+                console.log(nom, type); // ok
+
                 const response2 = await fetch("http://localhost:8000/api/variables", {
                     method: "POST",
                     headers: { 
@@ -124,9 +136,10 @@ function Donnees(){
                         Authorization: `Bearer ${user.token}`
                     },
                     body: JSON.stringify({
-                        idDonnees: uploaded['@id'], // à voir -> nom pas sûr
+                        idDonnees: uploaded['@id'], // à voir -> probablement ça qui bloque
                         nom,
-                        type
+                        type,
+                        graphiqueVariables: [], // à changer -> là juste pour test reste
                     })
                 })
 
@@ -147,10 +160,12 @@ function Donnees(){
 
 
     return(
-        <div>
+        <div className="pageImportDonnees">
+            <h1>Ajouter des données</h1>
+
             <div className="importDonnees">
                 <label htmlFor="csv" id="labelCsv">Source de données</label>
-                <br></br>
+                <br/>
                 <input type="file" name="csv" id='csv' accept=".csv" onChange={handleChoixFichier} required ></input>
             </div>
 
