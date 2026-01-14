@@ -9,16 +9,32 @@ import { MesRoutes } from './components/MesRoutes';
 
 function App() {
 
+    const createAllowed = ['ROLE_ADMIN','ROLE_AUTEUR','ROLE_EDIT'];
+    const addDataAllowed = ['ROLE_ADMIN','ROLE_FOURNI'];
+    const editDesignAllowed = ['ROLE_ADMIN','ROLE_DESIGN'];
+
   return (
     <>
     < BrowserRouter >
     <ThemeProvider>
     <UserProvider>
-      <Header />
+      <Header 
+        createAllowed={createAllowed}
+        addDataAllowed={addDataAllowed}
+        editDesignAllowed={editDesignAllowed}
+      />
       <main>
-        <MesRoutes />
+        <MesRoutes 
+          createAllowed={createAllowed}
+          addDataAllowed={addDataAllowed}
+          editDesignAllowed={editDesignAllowed}
+        />
       </main>
-      <Footer />
+      <Footer 
+        createAllowed={createAllowed}
+        addDataAllowed={addDataAllowed}
+        editDesignAllowed={editDesignAllowed}
+      />
     </UserProvider>
     </ThemeProvider>
     </BrowserRouter>

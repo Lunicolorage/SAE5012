@@ -10,13 +10,10 @@ import { useContext, useState, useEffect } from 'react'
 import { UserContext } from "../context/UserProvider";
 import { ThemeDesign } from "./gestionThemes/ThemeDesign";
 
-function MesRoutes() {
+function MesRoutes({createAllowed, addDataAllowed, editDesignAllowed}) {
 
     const [user, setUser] = useContext(UserContext);
 
-    const createAllowed = ['ROLE_ADMIN','ROLE_AUTEUR','ROLE_EDIT'];
-    const addDataAllowed = ['ROLE_ADMIN','ROLE_FOURNI'];
-    const editDesignAllowed = ['ROLE_ADMIN','ROLE_DESIGN'];
     const hasAnyRole = (allowed) => Array.isArray(user?.roles) && user.roles.some(r => allowed.includes(r));
 
 

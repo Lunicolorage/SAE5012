@@ -3,14 +3,12 @@ import { useContext } from 'react'
 import { ThemeContext } from "../context/ThemeProvider";
 import { UserContext } from "../context/UserProvider";
 
-function Footer(){
+function Footer({createAllowed, addDataAllowed, editDesignAllowed}){
 
     const [theme, setTheme, themes] = useContext(ThemeContext);
-
+    
     const [user, setUser] = useContext(UserContext);
-    const createAllowed = ['ROLE_ADMIN','ROLE_AUTEUR','ROLE_EDIT'];
-    const addDataAllowed = ['ROLE_ADMIN','ROLE_FOURNI'];
-    const editDesignAllowed = ['ROLE_ADMIN','ROLE_DESIGN'];
+    
     const hasAnyRole = (allowed) => Array.isArray(user?.roles) && user.roles.some(r => allowed.includes(r));
 
 
