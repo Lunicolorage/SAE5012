@@ -55,10 +55,9 @@ function ThemeProvider({ children }) {
     }, [ListeThemes]);
 
     useEffect(() => {
-        // document.documentElement.className = theme.class;
+        document.documentElement.className = theme.class;
         if (theme && theme.couleurs) {
-            const colors = theme.couleurs;
-            Object.entries(colors).forEach(([key, value]) => {
+            Object.entries(theme.couleurs).forEach(([key, value]) => {
                 document.documentElement.style.setProperty(`--${key}`, value); //cette ligne modifie les variables CSS
             });
         }

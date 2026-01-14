@@ -790,6 +790,51 @@ input[type=file]::file-selector-button {
 
 /* Page theme-design------------------------------------------------------------------------------- */
 
+
+.formCreateTheme{
+  background-color: var(--grey);
+  padding: 15px;
+  border-radius: 10px;
+  color: var(--deepBlue);
+  width: 100%;
+  margin: 25px auto 25px auto;
+}
+
+.formCreateTheme h2{
+  text-align: center;
+}
+
+.formCreateTheme h3{
+  font-size: 1.3em;
+}
+
+.formCreateTheme input, .formCreateTheme select, .formCreateTheme textarea{
+  width: 100%;
+  padding: 6px;
+}
+
+.formCreateTheme button{
+  width: 60%;
+  padding: 10px;
+  margin: 20px 20% 0 20%;
+  border-radius: 8px;
+}
+
+.selectColorTheme{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.selectColorTheme input{
+  padding: 0;
+  height: 30px;
+  width: 60px;
+  border: none;
+  border-radius: 3px;
+}
+
+
 .formTestTheme{
   background-color: var(--grey);
   padding: 15px;
