@@ -103,6 +103,13 @@ input, select{
   color: var(--deepBlue);
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--white) inset !important;
+  -webkit-text-fill-color: var(--deepBlue) !important;
+}
+
 textarea{
   border: none;
   background-color: var(--white);
