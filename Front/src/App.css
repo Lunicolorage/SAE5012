@@ -825,6 +825,11 @@ input[type=file]::file-selector-button {
   .formTestTheme-selection{
     flex-direction: row;
   }
+
+  .boutonTestTheme{
+    padding: 10px 40px;
+  }
+
 }
 
 @media (min-width: 1024px) {

@@ -81,27 +81,46 @@ function Header(){
                         setBurgerOuvert(!burgerOuvert);
                     }}
                     src="src/assets/croix.png" alt="icone fermeture burger" />
-                <Link to="/index">
+                <Link 
+                    onClick={() => {
+                        setBurgerOuvert(!burgerOuvert);
+                    }}
+                    to="/index">
                 Index
                 </Link>
                 {hasAnyRole(createAllowed) && (
-                    <Link to="/create">
+                    <Link 
+                        onClick={() => {
+                        setBurgerOuvert(!burgerOuvert);
+                    }}
+                    to="/create">
                     Ajout d'article
                     </Link>
                 )}
                {hasAnyRole(addDataAllowed) && (
-                    <Link to="/add-data" >
+                    <Link to="/add-data" 
+                        onClick={() => {
+                        setBurgerOuvert(!burgerOuvert);
+                    }}>
                     Ajout de données
                     </Link>
                 )} 
 
                  {hasAnyRole(editDesignAllowed) && (
-                <Link to="/theme-design">
+                <Link 
+                    onClick={() => {
+                        setBurgerOuvert(!burgerOuvert);
+                    }}
+                to="/theme-design">
                     Modifier thème
                 </Link>
                 )}
 
-                <Link to="/connexion">
+                <Link 
+                    onClick={() => {
+                        setBurgerOuvert(!burgerOuvert);
+                    }}
+                to="/connexion">
                     {buttonCo}
                 </Link>
             </section>

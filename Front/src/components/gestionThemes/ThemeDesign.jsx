@@ -12,6 +12,7 @@ export function ThemeDesign() {
                 <div className="formTestTheme-selection">
                     <h2>Thème actif : </h2>
                     <button
+                            className="boutonTestTheme"
                             onClick={() => {
                                 let idTheme = themes.findIndex(t => t.id === theme.id) + 1;
                                 if (idTheme >= themes.length) {

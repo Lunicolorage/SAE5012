@@ -1,10 +1,18 @@
 import { Link } from "react-router-dom";
 import { useContext } from 'react'
 import { ThemeContext } from "../context/ThemeProvider";
+import { UserContext } from "../context/UserProvider";
 
 function Footer(){
 
     const [theme, setTheme, themes] = useContext(ThemeContext);
+
+    const [user, setUser] = useContext(UserContext);
+    const createAllowed = ['ROLE_ADMIN','ROLE_AUTEUR','ROLE_EDIT'];
+    const addDataAllowed = ['ROLE_ADMIN','ROLE_FOURNI'];
+    const editDesignAllowed = ['ROLE_ADMIN','ROLE_DESIGN'];
+    const hasAnyRole = (allowed) => Array.isArray(user?.roles) && user.roles.some(r => allowed.includes(r));
+
 
     const srcImg = theme.name === 'dark' ? 'src/assets/logo-clair.png' : 'src/assets/logo-foncé.png';
 
@@ -15,12 +23,23 @@ function Footer(){
                     <Link to="/index">
                     Index
                     </Link>
-                    {/* <Link to="/create">
+                    {hasAnyRole(createAllowed) && (
+                    <Link to="/create" >
                     Ajout d'article
                     </Link>
-                    <Link to="/add-data">
-                    Ajout de données
-                    </Link> */}
+                    )}
+
+                    {hasAnyRole(addDataAllowed) && (
+                        <Link to="/add-data" >
+                        Ajout de données
+                        </Link>
+                    )}       
+
+                    {hasAnyRole(editDesignAllowed) && (
+                    <Link to="/theme-design" >
+                        Modifier thème
+                    </Link>
+                    )}
                     <Link to="/connexion">
                         Connexion
                     </Link>
