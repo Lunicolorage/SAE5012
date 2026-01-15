@@ -877,6 +877,21 @@ input[type=file]::file-selector-button {
     padding: 10px 40px;
   }
 
+  .formCreateTheme {
+    width: 80%;
+    padding: 30px;
+  }
+
+
+  .selectColorTheme input{
+    height: 4vw;
+    width: 8vw;
+  }
+
+  .allInputColor{
+    margin: 1.5vw 0;
+  }
+
 }
 
 @media (min-width: 1024px) {
@@ -887,9 +902,19 @@ input[type=file]::file-selector-button {
   }
 
   .boutonValiderTheme{
-  width: 40%;
-  margin: 20px 30% 0 30%;
-}
+    width: 40%;
+    margin: 20px 30% 0 30%;
+  }
+
+  .formCreateTheme {
+      width: 60%;
+      margin-top: 2vw;
+  }
+
+  .selectColorTheme input{
+    height: 3vw;
+    width: 6vw;
+  }
 
 }
 
