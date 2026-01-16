@@ -865,6 +865,7 @@ input[type=file]::file-selector-button {
 
 .formTestTheme-apercu{
   width: 100px;
+  border: solid transparent;
 }
 
 .boutonValiderTheme{
@@ -903,7 +904,7 @@ input[type=file]::file-selector-button {
   }
 
   .formTestTheme-buttons{
-    width: 50%;
+    width: 70%;
     justify-content: start;
   }
 
@@ -932,7 +933,7 @@ input[type=file]::file-selector-button {
   }
 
   .formTestTheme-buttons{
-    width: 30%;
+    width: 30vw;
     justify-content: start;
   }
 
