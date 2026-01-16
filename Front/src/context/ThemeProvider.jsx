@@ -66,7 +66,7 @@ function ThemeProvider({ children }) {
 
     return (
         <ThemeContext.Provider
-            value={[theme,setTheme,ListeThemes]}
+            value={[theme,setTheme,ListeThemes, setListeThemes]}
             >
             {children}
         </ThemeContext.Provider>
