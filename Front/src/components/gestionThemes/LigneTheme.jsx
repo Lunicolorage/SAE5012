@@ -22,7 +22,7 @@ export function LigneTheme({ UnTheme }) {
 
     return(
         <div className="formTestTheme-selection">
-            <p className="formTestTheme-nom">{UnTheme.nom}</p>
+            <p>{UnTheme.nom}</p>
             <div className="formTestTheme-buttons">
                 <button 
                     className={theme.id === UnTheme.id ? 'formTestTheme-apercu actif' : 'formTestTheme-apercu'}
@@ -30,9 +30,11 @@ export function LigneTheme({ UnTheme }) {
                 >
                     {theme.id === UnTheme.id ? 'Actif' : 'Aperçu'}
                 </button>
-                <button className="formTestTheme-suppr">
-                    Supprimer
-                </button>
+                {UnTheme.id !== 1 && (
+                    <button className="formTestTheme-suppr">
+                        Supprimer
+                    </button>
+                )}
             </div>
         </div>
     );
