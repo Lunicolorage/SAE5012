@@ -800,7 +800,7 @@ input[type=file]::file-selector-button {
   margin: 25px auto 25px auto;
 }
 
-.formCreateTheme h2{
+.formCreateTheme h2, .formTestTheme h2{
   text-align: center;
 }
 
@@ -845,10 +845,22 @@ input[type=file]::file-selector-button {
 }
 
 .formTestTheme-selection{
-  margin-bottom: 15px;
+  margin: 2vw 0;
   display: flex;
+  justify-content: space-around;
   flex-direction: column;
-  gap: 5px;
+  align-items: center;
+}
+
+
+.formTestTheme-suppr{
+  background-color: var(--deepBlue);
+  color: var(--white);
+  margin-left: 10px;
+}
+
+.formTestTheme-apercu{
+  width: 100px;
 }
 
 .boutonValiderTheme{
@@ -856,6 +868,10 @@ input[type=file]::file-selector-button {
   padding: 10px;
   margin: 20px 20% 0 20%;
   border-radius: 8px;
+}
+
+.formTestTheme-apercu.actif {
+  border: solid var(--deepBlue);
 }
 
 @media (min-width: 600px) {
@@ -872,6 +888,7 @@ input[type=file]::file-selector-button {
   .formTestTheme-selection{
     flex-direction: row;
   }
+
 
   .boutonTestTheme{
     padding: 10px 40px;

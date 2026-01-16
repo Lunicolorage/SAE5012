@@ -1,41 +1,21 @@
 import { ThemeContext } from "../../context/ThemeProvider";
 import { useContext } from "react";
 import { BoutonValiderTheme } from "./BoutonValiderTheme";
+import { LigneTheme } from "./LigneTheme";
 
 export function SectionTestTheme() {
 
     const [theme, setTheme, themes] = useContext(ThemeContext);
 
+    // console.log(themes);
+
     return (
         <section className="formTestTheme">
-                <div className="formTestTheme-selection">
-                    <h2>Thème actif : </h2>
-                    <button
-                            className="boutonTestTheme"
-                            onClick={() => {
-                                let idTheme = themes.findIndex(t => t.id === theme.id) + 1;
-                                if (idTheme >= themes.length) {
-                                    idTheme = 0;
-                                }
-                                
-                                const newTheme  = themes[idTheme];
-                                setTheme({
-                                id: newTheme.id, 
-                                nom: newTheme.nom, 
-                                class: newTheme.class,
-                                logoCouleur: newTheme.logoCouleur,
-                                user: newTheme.user,
-                                couleurs: {
-                                    grey : newTheme.grey,
-                                    deepBlue : newTheme.deepBlue,
-                                    white : newTheme.white,
-                                    greenLight : newTheme.greenLight,
-                                } } );
-                                // console.log(theme);
-                            }}
-                        >
-                        {theme.nom}
-                    </button>
+                <h2>Thèmes disponibles </h2>
+                <div>
+                {themes.map((UnTheme, index)=>{
+                    return <LigneTheme key={index} UnTheme={UnTheme}/>;
+                })}
                 </div>
                 <BoutonValiderTheme />
             </section>
