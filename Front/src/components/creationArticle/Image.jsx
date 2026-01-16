@@ -248,7 +248,7 @@ function Image({article, setArticle, index}){
             {tempImage && (
                 <div className="choixAlt">
                     <label htmlFor="alt">Choisir un texte alternatif</label>
-                    <input type="text" id="alt" value={altValue} onChange={handleAltChange}/>
+                    <input type="text" id="alt" value={altValue} onChange={handleAltChange} required/>
                 </div>
             )}
 

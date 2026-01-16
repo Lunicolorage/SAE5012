@@ -610,6 +610,10 @@ input[type=file]::file-selector-button {
   height: auto;
 }
 
+.zoneSourceDonnees button{
+  margin-top: 10px;
+}
+
 .zoneCheck{
   padding-top: 10px;
   padding-bottom: 10px;

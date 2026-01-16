@@ -65,10 +65,10 @@ function AjoutBloc({article, setArticle, clickCross}){
                             type: "graphique",
                             contenu: {
                                 // à voir
-                                typeGraphic: "", // à voir -> "bar" | "pie" | "histogram"
+                                type: "", // à voir -> "bar" | "pie" | "histogram"
                                 title: "", //Titre du graphique
                                 labels: [],
-                                datasets: [],
+                                datasets: [], //intérieur différent en fonction du type de graphique
                                 options: {},
                             }
                         }

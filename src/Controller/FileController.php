@@ -29,6 +29,7 @@ class FileController extends AbstractController
             return  new JsonResponse(['error' => 'User introuvable'], 400);
         }
 
+        $nom = $request->request->get('nom');
 
         // $extension = $file->guessExtension() ?? 'csv'; // récupère l'extension du fichier, si reconnait pas -> met en csv
         $extension = 'csv';
@@ -42,6 +43,7 @@ class FileController extends AbstractController
         $dataset = new JeuDonnee();
         $dataset->setLien('http://localhost:8000/datasets/'.$filename);
         $dataset->setUser($user);
+        $dataset->setNom($nom);
         $dataset->setCreatedAt(new \DateTimeImmutable());
 
         $em->persist($dataset);
@@ -51,6 +53,7 @@ class FileController extends AbstractController
             'id' => $dataset->getId(),
             'lien' => $dataset->getLien(),
             'user' => $dataset->getUser(),
+            'nom' => $dataset->getNom(),
         ]);
     }
 }

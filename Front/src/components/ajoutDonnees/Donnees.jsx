@@ -19,27 +19,74 @@ function Donnees(){
         setFile(selectedFile);
 
         let reader = new FileReader();
-        reader.onload = function(e) {    
-            let text = e.target.result;
+
+        // reader.onload = function(e) {    
+        //     let text = e.target.result;
             
-            // trim supprime les espaces au début et à la fin d'une chaîne
-            const lines = text.split("\n").map(line => line.trim()).filter(line => line !== "");
+        //     // trim supprime les espaces au début et à la fin d'une chaîne
+        //     const lines = text.split("\n").map(line => line.trim()).filter(line => line !== "");
 
-            const newHeaders = lines[0].split(",");
-            setHeaders(newHeaders);
+        //     const newHeaders = lines[0].split(",");
+        //     setHeaders(newHeaders);
 
-            const rows = lines.slice(1).map(line => {
-                const values = line.split(",");
-                let obj = {};
-                newHeaders.forEach((h, i) => {
-                    obj[h] = values[i];
-                });
-                return obj;
-            });
+        //     const rows = lines.slice(1).map(line => {
+        //         const values = line.split(",");
+        //         let obj = {};
+        //         newHeaders.forEach((h, i) => {
+        //             obj[h] = values[i];
+        //         });
+        //         return obj;
+        //     });
 
-            console.log("tab :", rows);
-            setData(rows);
+        //     console.log("tab :", rows);
+        //     setData(rows);
+        // }
+
+        function detectSeparator(line){
+            // tester première ligne pour voir si plus de , ou de ; -> en déduire séparateur pour le reste
+            const nbVirgule = (line.match(/,/g) || []).length;
+            const nbPointVirgule = (line.match(/;/g) || []).length;
+
+            return nbPointVirgule > nbVirgule ? ";" : ",";
         }
+
+        reader.onload = (e) => {
+            try{
+                const text = e.target.result;
+
+                const lines = text.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+
+                if (lines.length == 0) return;
+
+                const separateur = detectSeparator(lines[0]);
+
+                // headers -> nom des colonnes
+                const headers = lines[0].split(separateur).map(h => h.trim());
+                setHeaders(headers);
+
+                // données
+                const rows = lines.slice(1).map(line => {
+                    const values = line.split(separateur).map(v => v.trim());
+
+                    return headers.reduce((obj, header, index) => {
+                        obj[header] = values[index] ?? "";
+                        return obj;
+                    }, {});
+                });
+                setData(rows);
+
+                console.log("séparateur : ", separateur);
+                console.log("données :", rows);
+
+            } catch (error) {
+                console.error("Erreur fichier CSV : ", error);
+            }
+        }
+
+        reader.onerror = () => {
+            console.error("Impossible de le lire le fichier");
+        };
+        
         reader.readAsText(selectedFile);
     }
 
@@ -49,7 +96,7 @@ function Donnees(){
         setVariables(prev=>({...prev, [nomVar]: type}));
     }
 
-    // doit enregistrer dans jeu_donnee le lien du fichier (url cf image ?), l'id du user, created_at ?
+    // doit enregistrer dans jeu_donnee le lien du fichier, l'id du user, nom fichier
     // doit enregistrer dans variable pour chaque variable le nom, le type, id du jeu de données lié
     async function handleClickPublier(e){
         // appel à /api/jeu_donnees en POST
@@ -99,11 +146,12 @@ function Donnees(){
             // console.log(file); // ok
             const userId = user.id; 
 
+            // https://fr.javascript.info/formdata 
             const formData = new FormData();
             formData.append("user", userId);
             formData.append("lien", file);
-            
-            // https://fr.javascript.info/formdata 
+            formData.append("nom", file.name);
+                        
             // for (var value of formData.values()) {
             //     console.log(value); // ok
             // }

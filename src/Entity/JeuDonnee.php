@@ -7,7 +7,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use App\Controller\JeuDonneeController;
+use ApiPlatform\Metadata\Link;
 
+#[ApiResource (
+    operations: [
+        new Get(
+            uriTemplate: '/jeu_donnee/{id}/variables',
+            uriVariables: ['id' => new Link(fromClass: JeuDonnee::class, identifiers: ['id'])],
+            controller: JeuDonneeController::class,
+            read: false, // Empêche API Platform de charger une entité Doctrine automatiquement avant d’appeler le contrôleur
+        )
+    ]
+)] 
 #[ApiResource] 
 #[ORM\Entity(repositoryClass: JeuDonneeRepository::class)]
 class JeuDonnee

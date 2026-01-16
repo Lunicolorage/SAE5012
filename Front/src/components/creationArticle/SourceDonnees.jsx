@@ -9,8 +9,10 @@ function SourceDonnees({article, setArticle, index}){
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     // const [success, setSuccess] = useState('');
-
+    const [selectedData, setSelectedData] = useState(null);
     const [jeuDonnees, setJeuDonnees] = useState([]);
+    const [variables, setVariables] = useState([]);
+    const [selectedVariables, setSelectedVariables] = useState([]);
 
 
     // récupérer jeu données en BDD pour remplir les options
@@ -45,35 +47,151 @@ function SourceDonnees({article, setArticle, index}){
         fetchSourcesDonnees();
     }, [user.token]);
 
+    // pas fini, en cours de tests
+    function handleCheckVariables(variable, checked){
+        setSelectedVariables((prev) => {
+            if(checked) {
+                // si cochée -> copie déjà là + ajoute celle qu'on vient de cocher
+                // vars = [...prev, variable];
+                const existing = prev.find(v => v.id === variable.id);
+                return existing ? prev : [...prev, {...variable, backgroundColor: "#ff0000"}]
+            } else {
+                // sinon -> garde tout sauf celle qu'on décoche
+                return prev.filter(v => v.id !== variable.id);
+            }
+        })
 
+        setArticle(prev => {
+            const sections = [...prev.sections]; 
+            const prevDatasets = sections[index].contenu.datasets || [];
 
-    function handleChoixTypeGraphique(){}
+            const newDatasets = checked
+                ? [...prevDatasets, { variableId: variable.id, label: variable.nom, backgroundColor: variable.backgroundColor || "#ff0000" }]
+                : prevDatasets.filter(ds => ds.variableId !== variable.id);
 
+            sections[index] = {
+                ...sections[index],
+                contenu: {
+                    ...sections[index].contenu,
+                    datasets: newDatasets
+                }
+            }
+            return {...prev, sections}
+        })
 
-    function handleSourceDonnees(e){
-        const donnees = e.target.value;
-        // console.log("donnees : ", donnees);
+    }
+ 
+    // pas fini, en cours de tests
+    function handleColorChoice(variableId, color){ // à voir
+        console.log(color); // récupère bien couleur (hexa)
 
-        const selectedData = jeuDonnees.find(jd => jd.id == donnees);
-        // console.log(selectedData.variables); // récupérer variables pour zoneCheck
+        setSelectedVariables(prev => prev.map(v => v.id == variableId ? {...v, backgroundColor: color} : v))
 
         setArticle(prev => {
             const sections = [...prev.sections];
 
+            const prevDatasets = sections[index].contenu.datasets || [];
+
+            const newDatasets = prevDatasets.map((nd) =>{
+                return nd.variableId == variableId ? {...nd, backgroundColor: color} : nd;
+            } )
+
             sections[index]={
                 ...sections[index],
-                type: "graphique",
                 contenu: {
                     ...sections[index].contenu,
-                    // à voir -> faire en fonction type de graphiques ?
+                    datasets: newDatasets,
+                    // [
+                    //     {
+                    //         // ...sections[index].contenu.datasets,
+                    //         // backgroundColor: color,
+
+                    //     }
+                    // ],
                 }
             }
             return {...prev, sections}
         })
     }
 
+    
+    // ok
+    function handleChoixTypeGraphique(e){
+        const typeGraphic = e.target.value;
+
+        if (typeGraphic==""){
+            return;
+        }
+
+        console.log(typeGraphic);
+
+        setArticle(prev => {
+            const sections = [...prev.sections];
+
+            sections[index] = {
+                ...sections[index],
+                contenu: {
+                    ...sections[index].contenu,
+                    type: typeGraphic,
+                }
+            }
+            return {...prev, sections}
+        })
+    }
+
+    // semble ok -> à voir après
+    async function handleSourceDonnees(e){
+        const donneesId = e.target.value;
+        // console.log("donnees : ", donneesId);
+        const dataset = jeuDonnees.find(jd => jd.id == donneesId);
+        setSelectedData(dataset);
+        console.log(dataset);
+        setLoading(true);
+        setError('');
+
+        setArticle(prev => {
+            const sections = [...prev.sections];
+
+            sections[index]={
+                ...sections[index],
+                contenu: {
+                    ...sections[index].contenu,
+                    // à voir -> faire en fonction type de graphiques ?
+                    labels: [],
+                    datasets: [],
+                }
+            }
+            return {...prev, sections}
+        })
+        
+        // ok
+        try{ 
+            const response = await fetch(`http://localhost:8000/api/jeu_donnee/${donneesId}/variables`, {
+                method: 'GET',
+                headers: { 
+                    Authorization: `Bearer ${user.token}`
+                },
+            });
+
+            const nomsVar = await response.json();
+            console.log("nomsVar :", nomsVar)
+
+            if (!response.ok){
+                throw new Error(nomsVar.message || "Erreur get variables");
+            }
+
+            setVariables(nomsVar);
+        } catch (err) {
+            setError(err.message);
+        } finally{
+            setLoading(false);
+        }
+    }
+
+    
+
     async function handleValidateGraphic(){
-        // pour mettre tout bien dans toutes les tebles ? (notamment jeu_donnees)
+        // pour mettre tout bien dans toutes les tables BDD ? (notamment jeu_donnees)
         setError('');
         setLoading(true);
 
@@ -111,15 +229,21 @@ function SourceDonnees({article, setArticle, index}){
             </select>
 
             {/* à faire dynamiquement*/}
-            <div className="zoneCheck">
-                <h2>Variables</h2>
-                {/* faire boucle ? récupérer toutes les variables liées au jeu de données choisi*/}
-
-                <Variables nom={"nom"}/>
-                <Variables nom={"var 2"}/>
-                <Variables nom={"var 3"}/>
-                <Variables nom={"var 4"}/>                
-            </div>
+            
+            {selectedData && (
+                <div className="zoneCheck">
+                    <h2>Variables</h2>
+                    {/* faire boucle -> récupérer toutes les variables liées au jeu de données choisi*/}
+                    {variables.map(variable => {
+                        return <Variables 
+                                    key={variable.id} 
+                                    nom={variable.nom} 
+                                    onCheck = {(checked)=>handleCheckVariables(variable, checked)}
+                                    onColorChange={(color)=>handleColorChoice(variable.id,color)}
+                                />
+                    })}
+                </div>
+            )}         
 
 
             <label htmlFor="choixTypeGraphique"><h2>Type de graphique</h2></label>
@@ -131,6 +255,7 @@ function SourceDonnees({article, setArticle, index}){
                 <option>histogram</option>
             </select>
 
+            {/* Pour envoyer en BDD et à l'article ? */}
             <button type="button"
                     onClick={handleValidateGraphic}
                     disabled={loading} 

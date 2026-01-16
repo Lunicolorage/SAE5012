@@ -92,7 +92,7 @@ function PageCreationArticle(){
                     }
                 })}
 
-                <SourceDonnees article={article} setArticle={setArticle}/>
+                {/* <SourceDonnees article={article} setArticle={setArticle}/> */}
 
                 {showAjoutBloc && <AjoutBloc  article={article} setArticle={setArticle} clickCross={setShowAjoutBloc}/>}
                 {/* {console.log(article)} */}
