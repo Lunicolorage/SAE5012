@@ -13,6 +13,7 @@ function SourceDonnees({article, setArticle, index}){
     const [jeuDonnees, setJeuDonnees] = useState([]);
     const [variables, setVariables] = useState([]);
     const [selectedVariables, setSelectedVariables] = useState([]);
+    const [nomG, setNomG] = useState("");
 
 
     // récupérer jeu données en BDD pour remplir les options
@@ -47,6 +48,7 @@ function SourceDonnees({article, setArticle, index}){
         fetchSourcesDonnees();
     }, [user.token]);
 
+    
     // pas fini, en cours de tests
     function handleCheckVariables(variable, checked){
         setSelectedVariables((prev) => {
@@ -112,9 +114,10 @@ function SourceDonnees({article, setArticle, index}){
             }
             return {...prev, sections}
         })
+        console.log(article);
     }
 
-    
+
     // ok
     function handleChoixTypeGraphique(e){
         const typeGraphic = e.target.value;
@@ -137,6 +140,31 @@ function SourceDonnees({article, setArticle, index}){
             }
             return {...prev, sections}
         })
+    }
+
+    // ok
+    function handleChangeNom(e){
+        const nomGraphic = e.target.value;
+
+        if (nomGraphic==""){
+            return;
+        }
+
+        setNomG(nomGraphic);
+
+        setArticle(prev => {
+            const sections = [...prev.sections];
+
+            sections[index] = {
+                ...sections[index],
+                contenu: {
+                    ...sections[index].contenu,
+                    title: nomGraphic,
+                }
+            }
+            return {...prev, sections}
+        })
+        // console.log(article); // ok
     }
 
     // semble ok -> à voir après
@@ -195,9 +223,56 @@ function SourceDonnees({article, setArticle, index}){
         setError('');
         setLoading(true);
 
-        // try{
-
+        // format données à envoyer
+        // {
+        //     "idDonnees": "https://example.com/",
+        //     "idSection": "https://example.com/",
+        //     "type": "string",
+        //     "labels": [
+        //         "string"
+        //     ],
+        //     "datasets": [
+        //         "string"
+        //     ],
+        //     "options": [
+        //         "string"
+        //     ],
+        //     "graphiqueVariables": [
+        //         "https://example.com/"
+        //     ],
+        //     "title": "string"
         // }
+
+
+        // pour idDonnees : 
+        const idDonnees = selectedData.id;
+
+        try{
+            const response = await fetch('http://localhost:8000/api/graphiques', {
+                method: 'POST',
+                headers: { 
+                    Authorization: `Bearer ${user.token}`
+                },
+                body: JSON.stringify(
+                    article.sections.contenu // -> seulement si type == graphique 
+                )
+            });
+
+            const uploaded = await response.json();
+
+            if(!response.ok){
+                throw new Error(uploaded.message || "Erreur envoi données");
+            }
+
+
+
+
+        } catch (err) {
+            setError(err.message);
+            console.error("Erreur validation graphique:", err);
+        } finally {
+            setLoading(false);
+        }
     }
 
 
@@ -228,7 +303,7 @@ function SourceDonnees({article, setArticle, index}){
                 ))}
             </select>
 
-            {/* à faire dynamiquement*/}
+
             
             {selectedData && (
                 <div className="zoneCheck">
@@ -254,6 +329,9 @@ function SourceDonnees({article, setArticle, index}){
                 <option>bar chart</option>
                 <option>histogram</option>
             </select>
+
+            <label htmlFor="choixNomGraphique"><h2>Nom du graphique</h2></label>
+            <input type="text" id="choixNomGraphique" value={nomG} onChange={handleChangeNom} required/>
 
             {/* Pour envoyer en BDD et à l'article ? */}
             <button type="button"
