@@ -932,7 +932,7 @@ input[type=file]::file-selector-button {
   }
 
   .formTestTheme-buttons{
-    width: 0%;
+    width: 30%;
     justify-content: start;
   }
 
