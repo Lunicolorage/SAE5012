@@ -1,14 +1,17 @@
 import { InputColorTheme } from "./InputColorTheme";
 import { ThemeContext } from "../../context/ThemeProvider";
+import { UserContext } from "../../context/UserProvider";
 import { useContext, useEffect, useState } from "react";
 
 export function SectionCreateTheme() {
 
-    const [theme, setTheme, themes] = useContext(ThemeContext);
+    const [theme, setTheme, themes, setThemes] = useContext(ThemeContext);
+    const [user] = useContext(UserContext);
     // console.log(theme);
  
     const [nomTheme, setNomTheme] = useState('');
     const [logoColor, setLogoColor] = useState(theme.logoCouleur);
+    const [loading, setLoading] = useState(false);
 
     const [couleurPrincipale, setCouleurPrincipale] = useState(theme.couleurs.white);
     const [couleurSecondaire, setCouleurSecondaire] = useState(theme.couleurs.grey);
@@ -29,10 +32,54 @@ export function SectionCreateTheme() {
     }, [couleurPrincipale, couleurSecondaire, couleurAccent, couleurTexte, logoColor]);
 
     const handleSubmit = (e) => {
-        e.preventDefault(); // Empêche la redirection
-        // Ici vous pouvez ajouter votre logique pour traiter le formulaire
-        console.log('Thème créé :', { nomTheme, logoColor, couleurPrincipale, couleurSecondaire, couleurAccent, couleurTexte });
-    };
+        e.preventDefault();
+        setLoading(true);
+
+        const newTheme = {
+            nom: nomTheme,
+            class: nomTheme.toLowerCase().replace(/\s+/g, '-'),
+            active: false,
+            logo_couleur: logoColor,
+            grey: couleurSecondaire,
+            deepBlue: couleurTexte,
+            white: couleurPrincipale,
+            greenLight: couleurAccent,
+        };
+
+        const url = 'http://localhost:8000/api/themes';
+        
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/ld+json',
+                'Authorization': `Bearer ${user.token}`
+            },
+            body: JSON.stringify(newTheme)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Thème créé avec succès :', data);
+            // Ajouter le nouveau thème à la liste
+            setThemes([...themes, data]);
+            // Réinitialiser le formulaire
+            setNomTheme('');
+            setCouleurAccent(theme.couleurs.greenLight);
+            setCouleurPrincipale(theme.couleurs.white);
+            setCouleurSecondaire(theme.couleurs.grey);
+            setCouleurTexte(theme.couleurs.deepBlue);
+        })
+        .catch(error => {
+            console.error('Erreur lors de la création du thème:', error);
+        })
+        .finally(() => {
+            setLoading(false);
+        });
+    }
 
     return (
         <form className="formCreateTheme" onSubmit={handleSubmit}>
@@ -77,8 +124,8 @@ export function SectionCreateTheme() {
                     <option value="clair">logo clair</option>
                 </select>       
             </div>
-            <button type="submit">
-                Créer le thème
+            <button type="submit" disabled={loading}>
+                {loading ? "Création en cours..." : "Créer le thème"}
             </button>
             
         </form>
