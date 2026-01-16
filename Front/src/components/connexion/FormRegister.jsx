@@ -18,6 +18,7 @@ function FormRegister({ register }) {
         setSuccess('');
         setLoading(true);
 
+        //création du compte
         try {
             const response = await fetch('http://localhost:8000/api/users', {
                 method: 'POST',
@@ -37,7 +38,7 @@ function FormRegister({ register }) {
                 setLoading(false);
                 return;
             }
-
+            //connexion au nouveau compte
             const loginResponse = await fetch('http://localhost:8000/api/login_check', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -76,6 +77,7 @@ function FormRegister({ register }) {
                 const dataToStore = Array.isArray(value) ? JSON.stringify(value) : value;
                 localStorage.setItem('user_' + key, dataToStore);
             });
+            //information stockés dans le local storage (inutile pour le moment)
 
             setSuccess(' Inscription et connexion réussies !');
 

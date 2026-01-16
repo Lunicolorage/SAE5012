@@ -33,6 +33,7 @@ function ThemeProvider({ children }) {
         }
         getData();
     }, []); 
+    // Récupère tous les thèmes
     
     useEffect(() => {
         ListeThemes.forEach(monTheme => {
@@ -53,6 +54,7 @@ function ThemeProvider({ children }) {
             }
         });
     }, [ListeThemes]);
+    // Applique le thème séléctionné
 
     useEffect(() => {
         document.documentElement.className = theme.class;
@@ -63,6 +65,8 @@ function ThemeProvider({ children }) {
         }
 
     }, [theme]);
+
+    //Modifie les variables css pour appliquer le thème
 
     return (
         <ThemeContext.Provider

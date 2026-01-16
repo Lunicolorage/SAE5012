@@ -16,6 +16,7 @@ function BoutonNotation({ articleId, OnNoteAdded, setCanNote }) {
             .getPropertyValue(variable)
             .trim();
     };
+    // permet de récuperer une variable css
 
     async function PostNoteApi(note) {
         const url = 'http://localhost:8000/api/notes';
@@ -47,6 +48,7 @@ function BoutonNotation({ articleId, OnNoteAdded, setCanNote }) {
             console.error('Erreur lors de l\'ajout de la note:', err.message);
         }
     }
+    // Ajoute la note dans l'api
 
     function PostNote() {
         PostNoteApi(noteValue);
@@ -76,7 +78,7 @@ function BoutonNotation({ articleId, OnNoteAdded, setCanNote }) {
                             setNoteValue(newValue);
                         }}
                     />
-                </DialogContent>
+                </DialogContent> {/* Ouvre une nouvelle fenetre pour noter  */}
                 <Button 
                     onClick={PostNote}
                     sx={{ color: getCSSVariable('--greenLight') }}

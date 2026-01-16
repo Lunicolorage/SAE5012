@@ -5,11 +5,7 @@ function BoutonValiderTheme({PostThemeApi}) {
 
 
     const [theme, setTheme, themes, setThemes] = useContext(ThemeContext);
-    themes.forEach(monTheme => {
-        if (monTheme.active){
-            let themeActive = monTheme;
-        }
-    });
+    
 
     // console.log(theme);
     const [loading, setLoading] = useState(false);
@@ -24,10 +20,12 @@ function BoutonValiderTheme({PostThemeApi}) {
                     active: monTheme.id === theme.id
                 }));
                 setThemes(updatedThemes);
+                //modifie l'état de la State
                 
                 updatedThemes.forEach(monTheme => {
                     PostThemeApi(monTheme, monTheme.active, setLoading);
                 });
+                //Modifie l'état dans la bdd
             }}
         >
             {loading ? "Chargement..." : "Valider le thème"}

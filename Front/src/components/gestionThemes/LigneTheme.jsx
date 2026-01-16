@@ -6,9 +6,6 @@ export function LigneTheme({ UnTheme, PostThemeApi }) {
     const [theme, setTheme, ListeThemes, setListeThemes] = useContext(ThemeContext);
     const [user] = useContext(UserContext);
 
-
-    
-
     const handleThemeChange = () => {
         setTheme({
             id: UnTheme.id,  
@@ -24,9 +21,11 @@ export function LigneTheme({ UnTheme, PostThemeApi }) {
             }
         });
     };
+    //Voir l'aperçu du thème
 
     const [loading, setLoading] = useState(false);
 
+    // supression du thème dans l'api
     async function DeleteThemeApi(theme) {
     const url = 'http://localhost:8000/api/themes/' + theme.id;
     setLoading(true);
@@ -48,6 +47,7 @@ export function LigneTheme({ UnTheme, PostThemeApi }) {
         if (UnTheme.active){
             PostThemeApi(ListeThemes[0], true, setLoading);
         }
+        //si le thème était le thème séléctionné, remettre le thème par défaut
 
 
         if (UnTheme.id == theme.id){
@@ -65,8 +65,10 @@ export function LigneTheme({ UnTheme, PostThemeApi }) {
                 }
             });
         }
+        //si le thème était en aperçu, remettre le thème par défaut
 
         setListeThemes(newThemes);
+        //mettre a jour la liste de thème
         
     } catch (err) {
         console.error('Erreur lors de la suppression du thème:', err.message);

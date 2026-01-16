@@ -12,12 +12,14 @@ function AffichageArticle(){
             .getPropertyValue(variable)
             .trim();
     };
+    // permet de récuperer une variable css
 
     const { id } = useParams();
 
     const [user, setUser] = useContext(UserContext);
     const addNoteAllowed = ['ROLE_ADMIN','ROLE_ABO'];
     const hasAnyRole = (allowed) => Array.isArray(user?.roles) && user.roles.some(r => allowed.includes(r));
+    //verifie que le role autorise la fonctionnalité
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -39,6 +41,7 @@ function AffichageArticle(){
             console.error(err.message);
         }
     };
+    //récupère les données après avoir ajouté une note
 
     useEffect(() => {
         async function getData() {
@@ -60,6 +63,7 @@ function AffichageArticle(){
     
         getData();
     }, []); 
+    //récupère les données de l'article avec une requete custom
 
     useEffect(() => {
         if (contenuArticle.notes && Array.isArray(contenuArticle.notes)) {
@@ -69,13 +73,13 @@ function AffichageArticle(){
               setCanNote(false);
             }
           });
-        }
+        } // Vérifie si l'utilisateur n'a pas déjè noté l'article
 
         if (contenuArticle.notes && contenuArticle.notes.length > 0) {
           const totalNotes = contenuArticle.notes.reduce((sum, note) => sum + note.valeur, 0);
           const average = totalNotes / contenuArticle.notes.length;
           setNoteMoyenne(average);
-        }
+        } // Récupère la moyenne des notes
     }, [contenuArticle, user]);
 
     if (loading) return <div>Chargement...</div>;

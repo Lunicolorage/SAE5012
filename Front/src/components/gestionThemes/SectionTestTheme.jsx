@@ -9,6 +9,7 @@ export function SectionTestTheme() {
     const [theme, setTheme, themes] = useContext(ThemeContext);
     const [user] = useContext(UserContext);
 
+    //Fonction modifiant le thème actif
     async function PostThemeApi(theme,isActive, setLoading) {
         const url = 'http://localhost:8000/api/themes/'+theme.id;
         setLoading(true);

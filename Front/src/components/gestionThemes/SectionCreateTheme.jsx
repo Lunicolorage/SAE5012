@@ -30,7 +30,9 @@ export function SectionCreateTheme() {
         } } );
         // console.log(theme);
     }, [couleurPrincipale, couleurSecondaire, couleurAccent, couleurTexte, logoColor]);
+    //modification des élément du formulaire pour avoir un aperçu
 
+    //Création d'un nouveau thème
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
@@ -72,7 +74,7 @@ export function SectionCreateTheme() {
             setCouleurPrincipale(theme.couleurs.white);
             setCouleurSecondaire(theme.couleurs.grey);
             setCouleurTexte(theme.couleurs.deepBlue);
-        })
+        }) 
         .catch(error => {
             console.error('Erreur lors de la création du thème:', error);
         })

@@ -10,6 +10,7 @@ function Connexion() {
 
   // console.log(user);
 
+  //bouton de déconnexion
     if(user && user.nom){
         return (
         <div>
@@ -29,7 +30,7 @@ function Connexion() {
     }
     else if(isRegister){
         return(
-    <>
+    <> 
       <FormRegister
         register ={[isRegister, setIsRegister]}
       />
@@ -45,7 +46,7 @@ else {
     />
     </>
   )
-}
+}// page de connexion et de création de compte
 
 }
 

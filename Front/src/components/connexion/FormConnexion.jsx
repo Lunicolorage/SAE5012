@@ -12,7 +12,7 @@ function FormConnection({register}){
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     
-
+    //connexion et récupération des informations utilisateur
     const handleConnexion = async () => {
         setError('');
         setSuccess('');
@@ -53,7 +53,8 @@ function FormConnection({register}){
                 Object.entries(userDico).forEach(([key, value]) => {
                     const dataToStore = Array.isArray(value) ? JSON.stringify(value) : value;
                     localStorage.setItem('user_' + key, dataToStore);
-                });
+                }); 
+                //information stockés dans le local storage (inutile pour le moment)
 
                 // localStorage.setItem('user_id', userInfo.id);
 
