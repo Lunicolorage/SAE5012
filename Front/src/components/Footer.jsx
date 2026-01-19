@@ -48,7 +48,7 @@ function Footer({createAllowed, addDataAllowed, editDesignAllowed}){
                     <p>Politique de confidentialité</p>
                 </div>
             </div>
-            <p className="copyright">Copyright @ 2525 Seriouscience</p>
+            <p className="copyright">Copyright @ 2026 Seriouscience</p>
         </footer>
     );
 }

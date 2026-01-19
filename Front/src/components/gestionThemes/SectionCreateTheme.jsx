@@ -7,7 +7,7 @@ export function SectionCreateTheme() {
 
     const [theme, setTheme, themes, setThemes] = useContext(ThemeContext);
     const [user] = useContext(UserContext);
-    // console.log(theme);
+    // console.log(user.id);
  
     const [nomTheme, setNomTheme] = useState('');
     const [logoColor, setLogoColor] = useState(theme.logoCouleur);
@@ -40,6 +40,7 @@ export function SectionCreateTheme() {
         const newTheme = {
             nom: nomTheme,
             class: nomTheme.toLowerCase().replace(/\s+/g, '-'),
+            user: 'api/users/'+user.id,
             active: false,
             logo_couleur: logoColor,
             grey: couleurSecondaire,
