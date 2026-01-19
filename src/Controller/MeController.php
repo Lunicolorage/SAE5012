@@ -11,3 +11,5 @@ class MeController extends AbstractController
         return $this->getUser();
     }
 }
+
+//permet de se connecter, ajout d'une requête API
