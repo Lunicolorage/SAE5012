@@ -149,6 +149,7 @@ function Donnees(){
             // https://fr.javascript.info/formdata 
             const formData = new FormData();
             formData.append("user", userId);
+            // formData.append("user", `/api/users/${userId}`);
             formData.append("lien", file);
             formData.append("nom", file.name);
                         
@@ -174,6 +175,11 @@ function Donnees(){
             // Variables
             for (const [nom, type] of Object.entries(variables)){ // récupère nom et type pour chaque variable dans variables
 
+                const valeursCol = data.map(row => {
+                    const val = row[nom];
+                    return type == "numerique" ? Number(val) : val; // pour avoir nb directement (+ simple pour après)
+                })
+
                 const response2 = await fetch("http://localhost:8000/api/variables", {
                     method: "POST",
                     headers: { 
@@ -184,6 +190,7 @@ function Donnees(){
                         idDonnees: `/api/jeu_donnees/${uploaded.id}`,
                         nom,
                         type,
+                        valeurs: valeursCol,
                         // graphiqueVariables: [], // à changer ? -> là juste pour tester
                     })
                 })

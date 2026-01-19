@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { UserContext } from "../../context/UserProvider";
 
 function SourceDonnees({article, setArticle, index}){
-    const [user, setUser] = useContext(UserContext);
+    const [user] = useContext(UserContext);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     // const [success, setSuccess] = useState('');
@@ -49,14 +49,13 @@ function SourceDonnees({article, setArticle, index}){
     }, [user.token]);
 
     
-    // pas fini, en cours de tests
+    // gère sélection variables
     function handleCheckVariables(variable, checked){
         setSelectedVariables((prev) => {
             if(checked) {
                 // si cochée -> copie déjà là + ajoute celle qu'on vient de cocher
-                // vars = [...prev, variable];
                 const existing = prev.find(v => v.id === variable.id);
-                return existing ? prev : [...prev, {...variable, backgroundColor: "#ff0000"}]
+                return existing ? prev : [...prev, {...variable, backgroundColor: "#000000"}]
             } else {
                 // sinon -> garde tout sauf celle qu'on décoche
                 return prev.filter(v => v.id !== variable.id);
@@ -68,66 +67,57 @@ function SourceDonnees({article, setArticle, index}){
             const prevDatasets = sections[index].contenu.datasets || [];
 
             const newDatasets = checked
-                ? [...prevDatasets, { variableId: variable.id, label: variable.nom, backgroundColor: variable.backgroundColor || "#ff0000" }]
+                ? [...prevDatasets, { 
+                        variableId: Number(variable.id), 
+                        label: variable.nom, 
+                        data: variable.valeurs, 
+                        backgroundColor: "#000000" // met en noir par défaut
+                    }]
                 : prevDatasets.filter(ds => ds.variableId !== variable.id);
+
+            let labels = sections[index].contenu.labels; // à voir
+
+            if (prevDatasets.length == 0 && checked){
+                labels = variable.type == "categorielle" 
+                            ? variable.valeurs 
+                            : variable.valeurs.map((_, i) => `#${i + 1}`);// -> gérer qd nb
+            }
 
             sections[index] = {
                 ...sections[index],
                 contenu: {
                     ...sections[index].contenu,
-                    datasets: newDatasets
+                    datasets: newDatasets,
+                    labels,
                 }
             }
+
             return {...prev, sections}
         })
 
     }
  
-    // pas fini, en cours de tests
-    function handleColorChoice(variableId, color){ // à voir
-        console.log(color); // récupère bien couleur (hexa)
-
-        setSelectedVariables(prev => prev.map(v => v.id == variableId ? {...v, backgroundColor: color} : v))
-
+    // gère couleurs variables
+    function handleColorChoice(variableId, color){
+        // console.log(color); // récupère bien couleur (hexa)
         setArticle(prev => {
             const sections = [...prev.sections];
 
-            const prevDatasets = sections[index].contenu.datasets || [];
-
-            const newDatasets = prevDatasets.map((nd) =>{
-                return nd.variableId == variableId ? {...nd, backgroundColor: color} : nd;
-            } )
-
-            sections[index]={
-                ...sections[index],
-                contenu: {
-                    ...sections[index].contenu,
-                    datasets: newDatasets,
-                    // [
-                    //     {
-                    //         // ...sections[index].contenu.datasets,
-                    //         // backgroundColor: color,
-
-                    //     }
-                    // ],
-                }
-            }
+            sections[index].contenu.datasets =
+                sections[index].contenu.datasets.map(nd => 
+                    nd.variableId == variableId ? {...nd, backgroundColor: color} : nd
+                )                
             return {...prev, sections}
         })
-        console.log(article);
     }
 
 
-    // ok
+    // gère choix type graphique
     function handleChoixTypeGraphique(e){
         const typeGraphic = e.target.value;
-
         if (typeGraphic==""){
             return;
         }
-
-        console.log(typeGraphic);
-
         setArticle(prev => {
             const sections = [...prev.sections];
 
@@ -142,14 +132,12 @@ function SourceDonnees({article, setArticle, index}){
         })
     }
 
-    // ok
+    // gère choix nom graphique
     function handleChangeNom(e){
         const nomGraphic = e.target.value;
-
         if (nomGraphic==""){
             return;
         }
-
         setNomG(nomGraphic);
 
         setArticle(prev => {
@@ -164,16 +152,21 @@ function SourceDonnees({article, setArticle, index}){
             }
             return {...prev, sections}
         })
-        // console.log(article); // ok
     }
 
-    // semble ok -> à voir après
+    // semble ok
     async function handleSourceDonnees(e){
         const donneesId = e.target.value;
+        if (!donneesId) return;
         // console.log("donnees : ", donneesId);
         const dataset = jeuDonnees.find(jd => jd.id == donneesId);
         setSelectedData(dataset);
         console.log(dataset);
+
+        setVariables([]);
+        setSelectedVariables([]);
+        setNomG("");
+
         setLoading(true);
         setError('');
 
@@ -183,10 +176,14 @@ function SourceDonnees({article, setArticle, index}){
             sections[index]={
                 ...sections[index],
                 contenu: {
-                    ...sections[index].contenu,
-                    // à voir -> faire en fonction type de graphiques ?
+                    // ...sections[index].contenu,
+                    // à voir 
+                    type: '',
+                    title: '',
                     labels: [],
                     datasets: [],
+                    // jeuDonneeId: Number(donneesId),
+                    jeuDonneeId: `/api/jeu_donnees/${donneesId}`, // pbm de jeuDonneeId
                 }
             }
             return {...prev, sections}
@@ -216,67 +213,62 @@ function SourceDonnees({article, setArticle, index}){
         }
     }
 
-    
+    // fonction pour enregistrer graphique directement en BDD -> abandonné
+    // async function handleValidateGraphic(){
+    //     // pour mettre tout bien dans toutes les tables BDD
+    //     if (!selectedData) {
+    //         setError("Aucun jeu de données sélectionné");
+    //         return;
+    //     }
+        
+    //     setError('');
+    //     setLoading(true);
 
-    async function handleValidateGraphic(){
-        // pour mettre tout bien dans toutes les tables BDD ? (notamment jeu_donnees)
-        setError('');
-        setLoading(true);
+    //     try{
+    //         const response = await fetch('http://localhost:8000/api/graphiques', {
+    //             method: 'POST',
+    //             headers: { 
+    //                 Authorization: `Bearer ${user.token}`,
+    //                 "Content-Type": "application/ld+json"
+    //             },
+    //             body: JSON.stringify({
+    //                 idDonnees: `/api/jeu_donnees/${selectedData.id}`,
+    //                 type: article.sections[index].contenu.type,
+    //                 title: article.sections[index].contenu.title,
+    //                 labels: article.sections[index].contenu.labels,
+    //                 datasets: article.sections[index].contenu.datasets,
+    //             })
+    //         });
 
-        // format données à envoyer
-        // {
-        //     "idDonnees": "https://example.com/",
-        //     "idSection": "https://example.com/",
-        //     "type": "string",
-        //     "labels": [
-        //         "string"
-        //     ],
-        //     "datasets": [
-        //         "string"
-        //     ],
-        //     "options": [
-        //         "string"
-        //     ],
-        //     "graphiqueVariables": [
-        //         "https://example.com/"
-        //     ],
-        //     "title": "string"
-        // }
+    //         const uploadedGraph = await response.json();
 
+    //         if(!response.ok){
+    //             throw new Error(uploadedGraph.message || "Erreur envoi données");
+    //         }
 
-        // pour idDonnees : 
-        const idDonnees = selectedData.id;
-
-        try{
-            const response = await fetch('http://localhost:8000/api/graphiques', {
-                method: 'POST',
-                headers: { 
-                    Authorization: `Bearer ${user.token}`
-                },
-                body: JSON.stringify(
-                    article.sections.contenu // -> seulement si type == graphique 
-                )
-            });
-
-            const uploaded = await response.json();
-
-            if(!response.ok){
-                throw new Error(uploaded.message || "Erreur envoi données");
-            }
-
-
+    //         for (let v of selectedVariables){
+    //             await fetch('http://localhost:8000/api/graphique_variables', {
+    //                 method: 'POST',
+    //                 headers: { 
+    //                     Authorization: `Bearer ${user.token}`,
+    //                     "Content-Type": "application/ld+json"
+    //                 },
+    //                 body: JSON.stringify({
+    //                     idGraphique: `/api/graphiques/${uploadedGraph.id}`, // à voir
+    //                     idVariable: `/api/variables/${v.id}`,
+    //                     couleur: v.backgroundColor 
+    //                 })
+    //             })
+    //         }
 
 
-        } catch (err) {
-            setError(err.message);
-            console.error("Erreur validation graphique:", err);
-        } finally {
-            setLoading(false);
-        }
-    }
-
-
-
+    //     } catch (err) {
+    //         setError(err.message);
+    //         console.error("Erreur validation graphique:", err);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }
 
 
     function handleCrossClick(){
@@ -333,13 +325,15 @@ function SourceDonnees({article, setArticle, index}){
             <label htmlFor="choixNomGraphique"><h2>Nom du graphique</h2></label>
             <input type="text" id="choixNomGraphique" value={nomG} onChange={handleChangeNom} required/>
 
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+
             {/* Pour envoyer en BDD et à l'article ? */}
-            <button type="button"
+            {/* <button type="button"
                     onClick={handleValidateGraphic}
                     disabled={loading} 
                 >
                     {loading ? "Upload..." : "Valider le graphique"}
-                </button>
+                </button> */}
         </div>
     )
 }

@@ -27,6 +27,9 @@ class Graphique
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
+
     #[ORM\Column(type: 'json')]
     private array $labels = [];
 
@@ -39,7 +42,7 @@ class Graphique
     /**
      * @var Collection<int, GraphiqueVariable>
      */
-    #[ORM\OneToMany(targetEntity: GraphiqueVariable::class, mappedBy: 'idGraphique', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: GraphiqueVariable::class, mappedBy: 'idGraphique', cascade: ['persist'], orphanRemoval: true)]
     private Collection $graphiqueVariables;
 
     public function __construct()

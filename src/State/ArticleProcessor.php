@@ -7,8 +7,12 @@ use App\Entity\Section;
 use App\Entity\Titre;
 use App\Entity\Texte;
 use App\Entity\Image;
+use App\Entity\Graphique;
+use App\Entity\GraphiqueVariable;
 use App\Repository\UserRepository;
 use App\Repository\ImageRepository;
+use App\Repository\JeuDonneeRepository;
+use App\Repository\VariableRepository;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,6 +23,8 @@ class ArticleProcessor implements ProcessorInterface
         private EntityManagerInterface $entityManager,
         private UserRepository $userRepository,
         private ImageRepository $imageRepository,
+        private JeuDonneeRepository $jeuDonneeRepository,
+        private VariableRepository $variableRepository,
     ) {}
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
@@ -67,6 +73,7 @@ class ArticleProcessor implements ProcessorInterface
                 'titre' => $this->processTitre($section, $contenuData),
                 'texte' => $this->processTexte($section, $contenuData),
                 'image' => $this->processImage($section, $contenuData),
+                'graphique' => $this->processGraphique($section, $contenuData),
                 default => throw new \Exception("Type de section inconnu: {$section->getType()}")
             };
         }
@@ -129,6 +136,51 @@ class ArticleProcessor implements ProcessorInterface
         // Lier l'image à la section
         $section->addImage($image);
         $this->entityManager->persist($section);
+        $this->entityManager->flush();
+    }
+
+
+    private function processGraphique(Section $section, ?array $contenuData = null): void
+    {
+        if (!$contenuData){
+            return;
+        }
+        $manager = $this->entityManager;
+
+        $jeuDonneeId = $contenuData['jeuDonneeId'];
+
+        if (!$jeuDonneeId) {
+            throw new \Exception("jeuDonneeId manquant pour le graphique");
+        }
+
+        $jeuDonnee = $this->jeuDonneeRepository->find($jeuDonneeId);
+
+        if (!$jeuDonnee) {
+            throw new \Exception("Jeu de données introuvable");
+        }
+
+        $graphique = new Graphique();
+        $graphique->setType($contenuData['type'] ?? '');
+        $graphique->setTitle($contenuData['title'] ?? '');
+        $graphique->setLabels($contenuData['labels'] ?? []);
+        $graphique->setDatasets($contenuData['datasets'] ?? []);
+        $graphique->setIdSection($section);
+        $graphique->setIdDonnees($jeuDonnee);
+
+        $manager->persist($graphique);
+
+        if (!empty($contenuData['datasets'])) {
+            foreach ($contenuData['datasets'] as $dataset){
+                $variable = $this->variableRepository->find($dataset['variableId']);
+            
+                $gv = new GraphiqueVariable();
+                $gv->setIdGraphique($graphique);
+                $gv->setIdVariable($variable);
+                $gv->setCouleur($dataset['backgroundColor'] ?? '#000000');
+                $manager->persist($gv);
+            }
+        }
+
         $this->entityManager->flush();
     }
 }

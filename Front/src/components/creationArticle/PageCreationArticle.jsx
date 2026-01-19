@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 function PageCreationArticle(){
     const [showAjoutBloc, setShowAjoutBloc] = useState(false)
-    const [user, setUser] = useContext(UserContext);
+    const [user] = useContext(UserContext);
     const navigate = useNavigate();
 
     // faire un tableau pour gérer affichage blocs

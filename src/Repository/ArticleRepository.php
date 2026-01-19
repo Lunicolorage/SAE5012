@@ -72,11 +72,16 @@ class ArticleRepository extends ServiceEntityRepository
                                 ->getRepository(\App\Entity\Graphique::class)
                                 ->findOneBy(['idSection'=>$section->getId()]);
 
+                            if (!$graphique) {
+                                $contenu = null;
+                                break;
+                            }
+
                             $variables = [];
                             foreach($graphique->getGraphiqueVariables() as $gv){
                                 $variables[] = [
                                     'id' => $gv->getId(),
-                                    'variableId'=> $gv->getIdVaraiable()->getId(),
+                                    'variableId'=> $gv->getIdVariable()->getId(),
                                     'nom'=> $gv->getIdVariable()->getNom(),
                                     'couleur'=> $gv->getCouleur(),
                                 ];
@@ -85,6 +90,9 @@ class ArticleRepository extends ServiceEntityRepository
                             $contenu = $graphique ? [
                                 'id' => $graphique->getId(),
                                 'type' => $graphique->getType(),
+                                'title' => $graphique->getTitle(),
+                                'labels' => $graphique->getLabels(),
+                                'datasets' => $graphique->getDatasets(),
                                 'jeuDonneeId' => $graphique->getIdDonnees()->getId(),
                                 'variables' => $variables
                             ] : null;

@@ -35,7 +35,7 @@ class JeuDonnee
 
     #[ORM\ManyToOne(inversedBy: 'jeuDonnees')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $user = null;
+    private ?User $user = null;
 
     #[ORM\Column(length: 255)]
     private ?string $lien = null;
@@ -52,7 +52,7 @@ class JeuDonnee
     /**
      * @var Collection<int, Graphique>
      */
-    #[ORM\OneToMany(targetEntity: Graphique::class, mappedBy: 'idDonnees', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Graphique::class, mappedBy: 'idDonnees', orphanRemoval: true)] // à voir pour orphanRemoval
     private Collection $graphiques;
 
     public function __construct()
@@ -78,12 +78,12 @@ class JeuDonnee
         return $this;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
