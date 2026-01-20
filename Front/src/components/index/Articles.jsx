@@ -29,6 +29,8 @@ function Articles() {
     getData();
   }, []); 
 
+  //récupérations de la totalité des articles
+
   const handleArticleClick = (articleId) => {
     navigate(`/article/${articleId}`);
   };
@@ -39,7 +41,7 @@ function Articles() {
   return (
     <div className="allArticles">
       {listeArticles
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) //trie les articles pour les placer du plus rescent au plus ancien
       .map((article) => (
         <ArticleIndex 
           key={article.id} 
@@ -47,7 +49,7 @@ function Articles() {
           onArticleClick={handleArticleClick}
         />
       ))}
-    </div>
+    </div> // parcours les articles et les affiche
   );
 }
 

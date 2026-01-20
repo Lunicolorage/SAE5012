@@ -112,7 +112,7 @@ function AffichageArticle(){
             <p> {new Date(contenuArticle.createdAt).toLocaleDateString('fr-FR')} - {contenuArticle.user.nom}</p> 
 
             {contenuArticle.sections
-                .sort((a, b) => a.ordre - b.ordre)
+                .sort((a, b) => a.ordre - b.ordre) // verifie que les sections sont dans le bon ordre
                 .map((section) => (
                     <SectionArticle 
                     key={section.id} 

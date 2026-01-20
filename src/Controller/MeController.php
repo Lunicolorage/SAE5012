@@ -12,4 +12,4 @@ class MeController extends AbstractController
     }
 }
 
-//permet de se connecter, ajout d'une requête API
+//permet de se connecter, ajout d'une requête API en récupérant les informations à partir du token
