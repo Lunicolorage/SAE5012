@@ -429,6 +429,12 @@ table th, table td {
   min-width: 20vw;
 }
 
+.articleSolo-suppr{
+  background-color: var(--deepBlue);
+  color: var(--white);
+  margin-left: 1vw;
+}
+
 
 .sectionTitre, .sectionTexte{
   margin-bottom: 1vw;

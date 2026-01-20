@@ -29,7 +29,7 @@ function ArticleIndex({ article, onArticleClick, listeArticles, setListeArticles
           article={article}
           listeArticles={listeArticles}
           setListeArticles={setListeArticles}
-          
+          //affiche le bouton supprimer seulement si l'utilisateur est l'auteur ou a un role de gestion
           />
         )}
       </div>

@@ -4,6 +4,8 @@ import { SectionArticle } from "./SectionArticle";
 import { UserContext } from "../../context/UserProvider";
 import Rating from '@mui/material/Rating';
 import { BoutonNotation } from "./BoutonNotation";
+import { BoutonModif } from "./BoutonModif";
+import { BoutonSuppr } from "./BoutonSuppr";
 
 function AffichageArticle(){
 
@@ -15,6 +17,11 @@ function AffichageArticle(){
     // permet de récuperer une variable css
 
     const { id } = useParams();
+
+    const SuppArticleAllowed = ['ROLE_ADMIN','ROLE_EDIT'];
+
+    const [IsTheAuthor, setIsTheAuthor] = useState(false);
+
 
     const [user, setUser] = useContext(UserContext);
     const addNoteAllowed = ['ROLE_ADMIN','ROLE_ABO'];
@@ -37,6 +44,8 @@ function AffichageArticle(){
             }
             const result = await response.json();
             setContenuArticle(result);
+            
+            //verifie si l'utilisateur est l'auteur de l'article
         } catch (err) {
             console.error(err.message);
         }
@@ -66,6 +75,12 @@ function AffichageArticle(){
     //récupère les données de l'article avec une requete custom
 
     useEffect(() => {
+        // Vérifie si l'utilisateur est l'auteur de l'article
+        if (contenuArticle.user){
+          setIsTheAuthor(contenuArticle.user.id === user.id);
+          //console.log(user);
+        }
+
         if (contenuArticle.notes && Array.isArray(contenuArticle.notes)) {
           contenuArticle.notes.forEach(note => {
             let idNoteUser = note.user.split('/').pop();
@@ -110,6 +125,13 @@ function AffichageArticle(){
               </div>
             </div>
             <p> {new Date(contenuArticle.createdAt).toLocaleDateString('fr-FR')} - {contenuArticle.user.nom}</p> 
+            
+            {(hasAnyRole(SuppArticleAllowed) || IsTheAuthor) && (
+            <div>
+              < BoutonModif />
+              < BoutonSuppr article ={contenuArticle}/>
+            </div>
+            )}
 
             {contenuArticle.sections
                 .sort((a, b) => a.ordre - b.ordre) // verifie que les sections sont dans le bon ordre
