@@ -6,6 +6,7 @@ api_platform:
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
+        pagination_enabled: false
     enable_swagger_ui: true
     enable_docs: true
     swagger:

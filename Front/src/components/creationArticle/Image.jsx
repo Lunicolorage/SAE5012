@@ -216,7 +216,7 @@ function Image({article, setArticle, index}){
         <div className="zoneChoixImage">
             <label htmlFor="choixImage">
                 <h2>Image</h2>
-                <img src="src\assets\croix.png" alt="fermer" className="cross" onClick={handleCrossClick}></img>
+                <img src="src\assets\croix.png" alt="fermer" className="cross icone" onClick={handleCrossClick}></img>
             </label>
 
             <div className="selectionImage">

@@ -158,7 +158,7 @@ function SourceDonnees({article, setArticle, index}){
     async function handleSourceDonnees(e){
         const donneesId = e.target.value;
         if (!donneesId) return;
-        // console.log("donnees : ", donneesId);
+        console.log("donnees : ", donneesId);
         const dataset = jeuDonnees.find(jd => jd.id == donneesId);
         setSelectedData(dataset);
         console.log(dataset);
@@ -177,13 +177,11 @@ function SourceDonnees({article, setArticle, index}){
                 ...sections[index],
                 contenu: {
                     // ...sections[index].contenu,
-                    // à voir 
                     type: '',
                     title: '',
                     labels: [],
                     datasets: [],
-                    // jeuDonneeId: Number(donneesId),
-                    jeuDonneeId: `/api/jeu_donnees/${donneesId}`, // pbm de jeuDonneeId
+                    idDonnees: `/api/jeu_donnees/${donneesId}`,
                 }
             }
             return {...prev, sections}
@@ -283,7 +281,7 @@ function SourceDonnees({article, setArticle, index}){
 
             <label htmlFor="choixSourceDonnees">
                 <h2>Source de données</h2>
-                <img src="src\assets\croix.png" alt="fermer" className="cross" onClick={handleCrossClick}></img>
+                <img src="src\assets\croix.png" alt="fermer" className="cross icone" onClick={handleCrossClick}></img>
             </label>
 
             <select id="choixSourceDonnees" onChange={handleSourceDonnees} disabled={loading}>

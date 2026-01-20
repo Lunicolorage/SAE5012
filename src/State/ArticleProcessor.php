@@ -147,16 +147,22 @@ class ArticleProcessor implements ProcessorInterface
         }
         $manager = $this->entityManager;
 
-        $jeuDonneeId = $contenuData['jeuDonneeId'];
+        $jeuDonneeId = $contenuData['idDonnees'];
 
-        if (!$jeuDonneeId) {
-            throw new \Exception("jeuDonneeId manquant pour le graphique");
+        if (!$jeuDonneeId) { // ok ici
+            throw new \Exception("idDonnees manquant pour le graphique");
+        }
+
+        if (is_string($jeuDonneeId) && str_contains($jeuDonneeId, '/')) {
+            // Extract the numeric ID from the IRI
+            $parts = explode('/', $jeuDonneeId);
+            $jeuDonneeId = (int) end($parts);
         }
 
         $jeuDonnee = $this->jeuDonneeRepository->find($jeuDonneeId);
 
-        if (!$jeuDonnee) {
-            throw new \Exception("Jeu de données introuvable");
+        if (!$jeuDonnee) { // pas ok ici
+            throw new \Exception("Jeu de données introuvable avec l'ID: " . $jeuDonneeId);
         }
 
         $graphique = new Graphique();
@@ -173,6 +179,10 @@ class ArticleProcessor implements ProcessorInterface
             foreach ($contenuData['datasets'] as $dataset){
                 $variable = $this->variableRepository->find($dataset['variableId']);
             
+                if (!$variable) {
+                    throw new \Exception("Variable introuvable avec l'ID: " . $variableId);
+                }
+                
                 $gv = new GraphiqueVariable();
                 $gv->setIdGraphique($graphique);
                 $gv->setIdVariable($variable);

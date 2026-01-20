@@ -46,6 +46,7 @@ function Articles() {
           article={article}
           onArticleClick={handleArticleClick}
         />
+        // console.log(article)
       ))}
     </div>
   );
