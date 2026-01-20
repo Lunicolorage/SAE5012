@@ -29,7 +29,7 @@ export function SectionTestTheme() {
             }
             const result = await response.json();
             console.log('Thème modifié avec succès:');
-            console.log(result);
+            // console.log(result);
 
             const ThemeDico = {id: monTheme.id, 
                     nom: monTheme.nom, 
