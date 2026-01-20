@@ -20,28 +20,6 @@ function Donnees(){
 
         let reader = new FileReader();
 
-        // reader.onload = function(e) {    
-        //     let text = e.target.result;
-            
-        //     // trim supprime les espaces au début et à la fin d'une chaîne
-        //     const lines = text.split("\n").map(line => line.trim()).filter(line => line !== "");
-
-        //     const newHeaders = lines[0].split(",");
-        //     setHeaders(newHeaders);
-
-        //     const rows = lines.slice(1).map(line => {
-        //         const values = line.split(",");
-        //         let obj = {};
-        //         newHeaders.forEach((h, i) => {
-        //             obj[h] = values[i];
-        //         });
-        //         return obj;
-        //     });
-
-        //     console.log("tab :", rows);
-        //     setData(rows);
-        // }
-
         function detectSeparator(line){
             // tester première ligne pour voir si plus de , ou de ; -> en déduire séparateur pour le reste
             const nbVirgule = (line.match(/,/g) || []).length;
@@ -69,7 +47,9 @@ function Donnees(){
                     const values = line.split(separateur).map(v => v.trim());
 
                     return headers.reduce((obj, header, index) => {
-                        obj[header] = values[index] ?? "";
+                        let value = values[index] ?? "";
+                        value = value.replace(/"/g, ''); // Enlever les guillemets
+                        obj[header] = value;
                         return obj;
                     }, {});
                 });
@@ -99,30 +79,6 @@ function Donnees(){
     // doit enregistrer dans jeu_donnee le lien du fichier, l'id du user, nom fichier
     // doit enregistrer dans variable pour chaque variable le nom, le type, id du jeu de données lié
     async function handleClickPublier(e){
-        // appel à /api/jeu_donnees en POST
-        // {
-        //     "createdAt": "2026-01-13T10:14:33.989Z",
-        //     "user": "https://example.com/",
-        //     "lien": "string",
-        //     "variables": [
-        //         "https://example.com/"
-        //     ],
-        //     "graphiques": [
-        //         "https://example.com/"
-        //     ]
-        // }
-        // appel à /api/variables en POST
-        // {
-        //     "idDonnees": "https://example.com/",
-        //     "nom": "string",
-        //     "type": "string",
-        //     "graphiqueVariables": [
-        //         "https://example.com/"
-        //     ]
-        // }
-        // Doit pas remplir graphiques et graphiqueVariables pour l'instant. 
-        // Verif peut être null
-
         e.preventDefault();
         setLoading(true);
         setError('');
@@ -176,8 +132,20 @@ function Donnees(){
             for (const [nom, type] of Object.entries(variables)){ // récupère nom et type pour chaque variable dans variables
 
                 const valeursCol = data.map(row => {
-                    const val = row[nom];
-                    return type == "numerique" ? Number(val) : val; // pour avoir nb directement (+ simple pour après)
+                    let val = row[nom];
+
+                    if (type == "numerique") {
+                        val = val.toString().trim().replace(/,/g, '.'); // Remplacer virgule par point
+                        const numVal = Number(val);
+                        return numVal;
+
+                        // if (isNaN(numVal)) {
+                        //     console.warn(`Valeur non numérique détectée: "${val}" pour la colonne "${nom}"`);
+                        //     return null; 
+                        // }
+                        // return numVal;
+                    }
+                    return val;
                 })
 
                 const response2 = await fetch("http://localhost:8000/api/variables", {

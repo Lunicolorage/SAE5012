@@ -80,7 +80,7 @@ function SourceDonnees({article, setArticle, index}){
             if (prevDatasets.length == 0 && checked){
                 labels = variable.type == "categorielle" 
                             ? variable.valeurs 
-                            : variable.valeurs.map((_, i) => `#${i + 1}`);// -> gérer qd nb
+                            : variable.valeurs.map((_, i) => `#${i + 1}`);// -> gérer qd nb -> à voir
             }
 
             sections[index] = {
@@ -317,7 +317,7 @@ function SourceDonnees({article, setArticle, index}){
                 {/* <hr></hr> */}
                 <option>pie chart</option>
                 <option>bar chart</option>
-                <option>histogram</option>
+                <option>line chart</option>
             </select>
 
             <label htmlFor="choixNomGraphique"><h2>Nom du graphique</h2></label>
