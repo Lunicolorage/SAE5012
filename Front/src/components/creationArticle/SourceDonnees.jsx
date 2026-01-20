@@ -71,7 +71,8 @@ function SourceDonnees({article, setArticle, index}){
                         variableId: Number(variable.id), 
                         label: variable.nom, 
                         data: variable.valeurs, 
-                        backgroundColor: "#000000" // met en noir par défaut
+                        backgroundColor: "#000000", // met en noir par défaut
+                        borderColor: "#000000",
                     }]
                 : prevDatasets.filter(ds => ds.variableId !== variable.id);
 
@@ -105,7 +106,7 @@ function SourceDonnees({article, setArticle, index}){
 
             sections[index].contenu.datasets =
                 sections[index].contenu.datasets.map(nd => 
-                    nd.variableId == variableId ? {...nd, backgroundColor: color} : nd
+                    nd.variableId == variableId ? {...nd, backgroundColor: color, borderColor: color} : nd
                 )                
             return {...prev, sections}
         })
@@ -315,7 +316,7 @@ function SourceDonnees({article, setArticle, index}){
             <select id="choixTypeGraphique" onChange={handleChoixTypeGraphique}>
                 <option value="">Choisissez le type de graphique</option>
                 {/* <hr></hr> */}
-                <option>pie chart</option>
+                {/* <option>pie chart</option> */}
                 <option>bar chart</option>
                 <option>line chart</option>
             </select>

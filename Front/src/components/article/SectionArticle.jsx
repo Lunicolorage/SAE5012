@@ -3,7 +3,7 @@ import { Bar, Line, Pie } from "react-chartjs-2"
 import { Chart as ChartJS } from "chart.js/auto";
 
 function SectionArticle({section}){
-    console.log(section);
+    // console.log(section);
 
     if(section.type == 'titre'){
         return(
@@ -26,7 +26,7 @@ function SectionArticle({section}){
     if(section.type == 'image'){
         // console.log(section.contenu[0].alt);
         return(
-            <img className="sectionImage" src={section.contenu[0].url} alt={section.section.contenu[0].alt} />
+            <img className="sectionImage" src={section.contenu[0].url} alt={section.contenu[0].alt} />
         )
     }
 
@@ -37,14 +37,27 @@ function SectionArticle({section}){
             datasets: section.contenu.datasets,
         } // ce qui est dans contenu -> labels + datasets
 
+        const options = {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: section.contenu.title,
+                    font: {
+                        size: 15
+                    }
+                }
+            }
+        }
+
         const graphique = () => {
             switch (section.contenu.type){
                 case "pie chart":
-                    return;
+                    return <Pie data={data} options={options}/>;
                 case "bar chart":
-                    return <Bar data={data} />;
+                    return <Bar data={data} options={options}/>;
                 case "line chart":
-                    return <Line data={data} />;
+                    return <Line data={data} options={options}/>;
                 default:
                     return <p>Type de graphique non supporté</p>;
             }
@@ -53,10 +66,14 @@ function SectionArticle({section}){
 
         return(
             <div className="sectionGraphique">
-                <p>graphique</p> 
-                {/* faire en fonction de celui choisi */}
+                 {/* faire en fonction de celui choisi */}
                 {graphique()}
             </div>
+
+            // <div className="sectionGraphique">
+            //     <canvas id="chart">{graphique()}</canvas>
+            // </div>
+
         )
     }
 

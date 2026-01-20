@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserProvider";
 
@@ -10,7 +10,10 @@ function Donnees(){
     const [data, setData] = useState([]);
     const [headers, setHeaders] = useState([]);
     const [variables, setVariables] = useState({});
-    const [file, setFile] = useState(null)
+    const [file, setFile] = useState(null);
+    const [visibleRows, setVisibleRows] = useState(10);
+    // const [showScrollBtnBas, setShowScrollBtnBas] = useState(false);
+    
 
     function handleChoixFichier (e) {
         var selectedFile = e.target.files[0];
@@ -184,6 +187,23 @@ function Donnees(){
     }
 
 
+    // useEffect(() => {
+    //     function handleScroll(){
+    //         setShowScrollBtnBas(window.scrollY > 300);
+    //     };
+
+    //     window.addEventListener('scroll', handleScroll);
+    //     return ()=> {window.removeEventListener('scroll', handleScroll);}
+    // }, [])
+
+    function scrollToBottom(){
+        window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth',
+        })
+    }
+
+
     return(
         <div className="pageImportDonnees">
             <h1>Ajouter des données</h1>
@@ -192,6 +212,18 @@ function Donnees(){
                 <label htmlFor="csv" id="labelCsv">Source de données</label>
                 <br/>
                 <input type="file" name="csv" id='csv' accept=".csv" onChange={handleChoixFichier} required ></input>
+            </div>
+
+            <div className="buttonsTabHaut">                    
+                    {visibleRows > 10 && (
+                        <button onClick={() => setVisibleRows(10)}>Réduire</button>
+                    )}
+
+                {visibleRows > 10 && (
+                    <button className="scrollBottomButton" onClick={scrollToBottom}>
+                        ↓
+                    </button>
+                )}
             </div>
 
             <div className="tableContainer">
@@ -204,7 +236,7 @@ function Donnees(){
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((row, index) => (
+                        {data.slice(0, visibleRows).map((row, index) => (
                             <tr key={index}>
                             {headers.map((header, idx) => (
                                 <td key={idx}>{row[header]}</td>
@@ -213,8 +245,23 @@ function Donnees(){
                         ))}
                     </tbody>
                 </table>
+
+                
             </div>
 
+            <div className="buttonsTab">
+                    {data.length > visibleRows && (
+                        <button onClick={() => setVisibleRows(prev => prev + 10)}>Afficher plus</button>
+                    )}
+                    
+                    {visibleRows > 10 && (
+                        <button onClick={() => setVisibleRows(10)}>Réduire</button>
+                    )}
+
+                    {data.length > visibleRows && (
+                        <button onClick={() => setVisibleRows(data.length)}>Tout afficher</button>
+                    )}
+            </div>
 
             <div className="variables">
                 <h2>Variables</h2>

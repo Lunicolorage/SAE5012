@@ -86,7 +86,7 @@ function AffichageArticle(){
     if (error) return <div>{error}</div>;
 
     return(
-        <div>
+        <div className="articleComplet">
             <div className="titreArticle">
               <h1>{contenuArticle.titre}</h1>
               <div className="notationArticle">
