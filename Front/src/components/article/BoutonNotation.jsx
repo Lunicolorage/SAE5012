@@ -11,6 +11,13 @@ function BoutonNotation({ articleId, OnNoteAdded, setCanNote }) {
     const [noteValue, setNoteValue] = useState(0);
     const [user] = useContext(UserContext);
 
+    const getCSSVariable = (variable) => {
+        return getComputedStyle(document.documentElement)
+            .getPropertyValue(variable)
+            .trim();
+    };
+    // permet de récuperer une variable css
+
     async function PostNoteApi(note) {
         const url = 'http://localhost:8000/api/notes';
         
@@ -41,6 +48,7 @@ function BoutonNotation({ articleId, OnNoteAdded, setCanNote }) {
             console.error('Erreur lors de l\'ajout de la note:', err.message);
         }
     }
+    // Ajoute la note dans l'api
 
     function PostNote() {
         PostNoteApi(noteValue);
@@ -63,17 +71,17 @@ function BoutonNotation({ articleId, OnNoteAdded, setCanNote }) {
                         value={noteValue} 
                         precision={1} 
                         sx={{ 
-                            color: "#7AC74F",
+                            color: getCSSVariable('--greenLight'),
                             fontSize: "2.5em",
                         }}
                         onChange={(e, newValue) => {
                             setNoteValue(newValue);
                         }}
                     />
-                </DialogContent>
+                </DialogContent> {/* Ouvre une nouvelle fenetre pour noter  */}
                 <Button 
                     onClick={PostNote}
-                    sx={{ color: "#7AC74F" }}
+                    sx={{ color: getCSSVariable('--greenLight') }}
                 >
                     Valider
                 </Button>

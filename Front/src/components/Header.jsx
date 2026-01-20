@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
 import { useContext, useState, useEffect } from 'react'
 import { UserContext } from "../context/UserProvider";
+import { ThemeContext } from "../context/ThemeProvider";
 
-function Header(){
+function Header({createAllowed, addDataAllowed, editDesignAllowed}){
+
+
+    const [theme, setTheme, themes] = useContext(ThemeContext);
+
+
+    const srcImg = 'src/assets/eff-'+ theme.logoCouleur +'.png';
 
     const [user, setUser] = useContext(UserContext);
     const [buttonCo, setButtonCo] = useState("Connexion");
@@ -27,15 +34,13 @@ function Header(){
     }
   }, [burgerOuvert]);
 
-    const createAllowed = ['ROLE_ADMIN','ROLE_AUTEUR','ROLE_EDIT'];
-    const addDataAllowed = ['ROLE_ADMIN','ROLE_FOURNI'];
     const hasAnyRole = (allowed) => Array.isArray(user?.roles) && user.roles.some(r => allowed.includes(r));
 
     return(
         <header>
             <div className="header-left">
                 <Link to="/">
-                    <img className="header-logo" src="src/assets/eff-fonce.png" alt="logo EFF" />
+                    <img className="header-logo" src={srcImg} alt="logo EFF" />
                 </Link>
                 <Link to="/index" className="hideMobile" >
                 Index
@@ -51,6 +56,12 @@ function Header(){
                     Ajout de données
                     </Link>
                 )}       
+
+                {hasAnyRole(editDesignAllowed) && (
+                <Link to="/theme-design" className="hideMobile" >
+                    Modifier thème
+                </Link>
+                )}
             </div>
             <Link to="/connexion" className="hideMobile" >
                 {buttonCo}
@@ -59,28 +70,55 @@ function Header(){
                 onClick={() => {
                     setBurgerOuvert(!burgerOuvert);
                 }}
-                src="src/assets/burger.svg" alt="icone menu burger" className="hideOrdi" />
+                src="src/assets/burger.svg" alt="icone menu burger" className="hideOrdi icone" />
 
             <section className="menuBurger hide">
                 <img
+                    className="icone"
                     onClick={() => {
                         setBurgerOuvert(!burgerOuvert);
                     }}
                     src="src/assets/croix.png" alt="icone fermeture burger" />
-                <Link to="/index">
+                <Link 
+                    onClick={() => {
+                        setBurgerOuvert(!burgerOuvert);
+                    }}
+                    to="/index">
                 Index
                 </Link>
                 {hasAnyRole(createAllowed) && (
-                    <Link to="/create">
+                    <Link 
+                        onClick={() => {
+                        setBurgerOuvert(!burgerOuvert);
+                    }}
+                    to="/create">
                     Ajout d'article
                     </Link>
                 )}
                {hasAnyRole(addDataAllowed) && (
-                    <Link to="/add-data" >
+                    <Link to="/add-data" 
+                        onClick={() => {
+                        setBurgerOuvert(!burgerOuvert);
+                    }}>
                     Ajout de données
                     </Link>
                 )} 
-                <Link to="/connexion">
+
+                 {hasAnyRole(editDesignAllowed) && (
+                <Link 
+                    onClick={() => {
+                        setBurgerOuvert(!burgerOuvert);
+                    }}
+                to="/theme-design">
+                    Modifier thème
+                </Link>
+                )}
+
+                <Link 
+                    onClick={() => {
+                        setBurgerOuvert(!burgerOuvert);
+                    }}
+                to="/connexion">
                     {buttonCo}
                 </Link>
             </section>

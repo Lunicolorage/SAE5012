@@ -23,6 +23,8 @@ final class PasswordHashingListener
         }
     }
 
+    //ajout du role ROLE_USER automatique a la création d'un utilisateur
+
     public function preUpdate(User $user, PreUpdateEventArgs $event): void
     {
         $this->hashPassword($user);
@@ -38,4 +40,6 @@ final class PasswordHashingListener
             );
         }
     }
+
+    // hashage du mot de passe a la création d'un utilisateur
 }

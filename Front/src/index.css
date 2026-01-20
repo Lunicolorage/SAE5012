@@ -3,9 +3,9 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light;
+  color: #213547; 
+  background-color: var(--white);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -16,6 +16,29 @@
   --white: #EFEFEF;
   --deepBlue: #000D36;
   --grey: #e3e3e3;
+}
+
+/* html.dark-mode {
+  --greenLight: #54853a;
+  --white: #121212;
+  --deepBlue: #EFEFEF;
+  --grey: #2c2c2c;
+}
+
+html.blue-mode {
+  --greenLight: #4A90E2;
+  --white: #E6F0FA;
+  --deepBlue: #0B2545;
+  --grey: #B0C4DE;
+} */
+
+.icone {
+  color: var(--deepBlue);
+  filter: brightness(0) saturate(100%) invert(0%);
+}
+
+html.dark-mode .icone {
+  filter: brightness(0) saturate(100%) invert(100%);
 }
 
 a {
@@ -38,6 +61,7 @@ body {
 h1 {
   font-size: 2.2em;
   line-height: 1.1;
+  text-align: center;
 }
 
 @media (min-width: 600px) {
@@ -75,13 +99,31 @@ input{
 input, select{
   border: none;
   min-height: 25px;
+  background-color: var(--white);
+  color: var(--deepBlue);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--white) inset !important;
+  -webkit-text-fill-color: var(--deepBlue) !important;
 }
 
 textarea{
   border: none;
+  background-color: var(--white);
+  color: var(--deepBlue);
 }
 
-@media (prefers-color-scheme: light) {
+a:hover {
+    color:  (var(--greenLight));
+  }
+  button {
+    background-color: var(--greenLight);
+  }
+
+/* @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: var(--white);
@@ -92,4 +134,4 @@ textarea{
   button {
     background-color: var(--greenLight);
   }
-}
+} */

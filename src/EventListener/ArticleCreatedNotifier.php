@@ -24,4 +24,6 @@ class ArticleCreatedNotifier
         // $article->setUser($user);
         error_log('Article created with ID: ' . $article->getId());
     }
+
+    //mets automatiquement la date de création d'un article
 }

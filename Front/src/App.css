@@ -6,6 +6,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  color: var(--deepBlue);
   
 }
 
@@ -32,8 +33,12 @@ header .header-left{
 }
 
 header .header-left a{
-  margin-right: 5vw;
+  margin-right: 3vw;
 } 
+
+header button{
+  padding: 0.5vw 1vw;
+}
 
 .hideMobile{
       display: none;  
@@ -58,6 +63,7 @@ header .header-logo{
 }
 
 .menuBurger{
+  z-index: 100;
   position:fixed;
   background-color: var(--white);
   width: 100%;
@@ -82,6 +88,12 @@ header .header-logo{
   display: none;
 }
 
+.boutonMobileTheme{
+  margin-top: 15px;
+  padding: 2vw 3vw
+
+}
+
 @media (min-width: 600px) {
   .hideMobile{
       display: inline;  
@@ -94,6 +106,11 @@ header .header-logo{
   header{
     padding: 2vw 5vw;
   }
+
+  header .header-logo{
+  width: 6vw;
+  min-width: 60px;
+}
 }
 
 
@@ -114,6 +131,7 @@ footer{
   font-size: 0.8em;
   bottom: 0;
   margin-top:auto ;
+  color: var(--deepBlue);
 }
 
 footer p{
@@ -729,6 +747,7 @@ input[type=file]::file-selector-button {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 3vw;
+  border-radius: 10px;
 }
 
 .formConnexion input{
@@ -775,3 +794,179 @@ input[type=file]::file-selector-button {
   }
 
 }
+
+/* /////////////////////////////////////////////////////////////////////////////////////// */
+
+/* Page theme-design------------------------------------------------------------------------------- */
+
+
+.formCreateTheme{
+  background-color: var(--grey);
+  padding: 15px;
+  border-radius: 10px;
+  color: var(--deepBlue);
+  width: 100%;
+  margin: 25px auto 25px auto;
+}
+
+.formCreateTheme h2, .formTestTheme h2{
+  text-align: center;
+}
+
+.formCreateTheme h3{
+  font-size: 1.3em;
+}
+
+.formCreateTheme input, .formCreateTheme select, .formCreateTheme textarea{
+  width: 100%;
+  padding: 6px;
+}
+
+.formCreateTheme button{
+  width: 60%;
+  padding: 10px;
+  margin: 20px 20% 0 20%;
+  border-radius: 8px;
+}
+
+.selectColorTheme{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.selectColorTheme input{
+  padding: 0;
+  height: 30px;
+  width: 60px;
+  border: none;
+  border-radius: 3px;
+}
+
+
+.formTestTheme{
+  background-color: var(--grey);
+  padding: 15px;
+  border-radius: 10px;
+  color: var(--deepBlue);
+  width: 100%;
+  margin: 25px auto 25px auto;
+}
+
+.formTestTheme-selection{
+  margin: 2vw 0;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formTestTheme-selection p{
+  width: 60vw;
+  text-align: center;
+}
+
+.formTestTheme-buttons{
+  display: flex;
+  justify-content: center;
+}
+
+.formTestTheme-suppr{
+  background-color: var(--deepBlue);
+  color: var(--white);
+  margin-left: 10px;
+}
+
+.formTestTheme-apercu{
+  width: 100px;
+  border: solid transparent;
+}
+
+.boutonValiderTheme{
+  width: 60%;
+  padding: 10px;
+  margin: 20px 20% 0 20%;
+  border-radius: 8px;
+}
+
+.formTestTheme-apercu.actif {
+  border: solid var(--deepBlue);
+}
+
+@media (min-width: 600px) {
+
+  .formTestTheme{
+    width: 80%;
+    padding: 30px;
+  }
+
+  .formTestTheme h2{
+    margin-right: 4vw;
+  }
+
+  .formTestTheme-selection{
+    flex-direction: row;
+  }
+
+  
+  .formTestTheme-selection p{
+    margin: 0;
+    width: 15vw;
+  }
+
+  .boutonTestTheme{
+    padding: 10px 40px;
+  }
+
+  .formTestTheme-buttons{
+    width: 60%;
+    justify-content: start;
+  }
+
+  .formCreateTheme {
+    width: 80%;
+    padding: 30px;
+  }
+
+
+  .selectColorTheme input{
+    height: 4vw;
+    width: 8vw;
+  }
+
+  .allInputColor{
+    margin: 1.5vw 0;
+  }
+
+}
+
+@media (min-width: 1024px) {
+
+  .formTestTheme{
+    width: 60%;
+    margin-top: 2vw;
+  }
+
+  .formTestTheme-buttons{
+    width: 22vw;
+    justify-content: start;
+  }
+
+  .boutonValiderTheme{
+    width: 40%;
+    margin: 20px 30% 0 30%;
+  }
+
+  .formCreateTheme {
+      width: 60%;
+      margin-top: 2vw;
+  }
+
+  .selectColorTheme input{
+    height: 3vw;
+    width: 6vw;
+  }
+
+}
+
+

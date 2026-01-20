@@ -90,12 +90,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private Collection $jeuDonnees;
 
+    /**
+     * @var Collection<int, Theme>
+     */
+    #[ORM\OneToMany(targetEntity: Theme::class, mappedBy: 'user')]
+    private Collection $themes;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
         $this->notes = new ArrayCollection();
         $this->jeuDonnees = new ArrayCollection();
         $this->roles = ['ROLE_USER'];
+        $this->themes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -264,6 +271,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($jeuDonnee->getUser() === $this) {
                 $jeuDonnee->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Theme>
+     */
+    public function getThemes(): Collection
+    {
+        return $this->themes;
+    }
+
+    public function addTheme(Theme $theme): static
+    {
+        if (!$this->themes->contains($theme)) {
+            $this->themes->add($theme);
+            $theme->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTheme(Theme $theme): static
+    {
+        if ($this->themes->removeElement($theme)) {
+            // set the owning side to null (unless already changed)
+            if ($theme->getUser() === $this) {
+                $theme->setUser(null);
             }
         }
 

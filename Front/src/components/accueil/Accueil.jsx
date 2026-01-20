@@ -15,6 +15,8 @@ function Accueil() {
     return () => window.removeEventListener('message', handleMessage);
   }, [navigate]);
 
+  // récupération du fichier iframe index.html 
+
   return (
     <div>
       <iframe 

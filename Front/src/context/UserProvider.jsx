@@ -7,16 +7,16 @@ function UserProvider({ children }) {
 
     let storage_user = {};
 
-    if (localStorage.user_id){
-        // console.log(localStorage);
-        storage_user ={
-            'id' : localStorage.user_id,
-            'nom' : localStorage.user_nom,
-            'email' : localStorage.user_email,
-            'roles': JSON.parse(localStorage.getItem('user_roles')),
-            'token' : localStorage.user_token
-         };
-    }
+    // if (localStorage.user_id){
+    //     // console.log(localStorage);
+    //     storage_user ={
+    //         'id' : localStorage.user_id,
+    //         'nom' : localStorage.user_nom,
+    //         'email' : localStorage.user_email,
+    //         'roles': JSON.parse(localStorage.getItem('user_roles')),
+    //         'token' : localStorage.user_token
+    //      };
+    // }
         
     const [user, setUser] = useState(storage_user);
 

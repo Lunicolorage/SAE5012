@@ -44,3 +44,5 @@ class RegistrationController extends AbstractController
         ]);
     }
 }
+
+//controller de connexion non utilisé car via API
