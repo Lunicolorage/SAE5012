@@ -278,6 +278,70 @@ class ArticleRepository extends ServiceEntityRepository
         $manager->flush();
     }
 
+    public function deleteFullArticle(int $id): array
+    {
+        $article = $this->find($id);
+        if (!$article) {
+            return ['error' => 'Article not found'];
+        }
+
+        $manager = $this->getEntityManager();
+
+        // Supprimer les notes associées
+        foreach ($article->getNotes() as $note) {
+            $manager->remove($note);
+        }
+
+        foreach ($article->getSections() as $section) {
+            switch ($section->getType()) {
+                case 'graphique':
+                    $graphRepository = $manager->getRepository(\App\Entity\Graphique::class);
+                    $graph = $graphRepository->findOneBy(['idSection' => $section->getId()]);
+                    if ($graph) {
+                        foreach ($graph->getGraphiqueVariables() as $gv) {
+                            $manager->remove($gv);
+                        }
+                        $manager->remove($graph);
+                    }
+                    break;
+
+                case 'texte':
+                    $texteRepository = $manager->getRepository(\App\Entity\Texte::class);
+                    $texte = $texteRepository->findOneBy(['section' => $section->getId()]);
+                    if ($texte) {
+                        $manager->remove($texte);
+                    }
+                    break;
+                    //supprime les textes de l'article
+
+                case 'titre':
+                    $titreRepository = $manager->getRepository(\App\Entity\Titre::class);
+                    $titre = $titreRepository->findOneBy(['section' => $section->getId()]);
+                    if ($titre) {
+                        $manager->remove($titre);
+                    }
+                    break;
+                    //supprime les titres de l'article
+
+                case 'image':
+                    foreach ($section->getImages() as $image) {
+                        $section->removeImage($image);
+                    }
+                    break;
+                    //supprime les images de l'article
+            }
+
+            $manager->remove($section);
+        }
+            
+        // Supprimer l'article
+        $manager->remove($article);
+        $manager->flush();
+
+        return ['message' => 'Article supprimé avec succès', 'id' => $id];
+    }
+    
+
 
 //    /**
 //     * @return Article[] Returns an array of Article objects

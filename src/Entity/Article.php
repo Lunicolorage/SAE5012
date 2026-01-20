@@ -15,7 +15,8 @@ use ApiPlatform\Metadata\Post;
 use App\Controller\PostFullArticleController;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\State\ArticleProcessor;
-
+use App\Controller\DeleteFullArticleController;
+use ApiPlatform\Metadata\Delete;
 // format json post :
 //     {
 //   "titre": "Test Article",
@@ -56,12 +57,18 @@ use App\State\ArticleProcessor;
         controller: GetFullArticleController::class,
     ),
     new Post(
-            name: 'create_article',
-            uriTemplate: '/articles/import',
-            processor: ArticleProcessor::class,
-            inputFormats: ['json' => ['application/json']],
-            deserialize: true,
-        )
+        name: 'create_article',
+        uriTemplate: '/articles/import',
+        processor: ArticleProcessor::class,
+        inputFormats: ['json' => ['application/json']],
+        deserialize: true,
+        ),
+    new Delete(
+        name: 'delete_full_article',
+        uriTemplate: '/articles/{id}/full',
+        uriVariables: ['id' => new Link(fromClass: Article::class, identifiers: ['id'])], 
+        controller: DeleteFullArticleController::class,
+    )
 ])]
 #[ApiResource] 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
