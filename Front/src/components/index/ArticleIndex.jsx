@@ -1,7 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../../context/UserProvider";
+import { BoutonSupprIndex } from "./BoutonSupprIndex";
 
-function ArticleIndex({ article, onArticleClick }) {
+function ArticleIndex({ article, onArticleClick, listeArticles, setListeArticles }) {
 
   const [user, setUser] = useContext(UserContext);
   const SuppArticleAllowed = ['ROLE_ADMIN','ROLE_EDIT'];
@@ -23,8 +24,13 @@ function ArticleIndex({ article, onArticleClick }) {
         >
           Voir l'article
         </button>
-        {hasAnyRole(SuppArticleAllowed) || IsTheAuthor && (
-          <button className="IndexTitre-suppr">Supprimer</button>
+        {(hasAnyRole(SuppArticleAllowed) || IsTheAuthor) && (
+          <BoutonSupprIndex 
+          article={article}
+          listeArticles={listeArticles}
+          setListeArticles={setListeArticles}
+          
+          />
         )}
       </div>
     </div>

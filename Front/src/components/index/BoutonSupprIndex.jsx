@@ -1,0 +1,42 @@
+import { useState, useContext } from "react";
+import { UserContext } from "../../context/UserProvider";
+
+export function BoutonSupprIndex({article, listeArticles, setListeArticles }){
+
+    const [user] = useContext(UserContext);
+    const [loading, setLoading] = useState(false);
+
+    async function Supprimer(idArticle){
+        const url = 'http://localhost:8000/api/articles/'+article.id+'/full';
+        setLoading(true);
+        
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            console.log('Article supprimé avec succès');
+
+            const newListeArticles = listeArticles.filter(a => a.id !== article.id);
+            setListeArticles(newListeArticles);
+            
+        } catch (err) {
+            console.error("Erreur lors de la supression de l'article:", err.message);
+        }finally {
+            setLoading(false);
+        }
+    }
+
+    return(
+        <button 
+            onClick={() => {Supprimer(article.id)}}
+            className="IndexTitre-suppr">
+            {loading ? "Chargement..." : "Supprimer"}
+            </button>
+    )
+}
