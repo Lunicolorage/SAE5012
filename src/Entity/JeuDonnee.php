@@ -7,7 +7,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use App\Controller\JeuDonneeController;
+use ApiPlatform\Metadata\Link;
 
+#[ApiResource (
+    operations: [
+        new Get(
+            uriTemplate: '/jeu_donnee/{id}/variables',
+            uriVariables: ['id' => new Link(fromClass: JeuDonnee::class, identifiers: ['id'])],
+            controller: JeuDonneeController::class,
+            read: false, // Empêche API Platform de charger une entité Doctrine automatiquement avant d’appeler le contrôleur
+        )
+    ]
+)] 
 #[ApiResource] 
 #[ORM\Entity(repositoryClass: JeuDonneeRepository::class)]
 class JeuDonnee
@@ -22,10 +35,13 @@ class JeuDonnee
 
     #[ORM\ManyToOne(inversedBy: 'jeuDonnees')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $user = null;
+    private ?User $user = null;
 
     #[ORM\Column(length: 255)]
     private ?string $lien = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
 
     /**
      * @var Collection<int, Variable>
@@ -36,7 +52,7 @@ class JeuDonnee
     /**
      * @var Collection<int, Graphique>
      */
-    #[ORM\OneToMany(targetEntity: Graphique::class, mappedBy: 'idDonnees', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Graphique::class, mappedBy: 'idDonnees', orphanRemoval: true)] // à voir pour orphanRemoval
     private Collection $graphiques;
 
     public function __construct()
@@ -62,12 +78,12 @@ class JeuDonnee
         return $this;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
@@ -82,6 +98,18 @@ class JeuDonnee
     public function setLien(string $lien): static
     {
         $this->lien = $lien;
+
+        return $this;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
 
         return $this;
     }

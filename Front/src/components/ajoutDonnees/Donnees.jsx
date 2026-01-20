@@ -1,42 +1,229 @@
 import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserProvider";
 
 function Donnees(){
+    const [user] = useContext(UserContext);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const [data, setData] = useState([]);
     const [headers, setHeaders] = useState([]);
+    const [variables, setVariables] = useState({});
+    const [file, setFile] = useState(null)
 
-    function handleChange (e) {
-        var file = e.target.files[0];
+    function handleChoixFichier (e) {
+        var selectedFile = e.target.files[0];
+        if (!selectedFile) return;
+
+        setFile(selectedFile);
+
         let reader = new FileReader();
-        reader.onload = function(e) {    
-            let text = e.target.result;
+
+        // reader.onload = function(e) {    
+        //     let text = e.target.result;
             
-            const lines = text.split("\n").map(line => line.trim()).filter(line => line !== "");
+        //     // trim supprime les espaces au début et à la fin d'une chaîne
+        //     const lines = text.split("\n").map(line => line.trim()).filter(line => line !== "");
 
-            const newHeaders = lines[0].split(",");
-            setHeaders(newHeaders);
+        //     const newHeaders = lines[0].split(",");
+        //     setHeaders(newHeaders);
 
-            const rows = lines.slice(1).map(line => {
-                const values = line.split(",");
-                let obj = {};
-                newHeaders.forEach((h, i) => {
-                    obj[h] = values[i];
-                });
-                return obj;
-            });
+        //     const rows = lines.slice(1).map(line => {
+        //         const values = line.split(",");
+        //         let obj = {};
+        //         newHeaders.forEach((h, i) => {
+        //             obj[h] = values[i];
+        //         });
+        //         return obj;
+        //     });
 
-            console.log("tab :", rows);
-            setData(rows);
+        //     console.log("tab :", rows);
+        //     setData(rows);
+        // }
+
+        function detectSeparator(line){
+            // tester première ligne pour voir si plus de , ou de ; -> en déduire séparateur pour le reste
+            const nbVirgule = (line.match(/,/g) || []).length;
+            const nbPointVirgule = (line.match(/;/g) || []).length;
+
+            return nbPointVirgule > nbVirgule ? ";" : ",";
         }
-        reader.readAsText(file);
+
+        reader.onload = (e) => {
+            try{
+                const text = e.target.result;
+
+                const lines = text.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+
+                if (lines.length == 0) return;
+
+                const separateur = detectSeparator(lines[0]);
+
+                // headers -> nom des colonnes
+                const headers = lines[0].split(separateur).map(h => h.trim());
+                setHeaders(headers);
+
+                // données
+                const rows = lines.slice(1).map(line => {
+                    const values = line.split(separateur).map(v => v.trim());
+
+                    return headers.reduce((obj, header, index) => {
+                        obj[header] = values[index] ?? "";
+                        return obj;
+                    }, {});
+                });
+                setData(rows);
+
+                console.log("séparateur : ", separateur);
+                console.log("données :", rows);
+
+            } catch (error) {
+                console.error("Erreur fichier CSV : ", error);
+            }
+        }
+
+        reader.onerror = () => {
+            console.error("Impossible de le lire le fichier");
+        };
+        
+        reader.readAsText(selectedFile);
+    }
+
+
+    function handleChangeTypeVar(nomVar, type){
+        // associer le bon type à la bonne variable -> obj
+        setVariables(prev=>({...prev, [nomVar]: type}));
+    }
+
+    // doit enregistrer dans jeu_donnee le lien du fichier, l'id du user, nom fichier
+    // doit enregistrer dans variable pour chaque variable le nom, le type, id du jeu de données lié
+    async function handleClickPublier(e){
+        // appel à /api/jeu_donnees en POST
+        // {
+        //     "createdAt": "2026-01-13T10:14:33.989Z",
+        //     "user": "https://example.com/",
+        //     "lien": "string",
+        //     "variables": [
+        //         "https://example.com/"
+        //     ],
+        //     "graphiques": [
+        //         "https://example.com/"
+        //     ]
+        // }
+        // appel à /api/variables en POST
+        // {
+        //     "idDonnees": "https://example.com/",
+        //     "nom": "string",
+        //     "type": "string",
+        //     "graphiqueVariables": [
+        //         "https://example.com/"
+        //     ]
+        // }
+        // Doit pas remplir graphiques et graphiqueVariables pour l'instant. 
+        // Verif peut être null
+
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+
+        // vérif si fichier choisi
+        if (headers.length == 0){ 
+            setError("Choisir un fichier");
+            setLoading(false);
+            return;
+        }
+
+        // vérif si toutes les variables ont un type
+        if (Object.keys(variables).length != headers.length){ 
+            setError("Choisir un type pour chaque variable");
+            setLoading(false);
+            return;
+        }
+
+        try{
+            // console.log(`/api/users/${user.id}`); // ok
+            // console.log(file); // ok
+            const userId = user.id; 
+
+            // https://fr.javascript.info/formdata 
+            const formData = new FormData();
+            formData.append("user", userId);
+            // formData.append("user", `/api/users/${userId}`);
+            formData.append("lien", file);
+            formData.append("nom", file.name);
+                        
+            // for (var value of formData.values()) {
+            //     console.log(value); // ok
+            // }
+
+            const response = await fetch("http://localhost:8000/api/datasets", {
+                method: "POST",
+                headers: { 
+                    Authorization: `Bearer ${user.token}`
+                },
+                body: formData,
+            })
+
+            const uploaded = await response.json();
+
+            if(!response.ok){
+                throw new Error(uploaded.message || "Erreur envoi données");
+            }
+
+
+            // Variables
+            for (const [nom, type] of Object.entries(variables)){ // récupère nom et type pour chaque variable dans variables
+
+                const valeursCol = data.map(row => {
+                    const val = row[nom];
+                    return type == "numerique" ? Number(val) : val; // pour avoir nb directement (+ simple pour après)
+                })
+
+                const response2 = await fetch("http://localhost:8000/api/variables", {
+                    method: "POST",
+                    headers: { 
+                        'Content-Type': 'application/ld+json', // ld = Linked Data -> nécessaire pour façon dont gère id
+                        Authorization: `Bearer ${user.token}`
+                    },
+                    body: JSON.stringify({
+                        idDonnees: `/api/jeu_donnees/${uploaded.id}`,
+                        nom,
+                        type,
+                        valeurs: valeursCol,
+                        // graphiqueVariables: [], // à changer ? -> là juste pour tester
+                    })
+                })
+
+                if (!response2.ok){
+                    const errorData = await response2.json();
+                    console.log(errorData);
+                    throw new Error("Erreur envoi variables");
+                }
+                else {
+                    setSuccess('Données ajoutées en base de données');
+                }
+            }
+
+            // console.log("jeu de données (et variables) ok")
+
+        } catch (err) {
+            setError(err.message);            
+        } finally{
+            setLoading(false);
+        }
+        
     }
 
 
     return(
-        <div>
+        <div className="pageImportDonnees">
+            <h1>Ajouter des données</h1>
+
             <div className="importDonnees">
                 <label htmlFor="csv" id="labelCsv">Source de données</label>
-                <br></br>
-                <input type="file" name="csv" id='csv' accept=".csv" onChange={handleChange} required ></input>
+                <br/>
+                <input type="file" name="csv" id='csv' accept=".csv" onChange={handleChoixFichier} required ></input>
             </div>
 
             <div className="tableContainer">
@@ -63,23 +250,26 @@ function Donnees(){
 
             <div className="variables">
                 <h2>Variables</h2>
-                <form action="" className="choixTypeVar">
+                <form className="choixTypeVar">
                     {headers.map((header, index) => (
                         // à voir pour la div
                         <div key={index} className="typeVar"> 
                             <label htmlFor={index}>{header}</label>
-                            <select id={index}>
+                            <select id={index} onChange={(e)=>handleChangeTypeVar(header, e.target.value)}>
                                 <option value="">-- Type de variable --</option>
-                                <hr></hr>
+                                <hr></hr> {/* à voir */}
                                 <option value={"categorielle"}>Catégorielle</option>
                                 <option value={"numerique"}>Numérique</option>
                             </select>
                         </div>
                     ))}
-                    <button type="submit" className="publierButton">Publier</button>
+
+                    {error && <p style={{ color: "red" }}>{error}</p>}
+                    {success && <p style={{ color: 'green' }}>{success}</p>}
+
+                    <button type="submit" className="publierButton" disabled={loading} onClick={handleClickPublier}>{loading ? "Publication..." : "Publier"}</button>
                 </form>
             </div>
-
         </div>
     )
 }

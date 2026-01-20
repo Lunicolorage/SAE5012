@@ -27,6 +27,10 @@ class Variable
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
+    // pour récupérer les valeurs pour Chart.js
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $valeurs = [];
+
     /**
      * @var Collection<int, GraphiqueVariable>
      */
@@ -75,6 +79,18 @@ class Variable
     public function setType(string $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getValeurs(): ?array
+    {
+        return $this->valeurs;
+    }
+
+    public function setValeurs(array $valeurs): static
+    {
+        $this->valeurs = $valeurs;
 
         return $this;
     }

@@ -194,6 +194,11 @@ footer .copyright{
 
 /* Donnees.jsx----------------------------------------------------------------- */
 
+.pageImportDonnees h1{
+  text-align: center;
+  margin-bottom: 40px;
+}
+
 .importDonnees{
   /* display: flex;
   flex-direction: column; */
@@ -202,6 +207,7 @@ footer .copyright{
   border-radius: 10px;
   color: var(--deepBlue);
   margin-bottom: 25px;
+  margin-top: 15px;
 }
 
 .importDonnees label{
@@ -611,7 +617,6 @@ input[type=file]::file-selector-button {
   border-radius: 10px;
 }
 
-
 .zoneSourceDonnees label{
   display: flex;
   justify-content: space-between;
@@ -621,6 +626,10 @@ input[type=file]::file-selector-button {
 .zoneSourceDonnees label img{
   width: 25px;
   height: auto;
+}
+
+.zoneSourceDonnees button{
+  margin-top: 10px;
 }
 
 .zoneCheck{

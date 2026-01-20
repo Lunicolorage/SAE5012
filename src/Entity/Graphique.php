@@ -27,10 +27,22 @@ class Graphique
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
+
+    #[ORM\Column(type: 'json')]
+    private array $labels = [];
+
+    #[ORM\Column(type: 'json')]
+    private array $datasets = [];
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $options = [];
+
     /**
      * @var Collection<int, GraphiqueVariable>
      */
-    #[ORM\OneToMany(targetEntity: GraphiqueVariable::class, mappedBy: 'idGraphique', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: GraphiqueVariable::class, mappedBy: 'idGraphique', cascade: ['persist'], orphanRemoval: true)]
     private Collection $graphiqueVariables;
 
     public function __construct()
@@ -76,6 +88,50 @@ class Graphique
     {
         $this->type = $type;
 
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): static
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    public function getLabels(): array
+    {
+        return $this->labels;
+    }
+
+    public function setLabels(array $labels): static
+    {
+        $this->labels = $labels;
+        return $this;
+    }
+
+    public function getDatasets(): array
+    {
+        return $this->datasets;
+    }
+
+    public function setDatasets(array $datasets): static
+    {
+        $this->datasets = $datasets;
+        return $this;
+    }
+
+    public function getOptions(): ?array
+    {
+        return $this->options;
+    }
+
+    public function setOptions(?array $options): static
+    {
+        $this->options = $options;
         return $this;
     }
 

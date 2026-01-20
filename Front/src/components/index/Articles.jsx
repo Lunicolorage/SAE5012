@@ -48,6 +48,7 @@ function Articles() {
           article={article}
           onArticleClick={handleArticleClick}
         />
+        // console.log(article)
       ))}
     </div> // parcours les articles et les affiche
   );

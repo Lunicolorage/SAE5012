@@ -29,7 +29,7 @@ function Texte({article, setArticle, index}){
             {/* rajouter la croix dans le coin droit */}
             <label htmlFor="choixTexte">
                 <h2>Texte</h2>
-                <img src="/src/assets/croix.png" alt="fermer" className="cross" onClick={handleCrossClick}></img>
+                <img src="/src/assets/croix.png" alt="fermer" className="cross icone" onClick={handleCrossClick}></img>
             </label>
             <textarea id="choixTexte" rows="4" onChange={handleTexteChange}></textarea>
         </div>

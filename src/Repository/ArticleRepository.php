@@ -26,7 +26,7 @@ class ArticleRepository extends ServiceEntityRepository
         return [
             'id' => $article->getId(),
             'titre' => $article->getTitre(),
-            'resume' => $article->getResume(),
+            'Resume' => $article->getResume(),
             'createdAt' => $article->getCreatedAt()?->format('c'),
             'updatedAt' => $article->getUpdatedAt()?->format('c'),
             'user' => [
@@ -72,11 +72,16 @@ class ArticleRepository extends ServiceEntityRepository
                                 ->getRepository(\App\Entity\Graphique::class)
                                 ->findOneBy(['idSection'=>$section->getId()]);
 
+                            if (!$graphique) {
+                                $contenu = null;
+                                break;
+                            }
+
                             $variables = [];
                             foreach($graphique->getGraphiqueVariables() as $gv){
                                 $variables[] = [
                                     'id' => $gv->getId(),
-                                    'variableId'=> $gv->getIdVaraiable()->getId(),
+                                    'variableId'=> $gv->getIdVariable()->getId(),
                                     'nom'=> $gv->getIdVariable()->getNom(),
                                     'couleur'=> $gv->getCouleur(),
                                 ];
@@ -85,6 +90,9 @@ class ArticleRepository extends ServiceEntityRepository
                             $contenu = $graphique ? [
                                 'id' => $graphique->getId(),
                                 'type' => $graphique->getType(),
+                                'title' => $graphique->getTitle(),
+                                'labels' => $graphique->getLabels(),
+                                'datasets' => $graphique->getDatasets(),
                                 'jeuDonneeId' => $graphique->getIdDonnees()->getId(),
                                 'variables' => $variables
                             ] : null;
@@ -144,7 +152,7 @@ class ArticleRepository extends ServiceEntityRepository
      public function saveArticleFromJson(Article $article, array $data): Article
     {
         $article->setTitre($data['titre'] ?? null);
-        $article->setResume($data['resume'] ?? null);
+        $article->setResume($data['Resume'] ?? null);
         // $article->setCreatedAt(new \DateTimeImmutable());
 
         // // Récupérer l'utilisateur
@@ -212,9 +220,16 @@ class ArticleRepository extends ServiceEntityRepository
     private function linkImage(\App\Entity\Section $section, array $contenu): void
     {
         $imageRepository = $this->getEntityManager()->getRepository(\App\Entity\Image::class);
-        $image = $imageRepository->find($contenu['id']);
         
-        if (!$image) {
+        if(array_key_exists('id', $contenu) && $contenu['id'] != null){
+            $image = $imageRepository->find($contenu['id']);
+
+            if ($image == null) {
+                throw new \Exception("Image avec l'id {$contenu['id']} introuvable");
+            }
+        }
+
+        else {
             // Créer l'image si elle n'existe pas
             $image = new \App\Entity\Image();
             $image->setUrl($contenu['url']);

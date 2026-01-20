@@ -25,6 +25,7 @@ function AjoutBloc({article, setArticle, clickCross}){
                         }
                     ]
                 });
+                // clickCross(false) // pour enlever zone d'ajout bloc une fois le bloc sélectionné -> à voir
                 break;
             case "titre":
                 setArticle({
@@ -40,6 +41,7 @@ function AjoutBloc({article, setArticle, clickCross}){
                         }
                     ]
                 })
+                // clickCross(false)
                 break;
             case "image":
                 setArticle({
@@ -55,7 +57,30 @@ function AjoutBloc({article, setArticle, clickCross}){
                         }
                     ]
                 })
-            break;
+                // clickCross(false)
+                break;
+            case "graphique":
+                setArticle({
+                    ...article,
+                    sections: [
+                        ...article.sections,
+                        {
+                            type: "graphique",
+                            contenu: {
+                                // à voir
+                                type: "", // à voir -> "bar" | "pie" | "histogram"
+                                title: "", //Titre du graphique
+                                labels: [],
+                                datasets: [], //intérieur différent en fonction du type de graphique
+                                options: {},
+                            }
+                        }
+                    ]
+                })
+                // clickCross(false);
+                break;
+            default: 
+                break;
         }
         console.log("ajout bloc");
     }

@@ -44,9 +44,10 @@ function SousTitre({article, setArticle, index}){
         <div className="zoneChoixSousTitre">
             <label htmlFor="choixSousTitre">
                 <h2>Sous-titre</h2>
-                <img src="src\assets\croix.png" alt="fermer" className="cross" onClick={handleCrossClick}></img>
+                <img src="src\assets\croix.png" alt="fermer" className="cross icone" onClick={handleCrossClick}></img>
             </label>
             <select onChange={handleTypeChange}>
+                <option value="">Choisissez le niveau de titre</option>
                 <option value="h2">Titre 2</option>
                 <option value="h3">Titre 3</option>
                 <option value="h4">Titre 4</option>

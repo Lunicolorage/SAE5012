@@ -28,7 +28,7 @@ function SectionArticle(section){
         )
     }
 
-    if(section.section.type == 'graph'){
+    if(section.section.type == 'graphique'){
         return(
            <p>graphique</p>
         )
