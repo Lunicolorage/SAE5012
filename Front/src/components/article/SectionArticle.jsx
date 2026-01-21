@@ -2,7 +2,7 @@ import React from "react";
 import { Bar, Line, Pie } from "react-chartjs-2"
 import { Chart as ChartJS } from "chart.js/auto";
 
-function SectionArticle({section}){
+function SectionArticle({section, couleur}){
     // console.log(section);
 
     if(section.type == 'titre'){
@@ -45,6 +45,36 @@ function SectionArticle({section}){
                     text: section.contenu.title,
                     font: {
                         size: 15
+                    },
+                    color: couleur("--deepBlue"),
+                },
+                legend: {
+                    labels:{
+                        color: couleur("--deepBlue"),
+                    }
+                },
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: couleur("--deepBlue"),
+                    },
+                    grid: {
+                        color: couleur("--grey"),
+                    },
+                    border: {
+                        color: couleur("--deepBlue"),
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: couleur("--deepBlue"),
+                    },
+                    grid: {
+                        color: couleur("--grey"),
+                    },
+                    border: {
+                        color: couleur("--deepBlue"),
                     }
                 }
             }

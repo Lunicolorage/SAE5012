@@ -71,7 +71,7 @@ function SourceDonnees({article, setArticle, index}){
                         variableId: Number(variable.id), 
                         label: variable.nom, 
                         data: variable.valeurs, 
-                        backgroundColor: "#000000", // met en noir par défaut
+                        backgroundColor: "#000000", // met en noir par défaut -> changer en variable.backgrounColor ?
                         borderColor: "#000000",
                     }]
                 : prevDatasets.filter(ds => ds.variableId !== variable.id);

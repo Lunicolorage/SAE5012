@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserProvider";
 
@@ -12,7 +12,6 @@ function Donnees(){
     const [variables, setVariables] = useState({});
     const [file, setFile] = useState(null);
     const [visibleRows, setVisibleRows] = useState(10);
-    // const [showScrollBtnBas, setShowScrollBtnBas] = useState(false);
     
 
     function handleChoixFichier (e) {
@@ -186,22 +185,20 @@ function Donnees(){
         
     }
 
-
-    // useEffect(() => {
-    //     function handleScroll(){
-    //         setShowScrollBtnBas(window.scrollY > 300);
-    //     };
-
-    //     window.addEventListener('scroll', handleScroll);
-    //     return ()=> {window.removeEventListener('scroll', handleScroll);}
-    // }, [])
-
     function scrollToBottom(){
         window.scrollTo({
             top: document.documentElement.scrollHeight,
             behavior: 'smooth',
         })
     }
+
+    function scrollToTop(){
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        })
+    }
+
 
 
     return(
@@ -249,7 +246,8 @@ function Donnees(){
                 
             </div>
 
-            <div className="buttonsTab">
+            <div className="buttonsTabBas">
+                <div>
                     {data.length > visibleRows && (
                         <button onClick={() => setVisibleRows(prev => prev + 10)}>Afficher plus</button>
                     )}
@@ -261,6 +259,13 @@ function Donnees(){
                     {data.length > visibleRows && (
                         <button onClick={() => setVisibleRows(data.length)}>Tout afficher</button>
                     )}
+                </div>
+
+                {visibleRows > 10 && (
+                    <button className="scrollTopButton" onClick={scrollToTop}>
+                        ↑
+                    </button>
+                )}
             </div>
 
             <div className="variables">

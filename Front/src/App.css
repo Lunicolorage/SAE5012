@@ -279,15 +279,24 @@ table th, table td {
   background-color: var(--white);
 }
 
-.buttonsTab, .buttonsTabHaut{
+.buttonsTabBas, .buttonsTabHaut{
   margin: 10px 0px;
 }
 
-.buttonsTab button, .buttonsTabHaut button{
+.buttonsTabBas button, .buttonsTabHaut button{
   margin-right: 10px;
+  margin-top: 5px;
 }
 
-.buttonsTabHaut{}
+.buttonsTabHaut{
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttonsTabBas{
+  display: flex;
+  justify-content: space-between;
+}
 
 @media (min-width: 768px) {
   /* .variables{

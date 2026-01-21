@@ -116,7 +116,8 @@ function AffichageArticle(){
                 .map((section) => (
                     <SectionArticle 
                     key={section.id} 
-                    section={section} />
+                    section={section} 
+                    couleur={getCSSVariable} />
                 ))
             }
         </div> 
