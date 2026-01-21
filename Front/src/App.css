@@ -429,6 +429,10 @@ table th, table td {
   min-width: 20vw;
 }
 
+.BoutonsUnArticle{
+  margin-bottom: 20px;
+}
+
 .articleSolo-suppr{
   background-color: var(--deepBlue);
   color: var(--white);

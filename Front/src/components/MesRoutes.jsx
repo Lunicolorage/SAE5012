@@ -4,7 +4,7 @@ import { PageCreationArticle } from './creationArticle/PageCreationArticle';
 import { Donnees } from './ajoutDonnees/Donnees';
 import { Articles } from './index/Articles';
 import { Connexion } from './connexion/Connexion';
-import { AffichageArticle } from './article/AffichageArticle';
+import { UnArticle } from './article/UnArticle';
 import { NotFound } from './NotFound';
 import { useContext, useState, useEffect } from 'react'
 import { UserContext } from "../context/UserProvider";
@@ -31,7 +31,7 @@ function MesRoutes({createAllowed, addDataAllowed, editDesignAllowed}) {
           )}
           <Route path="/index" element={<Articles/>} />
           <Route path="/connexion" element={<Connexion/>} />
-          <Route path="/article/:id" element={<AffichageArticle />} />
+          <Route path="/article/:id" element={<UnArticle />} />
           {/* <Route path="/shop" element={<Shop like={[tabLiked, setTabLiked]} card={[tabPanier, setTabPanier]} />} />  */}
           <Route path="*" element={<NotFound />} />
         </Routes>

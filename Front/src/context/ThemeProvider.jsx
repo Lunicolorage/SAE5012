@@ -34,7 +34,7 @@ function ThemeProvider({ children }) {
     };
 
     const [theme, setTheme] = useState(getInitialTheme());
-    console.log(localStorage);
+    // console.log(localStorage);
 
     useEffect(() => {
         async function getData() {

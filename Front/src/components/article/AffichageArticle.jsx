@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { SectionArticle } from "./SectionArticle";
 import { UserContext } from "../../context/UserProvider";
@@ -7,7 +6,7 @@ import { BoutonNotation } from "./BoutonNotation";
 import { BoutonModif } from "./BoutonModif";
 import { BoutonSuppr } from "./BoutonSuppr";
 
-function AffichageArticle(){
+function AffichageArticle({contenuArticle, setContenuArticle, id, setOnModifier, OnModifier}){
 
     const getCSSVariable = (variable) => {
         return getComputedStyle(document.documentElement)
@@ -15,8 +14,6 @@ function AffichageArticle(){
             .trim();
     };
     // permet de récuperer une variable css
-
-    const { id } = useParams();
 
     const SuppArticleAllowed = ['ROLE_ADMIN','ROLE_EDIT'];
 
@@ -27,10 +24,6 @@ function AffichageArticle(){
     const addNoteAllowed = ['ROLE_ADMIN','ROLE_ABO'];
     const hasAnyRole = (allowed) => Array.isArray(user?.roles) && user.roles.some(r => allowed.includes(r));
     //verifie que le role autorise la fonctionnalité
-
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [contenuArticle, setContenuArticle] = useState({});
 
     const [canNote, setCanNote] = useState(true);
     const [noteMoyenne, setNoteMoyenne] = useState(0);
@@ -53,28 +46,6 @@ function AffichageArticle(){
     //récupère les données après avoir ajouté une note
 
     useEffect(() => {
-        async function getData() {
-          const url = 'http://localhost:8000/api/articles/'+id+'/full';
-          try {
-            const response = await fetch(url);
-            if (!response.ok) {
-              throw new Error(`Response status: ${response.status}`);
-            }
-            const result = await response.json();
-            setContenuArticle(result);
-          } catch (err) {
-            setError(err.message);
-            console.error(err.message);
-          } finally {
-            setLoading(false);
-          }
-        }
-    
-        getData();
-    }, []); 
-    //récupère les données de l'article avec une requete custom
-
-    useEffect(() => {
         // Vérifie si l'utilisateur est l'auteur de l'article
         if (contenuArticle.user){
           setIsTheAuthor(contenuArticle.user.id === user.id);
@@ -84,8 +55,8 @@ function AffichageArticle(){
         if (contenuArticle.notes && Array.isArray(contenuArticle.notes)) {
           contenuArticle.notes.forEach(note => {
             let idNoteUser = note.user.split('/').pop();
-            if (idNoteUser === user.id) {
-              setCanNote(false);
+            if (idNoteUser === String(user.id)) {
+              setCanNote(false);     
             }
           });
         } // Vérifie si l'utilisateur n'a pas déjè noté l'article
@@ -96,9 +67,7 @@ function AffichageArticle(){
           setNoteMoyenne(average);
         } // Récupère la moyenne des notes
     }, [contenuArticle, user]);
-
-    if (loading) return <div>Chargement...</div>;
-    if (error) return <div>{error}</div>;
+    
 
     return(
         <div>
@@ -127,8 +96,8 @@ function AffichageArticle(){
             <p> {new Date(contenuArticle.createdAt).toLocaleDateString('fr-FR')} - {contenuArticle.user.nom}</p> 
             
             {(hasAnyRole(SuppArticleAllowed) || IsTheAuthor) && (
-            <div>
-              < BoutonModif />
+            <div className="BoutonsUnArticle">
+              < BoutonModif setOnModifier={setOnModifier} OnModifier={OnModifier}/>
               < BoutonSuppr article ={contenuArticle}/>
             </div>
             )}
