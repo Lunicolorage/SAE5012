@@ -1,9 +1,11 @@
 import { useEffect, useState, useContext } from "react";
 import { AffichageArticle } from "./AffichageArticle";
 import { useParams } from "react-router-dom";
+import { ModifierArticle } from "./ModifierArticle";
 
 export function UnArticle(){
     const { id } = useParams();
+    //récupère l'id de l'article présent dans l'url
 
     const [OnModifier, setOnModifier] = useState('false');
 
@@ -37,8 +39,16 @@ export function UnArticle(){
     if (loading) return <div>Chargement...</div>;
     if (error) return <div>{error}</div>;
     
+    //verifie si l'article est en mode modification
     if (!OnModifier){
-    return('page modif')
+      return(
+        <ModifierArticle 
+          id={id}
+          contenuArticle={contenuArticle}
+          setOnModifier={setOnModifier}
+          OnModifier={OnModifier}
+        />
+      )
             
     }
     else{
