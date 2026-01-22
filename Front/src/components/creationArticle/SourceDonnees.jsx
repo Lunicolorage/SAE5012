@@ -71,7 +71,8 @@ function SourceDonnees({article, setArticle, index}){
                         variableId: Number(variable.id), 
                         label: variable.nom, 
                         data: variable.valeurs, 
-                        backgroundColor: "#000000" // met en noir par défaut
+                        backgroundColor: "#000000", // met en noir par défaut -> changer en variable.backgrounColor ?
+                        borderColor: "#000000",
                     }]
                 : prevDatasets.filter(ds => ds.variableId !== variable.id);
 
@@ -80,7 +81,7 @@ function SourceDonnees({article, setArticle, index}){
             if (prevDatasets.length == 0 && checked){
                 labels = variable.type == "categorielle" 
                             ? variable.valeurs 
-                            : variable.valeurs.map((_, i) => `#${i + 1}`);// -> gérer qd nb
+                            : variable.valeurs.map((_, i) => `#${i + 1}`);// -> gérer qd nb -> à voir
             }
 
             sections[index] = {
@@ -105,7 +106,7 @@ function SourceDonnees({article, setArticle, index}){
 
             sections[index].contenu.datasets =
                 sections[index].contenu.datasets.map(nd => 
-                    nd.variableId == variableId ? {...nd, backgroundColor: color} : nd
+                    nd.variableId == variableId ? {...nd, backgroundColor: color, borderColor: color} : nd
                 )                
             return {...prev, sections}
         })
@@ -315,9 +316,9 @@ function SourceDonnees({article, setArticle, index}){
             <select id="choixTypeGraphique" onChange={handleChoixTypeGraphique}>
                 <option value="">Choisissez le type de graphique</option>
                 {/* <hr></hr> */}
-                <option>pie chart</option>
+                {/* <option>pie chart</option> */}
                 <option>bar chart</option>
-                <option>histogram</option>
+                <option>line chart</option>
             </select>
 
             <label htmlFor="choixNomGraphique"><h2>Nom du graphique</h2></label>

@@ -70,7 +70,7 @@ function AffichageArticle({contenuArticle, setContenuArticle, id, setOnModifier,
     
 
     return(
-        <div>
+        <div className="articleComplet">
             <div className="titreArticle">
               <h1>{contenuArticle.titre}</h1>
               <div className="notationArticle">
@@ -107,7 +107,8 @@ function AffichageArticle({contenuArticle, setContenuArticle, id, setOnModifier,
                 .map((section) => (
                     <SectionArticle 
                     key={section.id} 
-                    section={section} />
+                    section={section} 
+                    couleur={getCSSVariable} />
                 ))
             }
         </div> 

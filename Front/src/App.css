@@ -279,7 +279,24 @@ table th, table td {
   background-color: var(--white);
 }
 
+.buttonsTabBas, .buttonsTabHaut{
+  margin: 10px 0px;
+}
 
+.buttonsTabBas button, .buttonsTabHaut button{
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+.buttonsTabHaut{
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttonsTabBas{
+  display: flex;
+  justify-content: space-between;
+}
 
 @media (min-width: 768px) {
   /* .variables{
@@ -439,6 +456,9 @@ table th, table td {
   margin-left: 1vw;
 }
 
+.articleComplet{
+  margin-bottom: 5%;
+}
 
 .sectionTitre, .sectionTexte{
   margin-bottom: 1vw;
@@ -452,17 +472,35 @@ table th, table td {
   display: block;
 }
 
+.sectionGraphique{
+  margin-bottom: 1vw;
+  width: 100%;
+  height: 200px;
+  /* margin-left: auto;
+  margin-right: auto; */
+}
+
 @media (min-width: 600px) {
   .sectionImage{
   max-width: 80%;
+  }
+
+  .sectionGraphique{
+    max-width: 100%;
+    height: 300px;
   }
 }
 
 @media (min-width: 1024px) {
 
   .sectionImage{
-  max-width: 60%;
-}
+    max-width: 60%;
+  }
+
+  .sectionGraphique{
+    max-width: 100%;
+    height: 450px;
+  }
 
 }
 
@@ -663,6 +701,12 @@ input[type=file]::file-selector-button {
   margin-top: 10px;
 }
 
+.zoneSourceDonnees select{
+  margin-bottom: 25px;
+  margin-top: 10px;
+}
+
+
 .zoneCheck{
   padding-top: 10px;
   padding-bottom: 10px;
@@ -737,7 +781,7 @@ input[type=file]::file-selector-button {
   margin-bottom: 15px;
   margin-top: 15px;
   background-color: var(--white);
-  border: solid #7AC74F;
+  border: solid var(--greenLight);
   padding: 15px;
   border-radius: 10px;
 }
@@ -754,7 +798,9 @@ input[type=file]::file-selector-button {
 }
 
 .zoneAjoutBloc select{
-  margin-bottom: 10px;
+  margin: 15px 0px;
+  padding: 5px;
+  border: var(--deepBlue) solid;
 }
 
 /* /////////////////////////////////////////////////////////////////////////////////////// */

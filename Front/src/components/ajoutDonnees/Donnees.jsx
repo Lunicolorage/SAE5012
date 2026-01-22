@@ -10,7 +10,9 @@ function Donnees(){
     const [data, setData] = useState([]);
     const [headers, setHeaders] = useState([]);
     const [variables, setVariables] = useState({});
-    const [file, setFile] = useState(null)
+    const [file, setFile] = useState(null);
+    const [visibleRows, setVisibleRows] = useState(10);
+    
 
     function handleChoixFichier (e) {
         var selectedFile = e.target.files[0];
@@ -19,28 +21,6 @@ function Donnees(){
         setFile(selectedFile);
 
         let reader = new FileReader();
-
-        // reader.onload = function(e) {    
-        //     let text = e.target.result;
-            
-        //     // trim supprime les espaces au début et à la fin d'une chaîne
-        //     const lines = text.split("\n").map(line => line.trim()).filter(line => line !== "");
-
-        //     const newHeaders = lines[0].split(",");
-        //     setHeaders(newHeaders);
-
-        //     const rows = lines.slice(1).map(line => {
-        //         const values = line.split(",");
-        //         let obj = {};
-        //         newHeaders.forEach((h, i) => {
-        //             obj[h] = values[i];
-        //         });
-        //         return obj;
-        //     });
-
-        //     console.log("tab :", rows);
-        //     setData(rows);
-        // }
 
         function detectSeparator(line){
             // tester première ligne pour voir si plus de , ou de ; -> en déduire séparateur pour le reste
@@ -69,7 +49,9 @@ function Donnees(){
                     const values = line.split(separateur).map(v => v.trim());
 
                     return headers.reduce((obj, header, index) => {
-                        obj[header] = values[index] ?? "";
+                        let value = values[index] ?? "";
+                        value = value.replace(/"/g, ''); // Enlever les guillemets
+                        obj[header] = value;
                         return obj;
                     }, {});
                 });
@@ -99,30 +81,6 @@ function Donnees(){
     // doit enregistrer dans jeu_donnee le lien du fichier, l'id du user, nom fichier
     // doit enregistrer dans variable pour chaque variable le nom, le type, id du jeu de données lié
     async function handleClickPublier(e){
-        // appel à /api/jeu_donnees en POST
-        // {
-        //     "createdAt": "2026-01-13T10:14:33.989Z",
-        //     "user": "https://example.com/",
-        //     "lien": "string",
-        //     "variables": [
-        //         "https://example.com/"
-        //     ],
-        //     "graphiques": [
-        //         "https://example.com/"
-        //     ]
-        // }
-        // appel à /api/variables en POST
-        // {
-        //     "idDonnees": "https://example.com/",
-        //     "nom": "string",
-        //     "type": "string",
-        //     "graphiqueVariables": [
-        //         "https://example.com/"
-        //     ]
-        // }
-        // Doit pas remplir graphiques et graphiqueVariables pour l'instant. 
-        // Verif peut être null
-
         e.preventDefault();
         setLoading(true);
         setError('');
@@ -176,8 +134,20 @@ function Donnees(){
             for (const [nom, type] of Object.entries(variables)){ // récupère nom et type pour chaque variable dans variables
 
                 const valeursCol = data.map(row => {
-                    const val = row[nom];
-                    return type == "numerique" ? Number(val) : val; // pour avoir nb directement (+ simple pour après)
+                    let val = row[nom];
+
+                    if (type == "numerique") {
+                        val = val.toString().trim().replace(/,/g, '.'); // Remplacer virgule par point
+                        const numVal = Number(val);
+                        return numVal;
+
+                        // if (isNaN(numVal)) {
+                        //     console.warn(`Valeur non numérique détectée: "${val}" pour la colonne "${nom}"`);
+                        //     return null; 
+                        // }
+                        // return numVal;
+                    }
+                    return val;
                 })
 
                 const response2 = await fetch("http://localhost:8000/api/variables", {
@@ -215,6 +185,21 @@ function Donnees(){
         
     }
 
+    function scrollToBottom(){
+        window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth',
+        })
+    }
+
+    function scrollToTop(){
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        })
+    }
+
+
 
     return(
         <div className="pageImportDonnees">
@@ -224,6 +209,18 @@ function Donnees(){
                 <label htmlFor="csv" id="labelCsv">Source de données</label>
                 <br/>
                 <input type="file" name="csv" id='csv' accept=".csv" onChange={handleChoixFichier} required ></input>
+            </div>
+
+            <div className="buttonsTabHaut">                    
+                    {visibleRows > 10 && (
+                        <button onClick={() => setVisibleRows(10)}>Réduire</button>
+                    )}
+
+                {visibleRows > 10 && (
+                    <button className="scrollBottomButton" onClick={scrollToBottom}>
+                        ↓
+                    </button>
+                )}
             </div>
 
             <div className="tableContainer">
@@ -236,7 +233,7 @@ function Donnees(){
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((row, index) => (
+                        {data.slice(0, visibleRows).map((row, index) => (
                             <tr key={index}>
                             {headers.map((header, idx) => (
                                 <td key={idx}>{row[header]}</td>
@@ -245,8 +242,31 @@ function Donnees(){
                         ))}
                     </tbody>
                 </table>
+
+                
             </div>
 
+            <div className="buttonsTabBas">
+                <div>
+                    {data.length > visibleRows && (
+                        <button onClick={() => setVisibleRows(prev => prev + 10)}>Afficher plus</button>
+                    )}
+                    
+                    {visibleRows > 10 && (
+                        <button onClick={() => setVisibleRows(10)}>Réduire</button>
+                    )}
+
+                    {data.length > visibleRows && (
+                        <button onClick={() => setVisibleRows(data.length)}>Tout afficher</button>
+                    )}
+                </div>
+
+                {visibleRows > 10 && (
+                    <button className="scrollTopButton" onClick={scrollToTop}>
+                        ↑
+                    </button>
+                )}
+            </div>
 
             <div className="variables">
                 <h2>Variables</h2>

@@ -1,36 +1,109 @@
 import React from "react";
+import { Bar, Line, Pie } from "react-chartjs-2"
+import { Chart as ChartJS } from "chart.js/auto";
 
-function SectionArticle(section){
+function SectionArticle({section, couleur}){
     // console.log(section);
 
-    if(section.section.type == 'titre'){
+    if(section.type == 'titre'){
         return(
             <>
              {React.createElement(
-                section.section.contenu.hierarchie,
+                section.contenu.hierarchie,
                 { className: 'sectionTitre' },
-                section.section.contenu.texte,
+                section.contenu.texte,
             )}
             </>
         )
     }
 
-    if(section.section.type == 'texte'){
+    if(section.type == 'texte'){
         return(
-            <p className="sectionTexte">{section.section.contenu.contenu}</p>
+            <p className="sectionTexte">{section.contenu.contenu}</p>
         )
     }
 
-    if(section.section.type == 'image'){
-        // console.log(section.section.contenu[0].alt);
+    if(section.type == 'image'){
+        // console.log(section.contenu[0].alt);
         return(
-            <img className="sectionImage" src={section.section.contenu[0].url} alt={section.section.contenu[0].alt} />
+            <img className="sectionImage" src={section.contenu[0].url} alt={section.contenu[0].alt} />
         )
     }
 
-    if(section.section.type == 'graphique'){
+    if(section.type == 'graphique'){
+        
+        const data = {
+            labels: section.contenu.labels,
+            datasets: section.contenu.datasets,
+        } // ce qui est dans contenu -> labels + datasets
+
+        const options = {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: section.contenu.title,
+                    font: {
+                        size: 15
+                    },
+                    color: couleur("--deepBlue"),
+                },
+                legend: {
+                    labels:{
+                        color: couleur("--deepBlue"),
+                    }
+                },
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: couleur("--deepBlue"),
+                    },
+                    grid: {
+                        color: couleur("--grey"),
+                    },
+                    border: {
+                        color: couleur("--deepBlue"),
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: couleur("--deepBlue"),
+                    },
+                    grid: {
+                        color: couleur("--grey"),
+                    },
+                    border: {
+                        color: couleur("--deepBlue"),
+                    }
+                }
+            }
+        }
+
+        const graphique = () => {
+            switch (section.contenu.type){
+                case "pie chart":
+                    return <Pie data={data} options={options}/>;
+                case "bar chart":
+                    return <Bar data={data} options={options}/>;
+                case "line chart":
+                    return <Line data={data} options={options}/>;
+                default:
+                    return <p>Type de graphique non supporté</p>;
+            }
+        }
+        
+
         return(
-           <p>graphique</p>
+            <div className="sectionGraphique">
+                 {/* faire en fonction de celui choisi */}
+                {graphique()}
+            </div>
+
+            // <div className="sectionGraphique">
+            //     <canvas id="chart">{graphique()}</canvas>
+            // </div>
+
         )
     }
 
