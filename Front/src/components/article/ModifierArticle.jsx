@@ -66,8 +66,12 @@ export function ModifierArticle({contenuArticle, setContenuArticle, id, setOnMod
                 {/* {console.log(article)} */}
 
                 <div className="buttonsCreation">
-                    <button className="buttonAjout" onClick={handleClick}>Ajouter un bloc</button>
-                    <button type="submit" className="buttonPublier" onClick={handleClickSubmit} disabled={loading || !article.titre.trim() || !article.Resume.trim()}>Modifier</button>
+                    <button className="buttonAjout" onClick={handleClick}>
+                        Ajouter un bloc
+                    </button>
+                    <button type="submit" className="buttonPublier" onClick={handleClickSubmit} disabled={loading || !article.titre.trim() || !article.Resume.trim()}>
+                        {loading ? "Modification..." :"Modifier"}
+                    </button>
                 </div>
 
                 {error && <p style={{ color: 'red' }}>{error}</p>}
