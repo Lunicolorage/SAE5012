@@ -11,18 +11,17 @@ function SourceDonnees({ article, setArticle, index }) {
     const [variables, setVariables] = useState([]);
     const [selectedVariables, setSelectedVariables] = useState([]);
 
+    // États contrôlés pour select / input
     const currentNom = article.sections[index].contenu.title || "";
     const [nomG, setNomG] = useState(currentNom);
 
     const currentjeuDonneeId = article.sections[index].contenu.jeuDonneeId || "";
-
     const [selectedJeuDonneesId, setSelectedJeuDonneesId] = useState(currentjeuDonneeId);
-    
-    const currentType = article.sections[index].contenu.type || "";
-const [selectedType, setSelectedType] = useState(currentType);
-    
 
-    // Récupère les jeux de données pour le select
+    const currentType = article.sections[index].contenu.type || "";
+    const [selectedType, setSelectedType] = useState(currentType);
+
+    // Récupération des jeux de données
     useEffect(() => {
         const fetchSourcesDonnees = async () => {
             setLoading(true);
@@ -47,27 +46,31 @@ const [selectedType, setSelectedType] = useState(currentType);
         fetchSourcesDonnees();
     }, [user.token]);
 
-    // Fonction générique pour charger un jeu de données (initialisation ou sélection)
-    const loadJeuDonnees = async (donneesId) => {
+    // Fonction pour charger un jeu de données
+    const loadJeuDonnees = async (donneesId, keepTitle = false, keepType = false) => {
         if (!donneesId) return;
+
         const dataset = jeuDonnees.find(jd => jd.id == donneesId);
         setSelectedData(dataset);
 
         setVariables([]);
         setSelectedVariables([]);
-        setNomG("");
+
+        // Sauvegarde du nom et type existants si demandé
+        const existingTitle = keepTitle ? article.sections[index].contenu.title || "" : "";
+        const existingType = keepType ? article.sections[index].contenu.type || "" : "";
 
         setLoading(true);
         setError('');
 
-        // Reset contenu section
+        // Reset contenu section en préservant title / type si nécessaire
         setArticle(prev => {
             const sections = [...prev.sections];
             sections[index] = {
                 ...sections[index],
                 contenu: {
-                    type: '',
-                    title: '',
+                    type: existingType,
+                    title: existingTitle,
                     labels: [],
                     datasets: [],
                     idDonnees: `/api/jeu_donnees/${donneesId}`,
@@ -75,6 +78,10 @@ const [selectedType, setSelectedType] = useState(currentType);
             };
             return { ...prev, sections };
         });
+
+        // Met à jour l'état local du nom si on garde le titre
+        setNomG(existingTitle);
+        setSelectedType(existingType);
 
         try {
             const response = await fetch(`http://localhost:8000/api/jeu_donnee/${donneesId}/variables`, {
@@ -91,12 +98,12 @@ const [selectedType, setSelectedType] = useState(currentType);
         }
     };
 
-    // Charge automatiquement le jeu de données si on est en mode édition
+    // Initialisation si édition
     useEffect(() => {
         if (currentjeuDonneeId && jeuDonnees.length > 0) {
-            loadJeuDonnees(currentjeuDonneeId);
+            loadJeuDonnees(currentjeuDonneeId, true, true); // garde le nom et le type existants
         }
-    }, [currentjeuDonneeId, jeuDonnees]); // Dépend de la liste des jeux de données et de l'id courant
+    }, [currentjeuDonneeId, jeuDonnees]);
 
     // Gestion sélection variables
     const handleCheckVariables = (variable, checked) => {
@@ -158,7 +165,6 @@ const [selectedType, setSelectedType] = useState(currentType);
     const handleChoixTypeGraphique = (e) => {
         const typeGraphic = e.target.value;
         setSelectedType(typeGraphic);
-        if (!typeGraphic) return;
         setArticle(prev => {
             const sections = [...prev.sections];
             sections[index] = {
