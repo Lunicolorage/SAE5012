@@ -97,7 +97,7 @@ function AffichageArticle({contenuArticle, setContenuArticle, id, setOnModifier,
             
             {(hasAnyRole(SuppArticleAllowed) || IsTheAuthor) && (
             <div className="BoutonsUnArticle">
-              < BoutonModif setOnModifier={setOnModifier} OnModifier={OnModifier}/>
+              {/* < BoutonModif setOnModifier={setOnModifier} OnModifier={OnModifier}/> */}
               < BoutonSuppr article ={contenuArticle}/>
             </div>
             )}

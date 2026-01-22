@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../context/UserProvider";
 import { Texte } from "../creationArticle/Texte";
 import { SousTitre } from "../creationArticle/SousTitre";
 import { Image } from "../creationArticle/Image";
@@ -11,6 +11,7 @@ export function ModifierArticle({contenuArticle, setContenuArticle, id, setOnMod
 
     const [showAjoutBloc, setShowAjoutBloc] = useState(false);
 
+    const [user, setUser] = useContext(UserContext);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -31,9 +32,41 @@ export function ModifierArticle({contenuArticle, setContenuArticle, id, setOnMod
         });
     }, [contenuArticle]);
 
-    const handleClickSubmit = async () => {
-        console.log(article);
-    };
+    function ModifierArticle(idArticle, nouvelArticle) {
+        console.log(nouvelArticle);
+    }
+
+    // async function ModifierArticle(idArticle, nouvelArticle) {
+    //     const url = 'http://localhost:8000/api/articles/' + idArticle + '/full';
+    //     setLoading(true);
+
+    //     try {
+    //         const response = await fetch(url, {
+    //             method: 'PUT',
+    //             headers: {
+    //                 'Authorization': `Bearer ${user.token}`,
+    //                 'Content-Type': 'application/json', 
+    //             },
+    //             body: JSON.stringify(nouvelArticle) // article modifié
+    //         });
+
+    //         if (!response.ok) {
+    //             const erreurJson = await response.json();
+    //             throw new Error(`Erreur ${response.status}: ${erreurJson.message || response.statusText}`);
+    //         }
+
+    //         const data = await response.json();
+    //         console.log('Article modifié avec succès', data);
+
+    //         setOnModifier(!OnModifier);
+
+    //     } catch (err) {
+    //         console.error("Erreur lors de la modification de l'article:", err.message);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }
+
     
     return(
         <div className="pageModifierArticle">
@@ -69,7 +102,7 @@ export function ModifierArticle({contenuArticle, setContenuArticle, id, setOnMod
                     <button className="buttonAjout" onClick={handleClick}>
                         Ajouter un bloc
                     </button>
-                    <button type="submit" className="buttonPublier" onClick={handleClickSubmit} disabled={loading || !article.titre.trim() || !article.Resume.trim()}>
+                    <button type="submit" className="buttonPublier" onClick={() => ModifierArticle(id, article)} disabled={loading || !article.titre.trim() || !article.Resume.trim()}>
                         {loading ? "Modification..." :"Modifier"}
                     </button>
                 </div>
