@@ -17,6 +17,7 @@ function Texte({article, setArticle, index}){
         })
     }
 
+    //récupere les info pour le modifier
     const currentContent = article.sections[index]?.contenu?.contenu || "";
 
     function handleCrossClick(){
