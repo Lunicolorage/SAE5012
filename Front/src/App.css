@@ -445,8 +445,10 @@ table th, table td {
   margin-bottom: 1vw;
   width: 100%;
   height: 200px;
-  /* margin-left: auto;
-  margin-right: auto; */
+}
+
+.sectionGraphiquePie {
+  height: 280px;
 }
 
 @media (min-width: 600px) {
@@ -457,6 +459,10 @@ table th, table td {
   .sectionGraphique{
     max-width: 100%;
     height: 300px;
+  }
+
+  .sectionGraphiquePie {
+    height: 380px;
   }
 }
 
@@ -469,6 +475,10 @@ table th, table td {
   .sectionGraphique{
     max-width: 100%;
     height: 450px;
+  }
+
+  .sectionGraphiquePie {
+    height: 520px;
   }
 
 }

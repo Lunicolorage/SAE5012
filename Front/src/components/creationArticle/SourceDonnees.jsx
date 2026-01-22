@@ -55,7 +55,7 @@ function SourceDonnees({article, setArticle, index}){
             if(checked) {
                 // si cochée -> copie déjà là + ajoute celle qu'on vient de cocher
                 const existing = prev.find(v => v.id === variable.id);
-                return existing ? prev : [...prev, {...variable, backgroundColor: "#000000"}]
+                return existing ? prev : [...prev, {...variable, backgroundColor: "#000000", baseColor: "#000000"}]
             } else {
                 // sinon -> garde tout sauf celle qu'on décoche
                 return prev.filter(v => v.id !== variable.id);
@@ -72,6 +72,7 @@ function SourceDonnees({article, setArticle, index}){
                         label: variable.nom, 
                         data: variable.valeurs, 
                         backgroundColor: "#000000", // met en noir par défaut -> changer en variable.backgrounColor ?
+                        baseColor: "#000000",
                         borderColor: "#000000",
                     }]
                 : prevDatasets.filter(ds => ds.variableId !== variable.id);
@@ -81,7 +82,7 @@ function SourceDonnees({article, setArticle, index}){
             if (prevDatasets.length == 0 && checked){
                 labels = variable.type == "categorielle" 
                             ? variable.valeurs 
-                            : variable.valeurs.map((_, i) => `#${i + 1}`);// -> gérer qd nb -> à voir
+                            : variable.valeurs.map((_, i) => `valeur ${i + 1}`);// -> gérer qd nb -> à voir
             }
 
             sections[index] = {
@@ -97,41 +98,129 @@ function SourceDonnees({article, setArticle, index}){
         })
 
     }
- 
+
+
+    // gestion couleurs pour pie charts
+    function generatePieColors(values, mainColor) {
+        if (!Array.isArray(values) || values.length === 0) return [];
+
+        const maxValue = Math.max(...values);
+        const colors = [];
+        const hueStep = 360 / values.length; // Calculer l'espacement des teintes pour avoir des couleurs bien distinctes
+        let mainColorUsed = false;
+
+         values.forEach((value, index) => {
+            if (value === maxValue && !mainColorUsed) {
+                mainColorUsed = true; // évite doublons si plusieurs max
+                colors.push(mainColor);
+            } else {
+                // Générer une couleur HSL avec une teinte espacée
+                const hue = (index * hueStep) % 360;
+                colors.push(`hsl(${hue}, 70%, 60%)`);
+            }
+        });
+    
+        return colors;
+    }
+
+
+    function adaptDatasetToType(dataset, type) {
+        let color = generatePieColors(dataset.data, dataset.baseColor)
+        if (type === "pie chart") {
+            return {
+                ...dataset,
+                backgroundColor: color,
+                borderColor: color,
+            };
+        }
+
+        return {
+            ...dataset,
+            backgroundColor: dataset.baseColor,
+            borderColor: dataset.baseColor,
+        };
+    }
+
+    
+
     // gère couleurs variables
+    // function handleColorChoice(variableId, color){
+    //     // console.log(color); // récupère bien couleur (hexa)
+    //     setArticle(prev => {
+    //         const sections = [...prev.sections];
+
+    //         sections[index].contenu.datasets =
+    //             sections[index].contenu.datasets.map(nd => 
+    //                 nd.variableId == variableId ? {...nd, backgroundColor: color, borderColor: color} : nd
+    //             )                
+    //         return {...prev, sections}
+    //     })
+    // }
+
     function handleColorChoice(variableId, color){
         // console.log(color); // récupère bien couleur (hexa)
         setArticle(prev => {
             const sections = [...prev.sections];
 
             sections[index].contenu.datasets =
-                sections[index].contenu.datasets.map(nd => 
-                    nd.variableId == variableId ? {...nd, backgroundColor: color, borderColor: color} : nd
-                )                
+                sections[index].contenu.datasets.map(nd => {
+                    if (nd.variableId != variableId) return nd;
+
+                    const updated = {...nd, baseColor: color}
+                    return adaptDatasetToType(updated, sections[index].contenu.type);
+                })                
             return {...prev, sections}
         })
     }
-
+    
 
     // gère choix type graphique
+    // function handleChoixTypeGraphique(e){
+    //     const typeGraphic = e.target.value;
+    //     if (!typeGraphic) return; 
+        
+    //     setArticle(prev => {
+    //         const sections = [...prev.sections];
+
+    //         sections[index] = {
+    //             ...sections[index],
+    //             contenu: {
+    //                 ...sections[index].contenu,
+    //                 type: typeGraphic,
+    //                 // datasets: [], // réinitialiser datasets --> à voir
+    //                 // labels: []    // réinitialiser labels
+    //             }
+    //         }
+    //         return {...prev, sections}
+    //     })
+    //     setSelectedVariables([]);
+    // }
+
     function handleChoixTypeGraphique(e){
         const typeGraphic = e.target.value;
-        if (typeGraphic==""){
-            return;
-        }
+        if (!typeGraphic) return; 
+        
         setArticle(prev => {
             const sections = [...prev.sections];
+
+            const adaptedDatasets = sections[index].contenu.datasets.map(ds => adaptDatasetToType(ds, typeGraphic))
 
             sections[index] = {
                 ...sections[index],
                 contenu: {
                     ...sections[index].contenu,
                     type: typeGraphic,
+                    datasets: adaptedDatasets,
+                    // datasets: [], // réinitialiser datasets --> à voir
+                    // labels: []    // réinitialiser labels
                 }
             }
             return {...prev, sections}
         })
+        // setSelectedVariables([]);
     }
+
+
 
     // gère choix nom graphique
     function handleChangeNom(e){
@@ -316,9 +405,9 @@ function SourceDonnees({article, setArticle, index}){
             <select id="choixTypeGraphique" onChange={handleChoixTypeGraphique}>
                 <option value="">Choisissez le type de graphique</option>
                 {/* <hr></hr> */}
-                {/* <option>pie chart</option> */}
-                <option>bar chart</option>
-                <option>line chart</option>
+                <option value="pie chart" disabled={selectedVariables.length !== 1}>pie chart</option>
+                <option value="bar chart">bar chart</option>
+                <option value="line chart">line chart</option>
             </select>
 
             <label htmlFor="choixNomGraphique"><h2>Nom du graphique</h2></label>
