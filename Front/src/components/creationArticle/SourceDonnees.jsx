@@ -48,22 +48,36 @@ function SourceDonnees({ article, setArticle, index }) {
 
     // Fonction pour charger un jeu de données
     const loadJeuDonnees = async (donneesId, keepTitle = false, keepType = false) => {
-        if (!donneesId) return;
+    if (!donneesId) return;
 
-        const dataset = jeuDonnees.find(jd => jd.id == donneesId);
-        setSelectedData(dataset);
+    const dataset = jeuDonnees.find(jd => jd.id == donneesId);
+    setSelectedData(dataset);
 
-        setVariables([]);
-        setSelectedVariables([]);
+    setVariables([]);
+    
+    const existingTitle = keepTitle ? article.sections[index].contenu.title || "" : "";
+    const existingType = keepType ? article.sections[index].contenu.type || "" : "";
 
-        // Sauvegarde du nom et type existants si demandé
-        const existingTitle = keepTitle ? article.sections[index].contenu.title || "" : "";
-        const existingType = keepType ? article.sections[index].contenu.type || "" : "";
+    setLoading(true);
+    setError('');
 
-        setLoading(true);
-        setError('');
+    try {
+        // Fetch variables
+        const response = await fetch(`http://localhost:8000/api/jeu_donnee/${donneesId}/variables`, {
+            method: 'GET',
+            headers: { Authorization: `Bearer ${user.token}` },
+        });
+        const nomsVar = await response.json();
+        if (!response.ok) throw new Error(nomsVar.message || "Erreur get variables");
+        setVariables(nomsVar);
 
-        // Reset contenu section en préservant title / type si nécessaire
+        // Recrée selectedVariables si datasets existants
+        const existingDatasets = article.sections[index].contenu.datasets || [];
+        const newSelectedVariables = nomsVar.filter(v => existingDatasets.some(ds => ds.variableId === v.id))
+            .map(v => ({ ...v, backgroundColor: "#000000" }));
+        setSelectedVariables(newSelectedVariables);
+
+        // Reset section
         setArticle(prev => {
             const sections = [...prev.sections];
             sections[index] = {
@@ -72,31 +86,23 @@ function SourceDonnees({ article, setArticle, index }) {
                     type: existingType,
                     title: existingTitle,
                     labels: [],
-                    datasets: [],
+                    datasets: existingDatasets,
                     idDonnees: `/api/jeu_donnees/${donneesId}`,
                 }
             };
             return { ...prev, sections };
         });
 
-        // Met à jour l'état local du nom si on garde le titre
         setNomG(existingTitle);
         setSelectedType(existingType);
 
-        try {
-            const response = await fetch(`http://localhost:8000/api/jeu_donnee/${donneesId}/variables`, {
-                method: 'GET',
-                headers: { Authorization: `Bearer ${user.token}` },
-            });
-            const nomsVar = await response.json();
-            if (!response.ok) throw new Error(nomsVar.message || "Erreur get variables");
-            setVariables(nomsVar);
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+    } catch (err) {
+        setError(err.message);
+    } finally {
+        setLoading(false);
+    }
+};
+
 
     // Initialisation si édition
     useEffect(() => {
@@ -109,12 +115,16 @@ function SourceDonnees({ article, setArticle, index }) {
     const handleCheckVariables = (variable, checked) => {
         setSelectedVariables(prev => {
             if (checked) {
-                const existing = prev.find(v => v.id === variable.id);
-                return existing ? prev : [...prev, { ...variable, backgroundColor: "#000000" }];
+                // Ajouter uniquement si pas déjà présent
+                if (!prev.find(v => v.id === variable.id)) {
+                    return [...prev, { ...variable, backgroundColor: "#000000" }];
+                }
+                return prev;
             } else {
                 return prev.filter(v => v.id !== variable.id);
             }
         });
+
 
         setArticle(prev => {
             const sections = [...prev.sections];
@@ -234,10 +244,13 @@ function SourceDonnees({ article, setArticle, index }) {
                         <Variables
                             key={variable.id}
                             nom={variable.nom}
+                            checked={selectedVariables.some(v => v.id === variable.id)}
                             onCheck={checked => handleCheckVariables(variable, checked)}
                             onColorChange={color => handleColorChoice(variable.id, color)}
                         />
                     ))}
+
+
                 </div>
             )}
 
