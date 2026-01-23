@@ -24,7 +24,7 @@ class GraphiqueVariable
     private ?Variable $idVariable = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $couleur = null;
+    private ?array $couleur = null;
 
     public function getId(): ?int
     {
@@ -55,14 +55,14 @@ class GraphiqueVariable
         return $this;
     }
 
-    public function getCouleur(): ?string
+    public function getCouleur(): ?array
     {
         return $this->couleur;
     }
 
-    public function setCouleur(string $couleur): static
+    public function setCouleur(array|string $couleur): static
     {
-        $this->couleur = $couleur;
+        $this->couleur = is_array($couleur) ? $couleur : [$couleur];
 
         return $this;
     }

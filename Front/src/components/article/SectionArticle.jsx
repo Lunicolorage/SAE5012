@@ -32,13 +32,31 @@ function SectionArticle({section, couleur}){
 
     if(section.type == 'graphique'){
         
+        const datasetsWithColors = section.contenu.datasets.map((dataset) => {
+            // On cherche dans le tableau "variables" celui qui correspond à ce dataset
+            const variableInfo = section.contenu.variables?.find(
+                v => v.variableId === dataset.variableId
+            );
+            // récupère les couleurs
+            const savedColors = variableInfo?.couleur;
+            
+            // Si des couleurs sont sauvegardées dans GraphiqueVariable, les utiliser
+            // Sinon, garder celles du dataset (noir par défaut)
+            return {
+                ...dataset,
+                backgroundColor: savedColors || dataset.backgroundColor,
+                borderColor: savedColors || dataset.borderColor,
+            };
+        });
+
         const data = {
             labels: section.contenu.labels,
-            datasets: section.contenu.datasets,
-        } // ce qui est dans contenu -> labels + datasets
-
+            datasets: datasetsWithColors,  // tableau avec les bonnes couleurs
+        }
+        
         const options = {
             responsive: true,
+            maintainAspectRatio: false, // pour éviter pbm taille pie chart
             plugins: {
                 title: {
                     display: true,
@@ -83,7 +101,7 @@ function SectionArticle({section, couleur}){
         const graphique = () => {
             switch (section.contenu.type){
                 case "pie chart":
-                    return <Pie data={data} options={options}/>;
+                    return <Pie key={section.id} data={data} options={options}/>;
                 case "bar chart":
                     return <Bar data={data} options={options}/>;
                 case "line chart":
@@ -95,15 +113,10 @@ function SectionArticle({section, couleur}){
         
 
         return(
-            <div className="sectionGraphique">
+            <div className={`sectionGraphique ${section.contenu.type === "pie chart" ? "sectionGraphiquePie" : ""}`}>
                  {/* faire en fonction de celui choisi */}
                 {graphique()}
             </div>
-
-            // <div className="sectionGraphique">
-            //     <canvas id="chart">{graphique()}</canvas>
-            // </div>
-
         )
     }
 
