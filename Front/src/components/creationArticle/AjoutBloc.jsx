@@ -90,7 +90,7 @@ function AjoutBloc({article, setArticle, clickCross}){
         <div className="zoneAjoutBloc">
             <div className="zoneTitreAjoutBloc">
                 <h2>Quel bloc ajouter ?</h2>
-                <img src="src\assets\croix.png" alt="fermer" className="cross" onClick={()=>clickCross(false)}></img>
+                <img src="src\assets\croix.png" alt="fermer" className="cross icone" onClick={()=>clickCross(false)}></img>
             </div>
             <select name="choixBloc" id="choixBloc" onChange={handleChoixBloc}>
                 {/* rajouter option neutre pour par défaut ? */}
