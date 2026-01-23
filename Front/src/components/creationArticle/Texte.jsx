@@ -17,6 +17,8 @@ function Texte({article, setArticle, index}){
         })
     }
 
+    //récupere les info pour le modifier
+    const currentContent = article.sections[index]?.contenu?.contenu || "";
 
     function handleCrossClick(){
         const indexToRemove = index;
@@ -31,7 +33,7 @@ function Texte({article, setArticle, index}){
                 <h2>Texte</h2>
                 <img src="/src/assets/croix.png" alt="fermer" className="cross icone" onClick={handleCrossClick}></img>
             </label>
-            <textarea id="choixTexte" rows="4" onChange={handleTexteChange}></textarea>
+            <textarea id="choixTexte" rows="4" value={currentContent} onChange={handleTexteChange}></textarea>
         </div>
     )
 }

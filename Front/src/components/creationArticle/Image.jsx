@@ -210,6 +210,9 @@ function Image({article, setArticle, index}){
         setArticle({...article, sections: sections})
     }
 
+    //mets l'image par defaut
+    const currentImageId = article.sections[index].contenu[0]?.id || "";
+    // console.log(currentImageId);
 
 
     return(
@@ -220,7 +223,7 @@ function Image({article, setArticle, index}){
             </label>
 
             <div className="selectionImage">
-                <select id="choixImage" onChange={handleImageChange} disabled={loading}>
+                <select id="choixImage" value={currentImageId} onChange={handleImageChange} disabled={loading}>
                     <option value="">{loading ? "Chargement..." : "Choisissez une image"}</option>
 
                     {/* Faire en sorte que si déjà en BDD -> se réengistre pas ? 

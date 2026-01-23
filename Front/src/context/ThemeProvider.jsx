@@ -13,8 +13,28 @@ function ThemeProvider({ children }) {
 
     const [ListeThemes, setListeThemes] = useState([]);
     const [error, setError] = useState(null);
-    const [theme, setTheme] = useState({});
-    // sconsole.log(theme);
+
+    const getInitialTheme = () => {
+        if (localStorage.theme_id) {
+            return {
+                id: localStorage.theme_id, 
+                nom: localStorage.theme_nom, 
+                class: localStorage.theme_class,
+                logoCouleur: localStorage.theme_logoCouleur,
+                user: localStorage.theme_user,
+                couleurs: {
+                    grey: localStorage.theme_grey,
+                    deepBlue: localStorage.theme_deepBlue,
+                    white: localStorage.theme_white,
+                    greenLight: localStorage.theme_greenLight,
+                }
+            };
+        }
+        return {}; // Thème vide si rien dans localStorage
+    };
+
+    const [theme, setTheme] = useState(getInitialTheme());
+    // console.log(localStorage);
 
     useEffect(() => {
         async function getData() {

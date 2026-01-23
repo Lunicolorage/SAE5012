@@ -1,7 +1,20 @@
+import { useEffect, useState } from "react";
 
 function SousTitre({article, setArticle, index}){
+    const [sousTitreValue, setSousTitreValue] = useState('');
+    const [hierarchieValue, setHierarchieValue] = useState('');
+
+    // Initialiser les valeurs pré-remplies
+    useEffect(() => {
+        if (article.sections[index]?.contenu) {
+            setSousTitreValue(article.sections[index].contenu.texte || '');
+            setHierarchieValue(article.sections[index].contenu.hierarchie || '');
+        }
+    }, [index]);
 
     function handleSousTitreChange(e){
+        setSousTitreValue(e.target.value);
+        
         setArticle(prev => {
             const sections = [...prev.sections]
 
@@ -18,6 +31,8 @@ function SousTitre({article, setArticle, index}){
     }
 
     function handleTypeChange(e){
+        setHierarchieValue(e.target.value);
+        
         setArticle(prev => {
             const sections = [...prev.sections]
 
@@ -39,20 +54,24 @@ function SousTitre({article, setArticle, index}){
         setArticle({...article, sections: sections})
     }
 
-
     return(
         <div className="zoneChoixSousTitre">
             <label htmlFor="choixSousTitre">
                 <h2>Sous-titre</h2>
                 <img src="src\assets\croix.png" alt="fermer" className="cross icone" onClick={handleCrossClick}></img>
             </label>
-            <select onChange={handleTypeChange}>
+            <select value={hierarchieValue} onChange={handleTypeChange}>
                 <option value="">Choisissez le niveau de titre</option>
                 <option value="h2">Titre 2</option>
                 <option value="h3">Titre 3</option>
                 <option value="h4">Titre 4</option>
             </select>
-            <input id="choixSousTitre" type="text" onChange={handleSousTitreChange}></input>
+            <input 
+                id="choixSousTitre" 
+                type="text" 
+                value={sousTitreValue}
+                onChange={handleSousTitreChange}
+            ></input>
         </div>
     )
 }

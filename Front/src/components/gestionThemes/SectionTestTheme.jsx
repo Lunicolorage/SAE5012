@@ -6,7 +6,7 @@ import { LigneTheme } from "./LigneTheme";
 
 export function SectionTestTheme() {
 
-    const [theme, setTheme, themes] = useContext(ThemeContext);
+    const [monTheme, setTheme, themes] = useContext(ThemeContext);
     const [user] = useContext(UserContext);
 
     //Fonction modifiant le thème actif
@@ -29,7 +29,24 @@ export function SectionTestTheme() {
             }
             const result = await response.json();
             console.log('Thème modifié avec succès:');
-            console.log(result);
+            // console.log(result);
+
+            const ThemeDico = {id: monTheme.id, 
+                    nom: monTheme.nom, 
+                    class: monTheme.class,
+                    logoCouleur: monTheme.logoCouleur,
+                    user: monTheme.user,
+                    grey : monTheme.couleurs.grey,
+                    deepBlue : monTheme.couleurs.deepBlue,
+                    white : monTheme.couleurs.white,
+                    greenLight : monTheme.couleurs.greenLight,
+                };
+                
+            Object.entries(ThemeDico).forEach(([key, value]) => {
+                const dataToStore = Array.isArray(value) ? JSON.stringify(value) : value;
+                localStorage.setItem('theme_' + key, dataToStore);
+            }); 
+            // console.log(localStorage);
             
         } catch (err) {
             console.error('Erreur lors de la modification du thème:', err.message);

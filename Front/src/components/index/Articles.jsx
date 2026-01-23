@@ -47,6 +47,8 @@ function Articles() {
           key={article.id} 
           article={article}
           onArticleClick={handleArticleClick}
+          listeArticles={listeArticles}
+          setListeArticles={setListeArticles}
         />
         // console.log(article)
       ))}
