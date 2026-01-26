@@ -161,7 +161,7 @@ class ArticleProcessor implements ProcessorInterface
 
         $jeuDonnee = $this->jeuDonneeRepository->find($jeuDonneeId);
 
-        if (!$jeuDonnee) { // pas ok ici
+        if (!$jeuDonnee) {
             throw new \Exception("Jeu de données introuvable avec l'ID: " . $jeuDonneeId);
         }
 

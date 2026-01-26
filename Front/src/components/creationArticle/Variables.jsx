@@ -9,7 +9,7 @@ export function Variables(props){
                 onChange={(e)=>props.onCheck(e.target.checked)}
             />
             <label className="form-check-label">
-                {props.nom}
+                {props.nom} : variable {props.type}
                 <input className="rectColor" type="color" onChange={(e)=>props.onColorChange(e.target.value)}/>
             </label>
         </div>

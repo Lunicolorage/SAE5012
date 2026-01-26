@@ -71,18 +71,18 @@ function SourceDonnees({article, setArticle, index}){
                         variableId: Number(variable.id), 
                         label: variable.nom, 
                         data: variable.valeurs, 
-                        backgroundColor: "#000000", // met en noir par défaut -> changer en variable.backgrounColor ?
+                        backgroundColor: "#000000", // met en noir par défaut
                         baseColor: "#000000",
                         borderColor: "#000000",
                     }]
                 : prevDatasets.filter(ds => ds.variableId !== variable.id);
 
-            let labels = sections[index].contenu.labels; // à voir
+            let labels = sections[index].contenu.labels;
 
             if (prevDatasets.length == 0 && checked){
                 labels = variable.type == "categorielle" 
                             ? variable.valeurs 
-                            : variable.valeurs.map((_, i) => `valeur ${i + 1}`);// -> gérer qd nb -> à voir
+                            : variable.valeurs.map((_, i) => `valeur ${i + 1}`);// -> gérer qd nb
             }
 
             sections[index] = {
@@ -102,21 +102,21 @@ function SourceDonnees({article, setArticle, index}){
 
     // gestion couleurs pour pie charts
     function generatePieColors(values, mainColor) {
-        if (!Array.isArray(values) || values.length === 0) return [];
+        if (!Array.isArray(values) || values.length == 0) return [];
 
         const maxValue = Math.max(...values);
         const colors = [];
-        const hueStep = 360 / values.length; // Calculer l'espacement des teintes pour avoir des couleurs bien distinctes
+        const hueStep = 360 / values.length; // Calculer l'espacement des teintes pour avoir des couleurs bien distinctes (cercle HSL (360°))
         let mainColorUsed = false;
 
          values.forEach((value, index) => {
-            if (value === maxValue && !mainColorUsed) {
+            if (value == maxValue && !mainColorUsed) {
                 mainColorUsed = true; // évite doublons si plusieurs max
                 colors.push(mainColor);
             } else {
                 // Générer une couleur HSL avec une teinte espacée
                 const hue = (index * hueStep) % 360;
-                colors.push(`hsl(${hue}, 70%, 60%)`);
+                colors.push(`hsl(${hue}, 70%, 60%)`); // Saturation : 70% (couleurs vives), Luminosité : 60% (pas trop sombre)
             }
         });
     
@@ -124,6 +124,7 @@ function SourceDonnees({article, setArticle, index}){
     }
 
 
+    // adapter la gestion des couleurs en fonction du chart
     function adaptDatasetToType(dataset, type) {
         let color = generatePieColors(dataset.data, dataset.baseColor)
         if (type === "pie chart") {
@@ -244,7 +245,7 @@ function SourceDonnees({article, setArticle, index}){
         })
     }
 
-    // semble ok
+    // récupère les variables du jeu de données sélectionné
     async function handleSourceDonnees(e){
         const donneesId = e.target.value;
         if (!donneesId) return;
@@ -393,6 +394,7 @@ function SourceDonnees({article, setArticle, index}){
                         return <Variables 
                                     key={variable.id} 
                                     nom={variable.nom} 
+                                    type={variable.type}
                                     onCheck = {(checked)=>handleCheckVariables(variable, checked)}
                                     onColorChange={(color)=>handleColorChoice(variable.id,color)}
                                 />

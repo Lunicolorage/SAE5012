@@ -35,7 +35,7 @@ function SectionArticle({section, couleur}){
         const datasetsWithColors = section.contenu.datasets.map((dataset) => {
             // On cherche dans le tableau "variables" celui qui correspond à ce dataset
             const variableInfo = section.contenu.variables?.find(
-                v => v.variableId === dataset.variableId
+                v => v.variableId == dataset.variableId
             );
             // récupère les couleurs
             const savedColors = variableInfo?.couleur;

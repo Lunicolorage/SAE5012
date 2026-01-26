@@ -34,6 +34,7 @@ export function ModifierArticle({contenuArticle, setContenuArticle, id, setOnMod
 
     function ModifierArticle(idArticle, nouvelArticle) {
         console.log(nouvelArticle);
+        setOnModifier(!OnModifier);
     }
 
     // async function ModifierArticle(idArticle, nouvelArticle) {
